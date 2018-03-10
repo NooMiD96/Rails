@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es5",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    // "declaration": true,
+    "skipDefaultLibCheck": true,
+    "strict": true,
+    "lib": [
+      "dom",
+      "es2015",
+      "es6"
+    ],
+    "types": [
+      "webpack-env"
+    ]
+  },
+  "awesomeTypescriptLoaderOptions": {
+    "transpileOnly": true
+  },
+  "exclude": [
+    "bin",
+    "node_modules"
+  ]
+}
