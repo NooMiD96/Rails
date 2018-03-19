@@ -2,7 +2,9 @@
 
 ## TODO:
 1. Create test templ for client(React/Redux) and server(ASP)
-2. Create TODO ╮(￣_￣)╭
+2. Create crosslanguage templ
+3. Test HRM on styled
+4. Create TODO ╮(￣_￣)╭
 
 ## Links:
 * [ANTD](https://ant.design/docs/react/introduce)
