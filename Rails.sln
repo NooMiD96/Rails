@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27428.2002
+VisualStudioVersion = 15.0.27520.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LazyLoad", "LazyLoad\LazyLoad.csproj", "{E02ADEFD-9CFB-44A7-A5DC-B9D1E1FA1927}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreReactRedux", "CoreReactRedux\CoreReactRedux.csproj", "{97A656B0-4C02-4DE5-BDDB-162E1BC67768}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreReactReduxTypeScript", "CoreReactReduxTypeScript\CoreReactReduxTypeScript.csproj", "{FB49DAA9-46D4-4404-8274-3BBF0B2E15A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +13,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E02ADEFD-9CFB-44A7-A5DC-B9D1E1FA1927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E02ADEFD-9CFB-44A7-A5DC-B9D1E1FA1927}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E02ADEFD-9CFB-44A7-A5DC-B9D1E1FA1927}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E02ADEFD-9CFB-44A7-A5DC-B9D1E1FA1927}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97A656B0-4C02-4DE5-BDDB-162E1BC67768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97A656B0-4C02-4DE5-BDDB-162E1BC67768}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97A656B0-4C02-4DE5-BDDB-162E1BC67768}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97A656B0-4C02-4DE5-BDDB-162E1BC67768}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB49DAA9-46D4-4404-8274-3BBF0B2E15A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB49DAA9-46D4-4404-8274-3BBF0B2E15A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB49DAA9-46D4-4404-8274-3BBF0B2E15A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB49DAA9-46D4-4404-8274-3BBF0B2E15A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {9DDC6095-34E6-4B20-AF9E-E0A2031C4C2F}
+		SolutionGuid = {8093C794-D2E6-4D09-B752-581B6C0F2E55}
 	EndGlobalSection
 EndGlobal
