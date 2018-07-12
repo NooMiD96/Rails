@@ -1,0 +1,6 @@
+body {
+    background-color: whitesmoke;
+}
+.ant-layout-header {
+    height: initial !important;
+}

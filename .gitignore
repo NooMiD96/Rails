@@ -242,3 +242,4 @@ _Pvt_Extensions
 # NPM
 */npm-shrinkwrap.json
 */package-lock.json
+/NodeReact/dist
