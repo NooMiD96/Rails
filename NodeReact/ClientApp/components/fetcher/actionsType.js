@@ -1,6 +1,3 @@
-// -----------------
-// ACTIONS
-
 export const PostDataRequest = 'POST_DATA_REQUEST';
 export const PostDataSuccess = 'POST_DATA_SUCCESS';
 export const PostDataError = 'POST_DATA_ERROR';

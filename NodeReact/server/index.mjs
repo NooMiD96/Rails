@@ -3,13 +3,27 @@ import webpack from "webpack";
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import WebpackConfig from "../webpack.config";
+import BodyParser from "body-parser";
 
 const app = express();
 const port = 3000;
+const jsonParser = BodyParser.json();
 
-// app.use('/', express.static(`./server/dist`));
+const strings = [];
 
-// app.use(bodyParser.json());
+app.post('/api/SaveString', jsonParser, (req, res) => {
+    console.log(req.url);
+    if(!req.body.data) {
+        res.send({error: 'empty data'});
+    }
+    strings.push(req.body.data);
+    res.send(200);
+});
+
+app.get('/api/GetString', (req, res) => {
+    console.log(req.url);
+    res.send(JSON.stringify(strings));
+});
 
 let config, compiler;
 if (process.argv.includes('production')) {
@@ -18,6 +32,9 @@ if (process.argv.includes('production')) {
     app.use(webpackDevMiddleware(compiler, {
         publicPath: '/',
     }));
+    // app.use('/', express.static(`./server/dist`));
+    // init(app);
+    // ErrorRequestHandler(app);
 } else {
     config = WebpackConfig();
     compiler = webpack(config);
@@ -50,13 +67,9 @@ if (process.argv.includes('production')) {
     });
 }
 
-// init(app);
-
 app.listen(port, (err) => {
     if (err) {
         return console.log('something bad happened', err);
     }
     console.log(`server is listening on ${port}`);
 });
-
-// ErrorRequestHandler(app);

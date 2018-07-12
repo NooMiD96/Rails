@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Spin } from 'antd';
+import AsyncComponentWrapper from "./style/AsyncComponent.style";
 
 class AsyncComponentClass extends React.Component {
     constructor(props) {
@@ -16,14 +18,19 @@ class AsyncComponentClass extends React.Component {
     }
 
     render() {
-        const Component = this.state.Component;
-        return <div>
-            {
-                (
-                    Component && <Component {...this.props} />
-                ) || <p>Loading...</p>
-            }
-        </div>
+        const { Component } = this.state;
+        const isLoading = !Component;
+        return <Spin
+            spinning={isLoading}
+            className="loading-spin-container"
+            tip="Loading..."
+        >
+            <AsyncComponentWrapper
+                isLoading={isLoading}
+            >
+                {(Component && <Component {...this.props} />)}
+            </AsyncComponentWrapper>
+        </Spin>
     }
 }
 

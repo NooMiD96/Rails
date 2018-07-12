@@ -5,10 +5,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
     entry: {
+        'vendor-styled': ['styled-components'],
         'main-client': [
             'babel-polyfill',
             path.join(__dirname, './ClientApp/boot-client.jsx'),
-        ]
+        ],
     },
     //https://webpack.js.org/configuration/stats/
     // Add built modules information
@@ -17,8 +18,6 @@ module.exports = {
     module: {
         rules: [{
             test: /\.css$/,
-            // include: /ClientApp/,
-            // use: ExtractTextPlugin.extract({ use: 'css-loader?minimize' }),
             use: ExtractTextPlugin.extract({
                 fallback: require.resolve('style-loader'),
                 use: [
@@ -30,9 +29,6 @@ module.exports = {
                             sourceMap: true,
                         },
                     },
-                    // {
-                    //     loader: require.resolve('less-loader'),
-                    // },
                 ],
             }),
         }],
@@ -51,11 +47,13 @@ module.exports = {
             parallel: true,
             uglifyOptions: {
                 warnings: true,
-                
             }
         }),
         //https://github.com/webpack-contrib/extract-text-webpack-plugin
         //load css styles in another file
-        new ExtractTextPlugin('static/css/site.css')
+        new ExtractTextPlugin(
+            'static/css/site.css',
+
+        )
     ]
 };

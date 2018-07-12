@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as actionCreators from "./actions";
+import { Button, Input, Row, Col } from "antd";
 import Hot from "core/Hot";
+import ActionCreators from "./actions";
+import FetcherWrapped from "./Fetcher.style";
 
 export class Fetcher extends React.Component {
     constructor(props) {
@@ -16,30 +18,55 @@ export class Fetcher extends React.Component {
     }
 
     fetchRequest = () => {
-        this.props.PostData(this.state.text.trim());
-        this.setState({
-            text: ''
-        });
-    }
-    changeHandler = (e) => {
-        this.setState({
-            text: e.target.value
-        });
+        const text = this.state.text.trim();
+        if(text){
+            this.props.PostData(text);
+            this.setState({
+                text: ''
+            });
+        }
     }
 
+    changeHandler = (e) => this.setState({
+        text: e.target.value
+    });
+
     render() {
-        return <div>
-            <button onClick={this.fetchRequest}>
-                Send data
-            </button>
-            <input type="text" value={this.state.text} onChange={this.changeHandler} />
-            <br />
-            <br />
-            <button onClick={this.props.GetData}>
-                Fetch request
-            </button>
-            {this.props.fetcher.dataList.map((val) => <p key={val.ParentId}>{val.Data}</p>)}
-        </div>
+        const { fetcher, GetData } = this.props;
+        const { text } = this.state;
+        return <FetcherWrapped>
+            <Row>
+                <Col
+                    md={{ span: 22, offset: 1 }}
+                    xs={{ span: 24 }}
+                >
+                <Input
+                    addonBefore={
+                        <span
+                            className="ant-input-group-addon-before"
+                            onClick={this.fetchRequest}
+                        >
+                            Send data
+                        </span>
+                    }
+                    value={text}
+                    onChange={this.changeHandler}
+                    onPressEnter={this.fetchRequest}
+                />
+                </Col>
+            </Row>
+            <Row>
+                <Col
+                    md={{ span: 22, offset: 1 }}
+                    xs={{ span: 24 }}
+                >
+                    <Button onClick={GetData}>
+                        Fetch request
+                    </Button>
+                    {fetcher.dataList.map((val, index) => <p key={index}>{val}</p>)}
+                </Col>
+            </Row>
+        </FetcherWrapped>
     }
 }
 
@@ -48,6 +75,6 @@ export default Hot(module,
         state => ({
             fetcher: state.fetcher
         }),
-        (actionCreators)
+        (ActionCreators)
     )(Fetcher)
 );

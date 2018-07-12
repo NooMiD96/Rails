@@ -1,9 +1,21 @@
 import * as t from "./actionsType";
 
 // ----------------
-// ACTION CREATORS
+// ACTIONS
+export const actions = {
+    IncrementCount: () => ({
+        type: t.IncrementCount
+    }),
+    DecrementCount: () => ({
+        type: t.DecrementCount
+    }),
+}
 
-export const actionCreators = {
-    increment: () => ({ type: t.IncrementCount }),
-    decrement: () => ({ type: t.DecrementCount })
-};
+// ----------------
+// ACTION CREATORS
+const ActionCreators = {
+    Increment: actions.IncrementCount,
+    Decrement: actions.DecrementCount,
+}
+
+export default ActionCreators;
