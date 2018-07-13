@@ -1,17 +1,23 @@
 import * as React from 'react';
 import { NavMenu } from './NavMenu';
+import AntdLayout from "antd/lib/layout/index";
+import "antd/lib/layout/style/css";
+const { Header, Content, Footer } = AntdLayout;
 
 export class Layout extends React.Component<{}, {}> {
     public render() {
-        return <div className='container-fluid'>
-            <div className='row'>
-                <div className='col-sm-3'>
+        return(
+            <AntdLayout>
+                <Header style={{height: 'initial'}}>
                     <NavMenu />
-                </div>
-                <div className='col-sm-9'>
+                </Header>
+                <Content>
                     { this.props.children }
-                </div>
-            </div>
-        </div>;
+                </Content>
+                <Footer>
+                    Footer
+                </Footer>
+            </AntdLayout>
+        );
     }
 }

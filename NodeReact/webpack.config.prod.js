@@ -53,7 +53,6 @@ module.exports = {
         //load css styles in another file
         new ExtractTextPlugin(
             'static/css/site.css',
-
         )
     ]
 };

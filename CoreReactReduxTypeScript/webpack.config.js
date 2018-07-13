@@ -22,7 +22,12 @@ module.exports = (env) => {
         //https://webpack.js.org/configuration/resolve/#resolve-extensions
         //can import files without extansions
         resolve: {
-            extensions: ['.js', '.jsx', '.ts', '.tsx']
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
+            alias: {
+                clientApp: path.resolve('./ClientApp'),
+                components: path.resolve('./ClientApp/components'),
+                core: path.resolve('./ClientApp/core'),
+            },
         },
         //https://webpack.js.org/configuration/module/
         module: {
@@ -32,7 +37,23 @@ module.exports = (env) => {
                 { test: /\.tsx?$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' },
                 //https://webpack.js.org/loaders/url-loader/
                 //looks like need install, need check
-                { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
+                { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' },
+                {
+                    test: /\.css$/,
+                    use: ExtractTextPlugin.extract({
+                        fallback: require.resolve('style-loader'),
+                        use: [
+                            {
+                                loader: require.resolve('css-loader'),
+                                options: {
+                                    importLoaders: 1,
+                                    minimize: !isDevBuild,
+                                    sourceMap: !isDevBuild,
+                                },
+                            },
+                        ],
+                    })
+                }
             ]
         },
         plugins: [
@@ -45,7 +66,12 @@ module.exports = (env) => {
                 'process.env.NODE_ENV': isDevBuild 
                     ? '"development"' 
                     : '"production"'
-            })
+            }),
+            new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+            //https://github.com/webpack-contrib/extract-text-webpack-plugin
+            //load css styles in another file
+            //needed to load antd's css files
+            new ExtractTextPlugin('site.css')
         ]
     });
 
@@ -60,6 +86,10 @@ module.exports = (env) => {
         new webpack.optimize.UglifyJsPlugin({
             minimize: true,
             sourceMap: true,
+            parallel: true,
+            uglifyOptions: {
+                warnings: true,
+            }
         })
     ]
     // Configuration for client-side bundle suitable for running in browsers
@@ -70,16 +100,6 @@ module.exports = (env) => {
         output: {
             path: path.join(__dirname, './wwwroot/dist')
         },
-        module: {
-            rules: [
-                { test: /\.css$/, use: ExtractTextPlugin.extract({ use: isDevBuild ? 'css-loader' : 'css-loader?minimize' }) }
-            ]
-        },
-        plugins: [
-            //https://github.com/webpack-contrib/extract-text-webpack-plugin
-            //load css styles in another file
-            new ExtractTextPlugin('site.css')
-        ].concat(pluginMap)
     });
 
     // Configuration for server-side (prerendering) bundle suitable for running in Node

@@ -1,40 +1,34 @@
 import * as React from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import Menu from "antd/lib/menu";
+import "antd/lib/menu/style/css";
 
 export class NavMenu extends React.Component<{}, {}> {
     public render() {
-        return <div className='main-nav'>
-                <div className='navbar navbar-inverse'>
-                <div className='navbar-header'>
-                    <button type='button' className='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
-                        <span className='sr-only'>Toggle navigation</span>
-                        <span className='icon-bar'></span>
-                        <span className='icon-bar'></span>
-                        <span className='icon-bar'></span>
-                    </button>
-                    <Link className='navbar-brand' to={ '/' }>CoreReactReduxTypeScript</Link>
-                </div>
-                <div className='clearfix'></div>
-                <div className='navbar-collapse collapse'>
-                    <ul className='nav navbar-nav'>
-                        <li>
-                            <NavLink exact to={ '/' } activeClassName='active'>
-                                <span className='glyphicon glyphicon-home'></span> Home
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={ '/Comp2' } activeClassName='active'>
-                                <span className='glyphicon glyphicon-home'></span> Comp2
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={ '/Counter' } activeClassName='active'>
-                                <span className='glyphicon glyphicon-home'></span> Counter
-                            </NavLink>
-                        </li>
-                    </ul>
-                </div>
+        return (
+            <div>
+                <Menu
+                    theme="dark"
+                    mode="horizontal"
+                    defaultSelectedKeys={['1']}
+                >
+                    <Menu.Item key="1">
+                        <NavLink exact to={'/'}>
+                            <span className='glyphicon glyphicon-home'></span> Home
+                        </NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="2">
+                        <NavLink to={'/Fetcher'}>
+                            <span className='glyphicon glyphicon-home'></span> Fetcher
+                        </NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="3">
+                        <NavLink to={'/Counter'}>
+                            <span className='glyphicon glyphicon-home'></span> Counter
+                        </NavLink>
+                    </Menu.Item>
+                </Menu>
             </div>
-        </div>;
+        );
     }
 }
