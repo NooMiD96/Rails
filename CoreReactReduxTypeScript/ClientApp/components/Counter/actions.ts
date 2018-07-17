@@ -1,19 +1,17 @@
 import * as t from "./actionsType";
-
 // ----------------
 // ACTIONS
-export const actions = {
-    IncrementCount: (): t.IncrementCountAction => ({
-        type: 'INCREMENT_COUNT',
+export const Actions = {
+    IncrementCount: (): t.IIncrementCount => ({
+        type: t.INCREMENT_COUNT,
     }),
-    DecrementCount: (): t.DecrementCountAction => ({
-        type: 'DECREMENT_COUNT',
+    DecrementCount: (): t.IDecrementCount => ({
+        type: t.DECREMENT_COUNT,
     })
 }
-
 // ----------------
 // ACTION CREATORS
-export const actionCreators = {
-    Increment: actions.IncrementCount,
-    Decrement: actions.DecrementCount,
+export const ActionCreators = {
+    Increment: Actions.IncrementCount,
+    Decrement: Actions.DecrementCount,
 };

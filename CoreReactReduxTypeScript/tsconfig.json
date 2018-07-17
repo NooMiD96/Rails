@@ -18,14 +18,14 @@
       "webpack-env"
     ],
     "paths": {
-      "clientApp/*": [
-        "^ClientApp/*"
+      "@clientApp/*": [
+        "ClientApp/*"
       ],
-      "core/*": [
-        "^ClientApp/core/*"
+      "@core/*": [
+        "ClientApp/core/*"
       ],
-      "components/*": [
-        "^ClientApp/components/*"
+      "@components/*": [
+        "ClientApp/components/*"
       ]
     }
   },

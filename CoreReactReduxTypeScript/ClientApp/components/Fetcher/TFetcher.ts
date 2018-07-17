@@ -1,16 +1,15 @@
-import { RouteComponentProps } from 'react-router-dom';
-
-import { CounterState } from './ICounterState';
+import { FetcherState } from './IFetcherState';
 import { ActionCreators } from './actions';
 
 type TStateToProps = 
-    CounterState
-    & RouteComponentProps<{}>;
+    FetcherState;
 
 type TDispatchToProps =
     typeof ActionCreators;
     
-type TOwnState = {}
+type TOwnState = {
+    text: string
+}
 
 export {
     TStateToProps,

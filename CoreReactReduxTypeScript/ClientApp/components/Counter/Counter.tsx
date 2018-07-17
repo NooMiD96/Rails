@@ -1,14 +1,14 @@
 import * as React from 'react';
+
+import Button from "@core/Button";
+import ButtonGroup from "@core/ButtonGroup";
+import Icon from "@core/Icon";
+
 import {
     TStateToProps,
     TDispatchToProps,
-    TOwnState
+    TOwnState,
 } from "./TCounter";
-import Button from "antd/lib/button/button";
-import ButtonGroup from "antd/lib/button/button-group";
-import Icon from "antd/lib/icon/index";
-import "antd/lib/button/style/css";
-import "antd/lib/icon/style/css";
 import CounterWrapper from "./Counter.style";
 
 export class Counter extends React.Component<TStateToProps & TDispatchToProps, TOwnState> {

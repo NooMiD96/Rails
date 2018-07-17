@@ -1,14 +1,16 @@
-import './css/site.css';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
+import { AppContainer } from 'react-hot-loader';
 import { createBrowserHistory } from 'history';
+
 import configureStore from './configureStore';
 import { ApplicationState }  from './store';
 import * as RoutesModule from './routes';
 let routes = RoutesModule.routes;
+
+import './css/site.css';
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href')!;

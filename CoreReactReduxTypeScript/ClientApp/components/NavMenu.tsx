@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import Menu from "antd/lib/menu";
-import "antd/lib/menu/style/css";
+import Menu from "@core/Menu";
 
 export class NavMenu extends React.Component<{}, {}> {
     public render() {
