@@ -12,7 +12,7 @@ module.exports = {
     },
     //https://webpack.js.org/configuration/stats/
     // Add built modules information
-    stats: 'minimal',
+    stats: true,
     //https://webpack.js.org/configuration/module/
     module: {
         rules: [{

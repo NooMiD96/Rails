@@ -8,7 +8,7 @@
     "startDev": "nodemon --experimental-modules index.mjs",
     "startProd": "node --experimental-modules index.mjs production",
     "clean": "IF EXIST %CD%\\dist rd /s /q %CD%\\dist",
-    "build": "npm run clean && node node_modules/webpack/bin/webpack.js --display-error-details",
+    "build": "npm run clean && node node_modules/webpack/bin/webpack.js",
     "buildProd": "npm run clean && node node_modules/webpack/bin/webpack.js --env.prod"
   },
   "author": "",
