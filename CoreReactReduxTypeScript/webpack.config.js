@@ -24,9 +24,9 @@ module.exports = (env) => {
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
             alias: {
-                clientApp: path.resolve('./ClientApp'),
-                components: path.resolve('./ClientApp/components'),
-                core: path.resolve('./ClientApp/core'),
+                '@clientApp': path.resolve('./ClientApp'),
+                '@core': path.resolve('./ClientApp/core'),
+                '@components': path.resolve('./ClientApp/components'),
             },
         },
         //https://webpack.js.org/configuration/module/
@@ -48,12 +48,12 @@ module.exports = (env) => {
                                 options: {
                                     importLoaders: 1,
                                     minimize: !isDevBuild,
-                                    sourceMap: !isDevBuild,
+                                    sourceMap: isDevBuild,
                                 },
                             },
                         ],
                     })
-                }
+                },
             ]
         },
         plugins: [
@@ -71,8 +71,16 @@ module.exports = (env) => {
             //https://github.com/webpack-contrib/extract-text-webpack-plugin
             //load css styles in another file
             //needed to load antd's css files
-            new ExtractTextPlugin('site.css')
-        ]
+            new ExtractTextPlugin({
+                filename: '[name].css',
+                allChunks: true,
+            })
+        ],
+        ...(
+            isDevBuild
+            ? {devtool: 'eval-source-map'}
+            : {}
+        )
     });
 
     const pluginMap = isDevBuild ? [
@@ -84,12 +92,7 @@ module.exports = (env) => {
         //https://webpack.js.org/guides/migrating/#uglifyjsplugin-sourcemap
         //Plugins that apply in production builds only
         new webpack.optimize.UglifyJsPlugin({
-            minimize: true,
-            sourceMap: true,
             parallel: true,
-            uglifyOptions: {
-                warnings: true,
-            }
         })
     ]
     // Configuration for client-side bundle suitable for running in browsers
@@ -100,6 +103,7 @@ module.exports = (env) => {
         output: {
             path: path.join(__dirname, './wwwroot/dist')
         },
+        plugins: pluginMap,
     });
 
     // Configuration for server-side (prerendering) bundle suitable for running in Node
@@ -118,7 +122,6 @@ module.exports = (env) => {
         },
         plugins: pluginMap,
         target: 'node',
-        devtool: 'inline-source-map'
     });
 
     return [clientBundleConfig, serverBundleConfig];
