@@ -17,4 +17,10 @@ namespace CoreReactReduxTypeScript.Context
         // parent
         public Fetcher Fetcher { get; set; }
     }
+
+    public class FetcherDataModel
+    {
+        public int Id { get; set; }
+        public string Data { get; set; }
+    }
 }

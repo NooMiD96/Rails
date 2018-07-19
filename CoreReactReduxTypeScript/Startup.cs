@@ -1,15 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CoreReactReduxTypeScript.Services.DIServices;
 using CoreReactReduxTypeScript.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace CoreReactReduxTypeScript
 {
@@ -46,11 +47,17 @@ namespace CoreReactReduxTypeScript
 
             var serviceProvider = services.BuildServiceProvider();
             Task.WhenAll(
-                DIServices.DIServices.InitIdentityDataBase(serviceProvider, Configuration),
-                DIServices.DIServices.InitIFetcherDataBase(serviceProvider, Configuration)
+                DIServices.InitIFetcherDataBase(serviceProvider, Configuration),
+                DIServices.InitIdentityDataBase(serviceProvider, Configuration)
             ).GetAwaiter().GetResult();
 
-            services.AddMvc();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/public";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,12 +68,13 @@ namespace CoreReactReduxTypeScript
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
+                    ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp"),
                     HotModuleReplacement = true,
                     ReactHotModuleReplacement = true
                 });
             }
-
-            app.UseStaticFiles();
+            
+            app.UseSpaStaticFiles();
 
             app.UseAuthentication();
 
