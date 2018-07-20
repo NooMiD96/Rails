@@ -5,16 +5,15 @@ import ButtonGroup from "@core/ButtonGroup";
 import Icon from "@core/Icon";
 
 import {
-    TStateToProps,
-    TDispatchToProps,
-    TOwnState,
+    TComponentState,
+    TState,
 } from "./TCounter";
+
 import CounterWrapper from "./Counter.style";
 
-export class Counter extends React.Component<TStateToProps & TDispatchToProps, TOwnState> {
+export class Counter extends React.Component<TState, TComponentState> {
     public render() {
         const { count, Increment, Decrement } = this.props;
-
         return (
             <CounterWrapper>
                 <h1>Counter</h1>

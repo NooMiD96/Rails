@@ -32,8 +32,4 @@
   "awesomeTypescriptLoaderOptions": {
     "transpileOnly": true
   },
-  "exclude": [
-    "bin",
-    "node_modules"
-  ]
 }

@@ -5,19 +5,24 @@ import Row from "@core/Row";
 import Col from "@core/Col";
 
 import {
-    TStateToProps,
-    TDispatchToProps,
-    TOwnState,
-    IData,
+    IKeyChangeEvent,
+    IPressEnterEvent,
+    IMouseClickEvent,
+} from "@core/IEvents";
+import { IData } from "./IFetcherState";
+import {
+    TComponentState,
+    TState,
 } from "./TFetcher";
+
 import FetcherWrapped from "./Fetcher.style";
 
-export class Fetcher extends React.Component<TStateToProps & TDispatchToProps, TOwnState> {
-    state: TOwnState = {
+export class Fetcher extends React.Component<TState, TComponentState> {
+    state = {
         text: "",
     };
 
-    fetchRequest = () => {
+    fetchRequest = (_e: IPressEnterEvent | IMouseClickEvent) => {
         const text = this.state.text.trim();
         if (text) {
             this.props.PostData(text);
@@ -27,8 +32,8 @@ export class Fetcher extends React.Component<TStateToProps & TDispatchToProps, T
         }
     }
 
-    changeHandler = (e: InputProps) => this.setState({
-        text: e.target.value,
+    changeHandler = (e: IKeyChangeEvent) => this.setState({
+        text: e.currentTarget.value,
     })
 
     render() {
@@ -64,7 +69,7 @@ export class Fetcher extends React.Component<TStateToProps & TDispatchToProps, T
                         <Button onClick={GetData}>
                             Fetch request
                         </Button>
-                        {data.map((val: IData) => <p key={val.id}>{val}</p>)}
+                        {data.map((val: IData) => <p key={val.id}>{val.data}</p>)}
                     </Col>
                 </Row>
             </FetcherWrapped>

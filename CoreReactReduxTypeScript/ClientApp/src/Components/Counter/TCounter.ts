@@ -1,19 +1,21 @@
-import { RouteComponentProps } from "react-router-dom";
-
 import { CounterState } from "./ICounterState";
 import { ActionCreators } from "./actions";
-
-type TStateToProps =
-    CounterState
-    & RouteComponentProps<{}>;
-
-type TDispatchToProps =
-    typeof ActionCreators;
-
-type TOwnState = {};
-
-export {
-    TStateToProps,
-    TDispatchToProps,
-    TOwnState,
+import { RouteComponentProps } from "react-router";
+// -----------------------------
+// STATE OF COMPONENT
+export type TComponentState = {
 };
+// -----------------------------
+// REDUX STATE OF COMPONENT
+export type TStateToProps = CounterState;
+export type TOwnProps = RouteComponentProps<{}>;
+export type TMapStateToProps = TStateToProps
+    & TOwnProps;
+// -----------------------------
+// REDUX ACTIONS OF COMPONENT
+export type TDispatchToProps = typeof ActionCreators;
+export type TMapDispatchToProps = TDispatchToProps;
+// -----------------------------
+// COMBINE REDUX PROPS
+export type TState = TMapStateToProps
+    & TMapDispatchToProps;

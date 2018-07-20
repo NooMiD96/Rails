@@ -1,13 +1,14 @@
 import * as React from "react";
 import { Provider } from "react-redux";
 import { StaticRouter } from "react-router-dom";
-import { replace } from "react-router-redux";
+import { replace } from "connected-react-router";
 import { renderToString } from "react-dom/server";
 import { createMemoryHistory } from "history";
 import { createServerRenderer, RenderResult } from "aspnet-prerendering";
 
 import { AppRoutes } from "./App";
 import configureStore from "./configureStore";
+import { ActionCreators as FetcherActionCreators } from "@components/Fetcher/actions";
 
 export default createServerRenderer(params =>
     new Promise<RenderResult>((resolve, reject) => {
@@ -20,6 +21,7 @@ export default createServerRenderer(params =>
 
         // Prepare an instance of the application and perform an inital render that will
         // cause any async tasks (e.g., data access) to begin
+        FetcherActionCreators.GetData()(store.dispatch, store.getState);
         const routerContext: any = {};
         const app = (
             <Provider store={ store }>

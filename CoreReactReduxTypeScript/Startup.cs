@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using System.IO;
+using System.Collections.Generic;
 
 namespace CoreReactReduxTypeScript
 {
@@ -68,6 +69,7 @@ namespace CoreReactReduxTypeScript
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
+                    HotModuleReplacementClientOptions = new Dictionary<string, string> { { "dynamicPublicPath", "false" } },
                     ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp"),
                     HotModuleReplacement = true,
                     ReactHotModuleReplacement = true

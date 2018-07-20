@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoreReactReduxTypeScript.Context
@@ -20,7 +21,9 @@ namespace CoreReactReduxTypeScript.Context
 
     public class FetcherDataModel
     {
+        [JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
+        [JsonProperty(PropertyName = "data")]
         public string Data { get; set; }
     }
 }

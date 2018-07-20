@@ -1,23 +1,25 @@
 
 import { connect } from "react-redux";
 
-import { ApplicationState } from "@src/Store";
 import { ActionCreators } from "./actions";
 import {
-    TStateToProps,
-    TDispatchToProps,
+    TOwnProps,
+    TMapStateToProps,
+    TMapDispatchToProps,
 } from "./TCounter";
 import { Counter } from "./Counter";
+import { ApplicationState } from "@src/Store";
 
-const mapStateToProps = (state: ApplicationState) => ({
+const mapStateToProps = (state: ApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
     ...state.counter,
-} as TStateToProps);
+    ...ownProp,
+});
 
-const mapDispatchToProps = {
+const mapDispatchToProps: TMapDispatchToProps = {
     ...ActionCreators,
-} as TDispatchToProps;
+};
 
-export default connect<TStateToProps, TDispatchToProps, {}>(
+export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps
-)(Counter) as typeof Counter;
+)(Counter);

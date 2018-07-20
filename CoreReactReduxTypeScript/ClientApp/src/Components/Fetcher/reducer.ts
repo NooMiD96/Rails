@@ -12,11 +12,18 @@ export const reducer: Reducer<FetcherState> = (state: FetcherState, action: Know
             return {
                 ...state,
             };
-        case t.GET_DATA_SUCCESS:
+
         case t.POST_DATA_SUCCESS:
             return {
                 ...state,
             };
+
+        case t.GET_DATA_SUCCESS:
+            return {
+                ...state,
+                data: action.payload,
+            };
+
         case t.GET_DATA_ERROR:
         case t.POST_DATA_ERROR:
             return {

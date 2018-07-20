@@ -12,17 +12,15 @@ module.exports = (env) => {
     output: {
       filename: '[name].js',
       chunkFilename: '[name].bundle.js',
-      publicPath: isDevBuild
-        ? 'public/'
-        : 'client/'
+      publicPath: 'client/'
     },
-    //https://webpack.js.org/configuration/stats/
+    // https://webpack.js.org/configuration/stats/
     // Add built modules information
     stats: {
       modules: false
     },
-    //https://webpack.js.org/configuration/resolve/#resolve-extensions
-    //can import files without extansions
+    // https://webpack.js.org/configuration/resolve/#resolve-extensions
+    // Can import files without extansions
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
       alias: {
@@ -31,14 +29,14 @@ module.exports = (env) => {
         '@components': path.resolve('./src/components'),
       },
     },
-    //https://webpack.js.org/configuration/module/
+    // https://webpack.js.org/configuration/module/
     module: {
       rules: [
-        //https://github.com/s-panferov/awesome-typescript-loader
-        //TS module for webpack
+        // https://github.com/s-panferov/awesome-typescript-loader
+        // TS module for webpack
         { test: /\.tsx?$/, include: /src/, use: 'awesome-typescript-loader?silent=true' },
-        //https://webpack.js.org/loaders/url-loader/
-        //looks like need install, need check
+        // https://webpack.js.org/loaders/url-loader/
+        // Looks like need install, need check
         { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' },
         {
           test: /\.css$/,
@@ -59,24 +57,31 @@ module.exports = (env) => {
       ]
     },
     plugins: [
+      // https://github.com/s-panferov/awesome-typescript-loader
+      // awesome-typescript-loader plugin
+      // `CheckerPlugin` is optional. Use it if want async error reporting.
+      new CheckerPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
         children: true,
         async: true,
       }),
-      new CheckerPlugin(),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': isDevBuild
           ? '"development"'
           : '"production"'
       }),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-      //https://github.com/webpack-contrib/extract-text-webpack-plugin
-      //load css styles in another file
-      //needed to load antd's css files
+      // https://github.com/webpack-contrib/extract-text-webpack-plugin
+      // Load css styles in another file
+      // Needed to load antd's css files
       new ExtractTextPlugin({
         filename: '[name].css',
         allChunks: true,
-      })
+      }),
+      // 
+      new webpack.NormalModuleReplacementPlugin(
+        /\/iconv-loader$/, 'node-noop',
+      ),
     ],
     ...(
       isDevBuild
@@ -93,8 +98,8 @@ module.exports = (env) => {
         moduleFilenameTemplate: path.relative('./public/client', '[resourcePath]')
       })
     ] : [
-      //https://webpack.js.org/guides/migrating/#uglifyjsplugin-sourcemap
-      //Plugins that apply in production builds only
+      // https://webpack.js.org/guides/migrating/#uglifyjsplugin-sourcemap
+      // Plugins that apply in production builds only
       new webpack.optimize.UglifyJsPlugin({
         parallel: true,
       })
@@ -116,11 +121,11 @@ module.exports = (env) => {
       'main-server': './src/boot-server.tsx'
     },
     output: {
+      path: path.join(__dirname, './public/server'),
       libraryTarget: 'commonjs',
-      path: path.join(__dirname, './public/server')
     },
-    //https://webpack.js.org/configuration/resolve/#resolve-mainfields
-    //import only main from package
+    // https://webpack.js.org/configuration/resolve/#resolve-mainfields
+    // Import only main from package
     resolve: {
       mainFields: ['main']
     },

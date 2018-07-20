@@ -1,5 +1,5 @@
 import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router";
 
 export function AsyncComponent(ComponentLoader: any) {
     interface IState {
@@ -19,11 +19,10 @@ export function AsyncComponent(ComponentLoader: any) {
 
         render() {
             const Component = this.state.Component;
-
             return (
                 <div>
                     {
-                        (Component && <Component routeProps />) || <p>Loading...</p>
+                        (Component && <Component {...this.props} />) || <p>Loading...</p>
                     }
                 </div>
             );

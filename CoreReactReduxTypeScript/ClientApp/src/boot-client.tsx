@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { ConnectedRouter } from "react-router-redux";
+import { ConnectedRouter } from "connected-react-router";
 import { AppContainer } from "react-hot-loader";
 import { createBrowserHistory } from "history";
 
@@ -23,7 +23,8 @@ const store = ConfigureStore(history, initialState);
 function renderApp() {
     // This code starts up the React app when it runs in a browser. It sets up the routing configuration
     // and injects the app into a DOM element.
-    ReactDOM.render(
+    // `hydrate` needed to attach created by server render with DOM
+    ReactDOM.hydrate(
         <AppContainer>
             <Provider store={ store }>
                 <ConnectedRouter history={ history } children={ routes } />
