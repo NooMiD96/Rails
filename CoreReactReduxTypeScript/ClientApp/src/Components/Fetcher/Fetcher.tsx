@@ -22,6 +22,12 @@ export class Fetcher extends React.Component<TState, TComponentState> {
         text: "",
     };
 
+    componentDidMount() {
+        if (!this.props.data.length) {
+            this.props.GetData();
+        }
+    }
+
     fetchRequest = (_e: IPressEnterEvent | IMouseClickEvent) => {
         const text = this.state.text.trim();
         if (text) {
