@@ -37,7 +37,7 @@ module.exports = (env) => {
         { test: /\.tsx?$/, include: /src/, use: 'awesome-typescript-loader?silent=true' },
         // https://webpack.js.org/loaders/url-loader/
         // Looks like need install, need check
-        { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' },
+        { test: /\.(png|jpg|jpeg|gif|svg|woff)$/, include: /src/, use: 'url-loader?limit=25000' },
         {
           test: /\.css$/,
           use: ExtractTextPlugin.extract({
@@ -118,7 +118,7 @@ module.exports = (env) => {
   // Configuration for server-side (prerendering) bundle suitable for running in Node
   const serverBundleConfig = merge(sharedConfig(), {
     entry: {
-      'main-server': './src/boot-server.tsx'
+      'main-server': './src/boot-server.tsx',
     },
     output: {
       path: path.join(__dirname, './public/server'),

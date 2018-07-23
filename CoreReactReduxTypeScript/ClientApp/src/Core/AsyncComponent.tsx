@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import Spin from "@core/Spin";
-import AsyncComponentWrapper from "./style/AsyncComponent.style";
 
 export function AsyncComponent(ComponentLoader: any) {
     interface IState {
@@ -25,14 +24,10 @@ export function AsyncComponent(ComponentLoader: any) {
             return (
                 <Spin
                     spinning={isLoading}
-                    className="loading-spin-container"
-                    tip="Loading..."
                 >
-                    <AsyncComponentWrapper
-                        isLoading={isLoading}
-                    >
+                    <div className={`loading-spin-container ${isLoading ? "hidden" : "visible"}`}>
                         {(Component && <Component {...this.props} />)}
-                    </AsyncComponentWrapper>
+                    </div>
                 </Spin>
             );
         }

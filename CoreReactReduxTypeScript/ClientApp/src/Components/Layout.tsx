@@ -8,7 +8,7 @@ export class Layout extends React.Component<{}, {}> {
     public render() {
         return (
             <AntdLayout>
-                <Header style={{height: "initial"}}>
+                <Header className="antd-header">
                     <NavMenu />
                 </Header>
                 <Content>

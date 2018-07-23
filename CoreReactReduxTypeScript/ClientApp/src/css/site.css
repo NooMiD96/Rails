@@ -1,1 +1,23 @@
-body{background-color: whitesmoke;}
+@font-face {
+    font-family: "up-circle-o";
+    src: url("/up-circle-o.woff") format("woff"),
+}
+body {
+    background-color: whitesmoke;
+}
+
+.loading-spin-container {
+    min-height: 320px;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.antd-header {
+    height: initial;
+}
