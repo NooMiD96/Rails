@@ -1,11 +1,13 @@
 import * as React from "react";
-import { RouteComponentProps } from "react-router";
+
+import Spin from "@core/Spin";
+import AsyncComponentWrapper from "./style/AsyncComponent.style";
 
 export function AsyncComponent(ComponentLoader: any) {
     interface IState {
         Component: any;
     }
-    class AsyncComponent extends React.Component<RouteComponentProps<{}>, IState> {
+    class AsyncComponent extends React.Component<any, IState> {
         state: IState = {
             Component: null,
         };
@@ -18,13 +20,20 @@ export function AsyncComponent(ComponentLoader: any) {
         }
 
         render() {
-            const Component = this.state.Component;
+            const { Component } = this.state;
+            const isLoading = !Component;
             return (
-                <div>
-                    {
-                        (Component && <Component {...this.props} />) || <p>Loading...</p>
-                    }
-                </div>
+                <Spin
+                    spinning={isLoading}
+                    className="loading-spin-container"
+                    tip="Loading..."
+                >
+                    <AsyncComponentWrapper
+                        isLoading={isLoading}
+                    >
+                        {(Component && <Component {...this.props} />)}
+                    </AsyncComponentWrapper>
+                </Spin>
             );
         }
     }
