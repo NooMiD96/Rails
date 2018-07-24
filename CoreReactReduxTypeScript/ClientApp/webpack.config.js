@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const StringReplacePlugin = require('string-replace-webpack-plugin');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const merge = require('webpack-merge');
 
@@ -32,27 +33,42 @@ module.exports = (env) => {
     // https://webpack.js.org/configuration/module/
     module: {
       rules: [
+        // https://webpack.js.org/loaders/url-loader/
+        // some troubles with creating the base64 string
+        // {
+        //   test: /\.(png|jpg|jpeg|gif|svg|eot|ttf|woff)$/,
+        //   loader: 'url-loader',
+        //   options: { limit: 1024 },
+        // },
+        // https://webpack.js.org/loaders/file-loader/
+        {
+          test: /\.(png|jpg|jpeg|gif|svg|eot|ttf|woff)$/,
+          loader: 'file-loader',
+          options: { name: '[name].[ext]', outputPath: 'assets/', publicPath: 'assets/' },
+        },
         // https://github.com/s-panferov/awesome-typescript-loader
         // TS module for webpack
         { test: /\.tsx?$/, include: /src/, use: 'awesome-typescript-loader?silent=true' },
-        // https://webpack.js.org/loaders/url-loader/
-        // Looks like need install, need check
-        { test: /\.(png|jpg|jpeg|gif|svg|woff)$/, include: /src/, use: 'url-loader?limit=25000' },
+        {
+          test: /\.css$/,
+          enforce: 'pre',
+          use: StringReplacePlugin.replace({
+            replacements: [{
+              pattern: /https:\/\/at.alicdn.com\/t\/(.*?\.)(svg|eot|ttf|woff)(#.*?)?'/ig,
+              replacement: (match, p1, p2, p3, p4, p5, offset, string) =>
+                `${path.resolve('./src/css').replace(/\\/g, '/')}/iconfont.${p2}${p3 ? p3 : ''}'`
+            }]
+          })
+        },
         {
           test: /\.css$/,
           use: ExtractTextPlugin.extract({
             fallback: require.resolve('style-loader'),
-            use: [
-              {
-                loader: require.resolve('css-loader'),
-                options: {
-                  importLoaders: 1,
-                  minimize: !isDevBuild,
-                  sourceMap: isDevBuild,
-                }
-              },
-            ]
-          })
+            use: [{
+              loader: require.resolve('css-loader'),
+              options: { importLoaders: 1, minimize: !isDevBuild, sourceMap: isDevBuild }
+            }]
+          }),
         },
       ]
     },
@@ -78,7 +94,9 @@ module.exports = (env) => {
         filename: '[name].css',
         allChunks: true,
       }),
-      // 
+      // an instance of the plugin must be present
+      new StringReplacePlugin(),
+      // hide warning in the webpack
       new webpack.NormalModuleReplacementPlugin(
         /\/iconv-loader$/, 'node-noop',
       ),

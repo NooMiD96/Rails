@@ -1,7 +1,3 @@
-@font-face {
-    font-family: "up-circle-o";
-    src: url("/up-circle-o.woff") format("woff"),
-}
 body {
     background-color: whitesmoke;
 }
