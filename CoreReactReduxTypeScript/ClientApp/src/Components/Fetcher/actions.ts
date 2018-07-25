@@ -13,8 +13,9 @@ export const ActionsList = {
     PostDataSuccess: (): t.IPostDataSuccess => ({
         type: t.POST_DATA_SUCCESS,
     }),
-    PostDataError: (): t.IPostDataError => ({
+    PostDataError: (errorMessage: string): t.IPostDataError => ({
         type: t.POST_DATA_ERROR,
+        errorMessage,
     }),
     GetDataRequest: (): t.IGetDataRequest => ({
         type: t.GET_DATA_REQUEST,
@@ -23,8 +24,12 @@ export const ActionsList = {
         type: t.GET_DATA_SUCCESS,
         payload,
     }),
-    GetDataError: (): t.IGetDataError => ({
+    GetDataError: (errorMessage: string): t.IGetDataError => ({
         type: t.GET_DATA_ERROR,
+        errorMessage,
+    }),
+    RemoveErrorMessage: (): t.IRemoveErrorMessage => ({
+        type: t.REMOVE_ERROR_MESSAGE,
     }),
 };
 // ----------------
@@ -48,7 +53,7 @@ export const ActionCreators = {
                 dispatch(ActionsList.GetDataSuccess(data));
             }).catch((err: string) => {
                 console.log(err);
-                dispatch(ActionsList.GetDataError());
+                dispatch(ActionsList.GetDataError(err));
             });
 
         addTask(fetchTask);
@@ -69,15 +74,15 @@ export const ActionCreators = {
                 if (value && value.error) {
                     throw value.error;
                 }
-
                 dispatch(ActionsList.PostDataSuccess());
                 ActionCreators.GetData()(dispatch, _getState);
             }).catch((err: string) => {
                 console.log(err);
-                dispatch(ActionsList.PostDataError());
+                dispatch(ActionsList.PostDataError(err));
             });
 
         addTask(fetchTask);
         dispatch(ActionsList.PostDataRequest());
     },
+    RemoveErrorMessage: ActionsList.RemoveErrorMessage,
 };

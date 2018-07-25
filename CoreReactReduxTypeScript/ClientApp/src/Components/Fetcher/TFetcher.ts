@@ -3,8 +3,14 @@ import { ActionCreators } from "./actions";
 import { RouteComponentProps } from "react-router";
 // -----------------------------
 // STATE OF COMPONENT
+export enum PendingTypeEnums {
+    Nothing,
+    SendData,
+    GetData,
+}
 export type TComponentState = {
     text: string,
+    pendingType: PendingTypeEnums,
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT
