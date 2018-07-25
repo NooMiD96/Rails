@@ -6,7 +6,7 @@ import { renderToString } from "react-dom/server";
 import { createMemoryHistory } from "history";
 import { createServerRenderer, RenderResult } from "aspnet-prerendering";
 
-import configureStore from "@src/configureStore";
+import configureStore from "./configureStore";
 import { AppRoutes } from "@src/App";
 import initReduxForComponent from "@core/BootServerHelper";
 
@@ -16,12 +16,12 @@ export default createServerRenderer(params =>
         // corresponding to the incoming URL
         const basename = params.baseUrl.substring(0, params.baseUrl.length - 1); // Remove trailing slash
         const urlAfterBasename = params.url.substring(basename.length);
-        const splitedUrl = urlAfterBasename.split("/").filter(Boolean);
         const store = configureStore(createMemoryHistory());
         store.dispatch(replace(urlAfterBasename));
 
         // Prepare an instance of the application and perform an inital render that will
         // cause any async tasks (e.g., data access) to begin
+        const splitedUrl = urlAfterBasename.split("/").filter(Boolean);
         initReduxForComponent(splitedUrl, store);
         const routerContext: any = {};
 
@@ -30,6 +30,7 @@ export default createServerRenderer(params =>
                 <StaticRouter basename={ basename } context={ routerContext } location={ params.location.path } children={ AppRoutes } />
             </Provider>
         );
+
         renderToString(app);
 
         // If there's a redirection, just send this information back to the host application
@@ -43,7 +44,7 @@ export default createServerRenderer(params =>
         params.domainTasks.then(() => {
             resolve({
                 html: renderToString(app),
-                globals: { initialReduxState: store.getState() },
+                globals: { initialReduxState: store.getState(), props: app.props },
             });
         }, reject); // Also propagate any errors back into the host application
     })

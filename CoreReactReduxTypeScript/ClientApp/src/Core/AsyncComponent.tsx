@@ -26,7 +26,7 @@ export function AsyncComponent(ComponentLoader: any) {
                     spinning={isLoading}
                 >
                     <div className={`loading-spin-container ${isLoading ? "hidden" : "visible"}`}>
-                        {(Component && <Component {...this.props} />)}
+                        {Component && <Component {...this.props} />}
                     </div>
                 </Spin>
             );

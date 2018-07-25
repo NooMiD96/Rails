@@ -5,12 +5,12 @@ import { ConnectedRouter } from "connected-react-router";
 import { AppContainer } from "react-hot-loader";
 import { createBrowserHistory } from "history";
 
-import ConfigureStore from "@src/ConfigureStore";
+import ConfigureStore from "./ConfigureStore";
 import { ApplicationState }  from "@src/store";
 import * as App from "@src/App";
 let routes = App.AppRoutes;
 
-import "./css/site.css";
+import "@src/css/site.css";
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href")!;
@@ -38,9 +38,9 @@ renderApp();
 
 // Allow Hot Module Replacement
 if (module.hot) {
-    module.hot.accept("./App", () => {
+    module.hot.accept("@src/App", () => {
         // tslint:disable-next-line
-        routes = require<typeof App>("./App").AppRoutes;
+        routes = require<typeof App>("@src/App").AppRoutes;
         renderApp();
     });
 }

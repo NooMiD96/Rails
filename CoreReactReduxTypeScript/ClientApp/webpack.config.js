@@ -126,7 +126,7 @@ module.exports = (env) => {
   // Configuration for client-side bundle suitable for running in browsers
   const clientBundleConfig = merge(sharedConfig(), {
     entry: {
-      'main-client': './src/boot-client.tsx'
+      'main-client': './src/boot-client/boot-client.tsx'
     },
     output: {
       path: path.join(__dirname, './public/client')
@@ -136,7 +136,7 @@ module.exports = (env) => {
   // Configuration for server-side (prerendering) bundle suitable for running in Node
   const serverBundleConfig = merge(sharedConfig(), {
     entry: {
-      'main-server': './src/boot-server.tsx',
+      'main-server': './src/boot-server/boot-server.tsx',
     },
     output: {
       path: path.join(__dirname, './public/server'),
