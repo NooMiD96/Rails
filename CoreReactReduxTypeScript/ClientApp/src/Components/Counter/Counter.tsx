@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import Button from "@core/Button";
-import ButtonGroup from "@core/ButtonGroup";
-import Icon from "@core/Icon";
+import Button from "@core/antd/Button";
+import ButtonGroup from "@core/antd/ButtonGroup";
+import Icon from "@core/antd/Icon";
 
 import {
     TComponentState,

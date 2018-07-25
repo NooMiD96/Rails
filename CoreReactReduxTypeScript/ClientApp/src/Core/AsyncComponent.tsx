@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import Spin from "@core/Spin";
+import Spin from "@core/antd/Spin";
 
 export function AsyncComponent(ComponentLoader: any) {
     interface IState {

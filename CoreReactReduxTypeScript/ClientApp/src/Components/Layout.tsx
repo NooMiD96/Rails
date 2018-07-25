@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { NavMenu } from "./NavMenu";
-import AntdLayout from "@core/Layout";
+import AntdLayout from "@core/antd/Layout";
 const { Header, Content, Footer } = AntdLayout;
 
 export class Layout extends React.Component<{}, {}> {

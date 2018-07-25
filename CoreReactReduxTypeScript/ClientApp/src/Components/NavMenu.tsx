@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import Menu from "@core/Menu";
+import Menu from "@core/antd/Menu";
 
 interface IState {
     selectedKeys: string[];
