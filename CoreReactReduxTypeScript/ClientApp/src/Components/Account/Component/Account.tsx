@@ -7,29 +7,31 @@ import Authentication from "./Authentication";
 import Registration from "./Registration";
 
 import {
-  IKeyChangeEvent,
-  IPressEnterEvent,
-  IMouseClickEvent,
-} from "@core/IEvents";
-import {
   TState,
   ModalTypeEnums,
   TComponentState,
+  TRegistrationModel,
+  TAuthenticationModel,
 } from "../TAccount";
 
 export class Account extends React.Component<TState, TComponentState> {
   state = {
     modalType: ModalTypeEnums.Nothing,
-    loading: false,
   };
   containerRef = React.createRef<HTMLDivElement>();
 
-  HandleSubmit = (payload: object) => {
+  componentDidMount() {
+    // TODO: request user info
+  }
+
+  HandleRegistrationSubmit = (payload: TRegistrationModel) => {
+    this.props.Registration(payload);
     // TODO: request
   }
 
-  componentDidMount() {
-    // TODO: request user info
+  HandleAuthenticationSubmit = (payload: TAuthenticationModel) => {
+    this.props.Authentication(payload);
+    // TODO: request
   }
 
   ShowModal = (type: ModalTypeEnums) => this.setState({
@@ -64,30 +66,30 @@ export class Account extends React.Component<TState, TComponentState> {
             icon="idcard"
             onClick={() => this.ShowModal(ModalTypeEnums.Registration)}
           />
-        <Modal
-          getContainer={() => this.containerRef.current!}
-          title={<span className="account-modal-title">{ModalTypeEnums[modalType]}</span>}
-          visible={modalType !== ModalTypeEnums.Nothing}
-          closable={false}
-          footer={null}
-        >
-          {
-            modalType === ModalTypeEnums.Authentication
-            && <Authentication
-              HandleSubmit={this.HandleSubmit}
-              HandleСlose={this.HandleСlose}
-              loading={pending}
-            />
-          }
-          {
-            modalType === ModalTypeEnums.Registration
-            && <Registration
-              HandleSubmit={this.HandleSubmit}
-              HandleСlose={this.HandleСlose}
-              loading={pending}
-            />
-          }
-        </Modal>
+          <Modal
+            getContainer={() => this.containerRef.current!}
+            title={<span className="account-modal-title">{ModalTypeEnums[modalType]}</span>}
+            visible={modalType !== ModalTypeEnums.Nothing}
+            closable={false}
+            footer={null}
+          >
+            {
+              modalType === ModalTypeEnums.Authentication
+              && <Authentication
+                HandleSubmit={this.HandleAuthenticationSubmit}
+                HandleСlose={this.HandleСlose}
+                loading={pending}
+              />
+            }
+            {
+              modalType === ModalTypeEnums.Registration
+              && <Registration
+                HandleSubmit={this.HandleRegistrationSubmit}
+                HandleСlose={this.HandleСlose}
+                loading={pending}
+              />
+            }
+          </Modal>
         </ButtonGroup>
       </div>
     );

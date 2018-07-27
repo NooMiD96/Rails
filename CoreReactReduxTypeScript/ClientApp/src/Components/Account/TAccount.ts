@@ -9,7 +9,6 @@ export enum ModalTypeEnums {
 }
 export type TComponentState = {
     modalType: ModalTypeEnums,
-    loading: boolean,
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT
@@ -25,3 +24,14 @@ export type TMapDispatchToProps = TDispatchToProps;
 // COMBINE REDUX PROPS
 export type TState = TMapStateToProps
     & TMapDispatchToProps;
+// -----------------------------
+// MODELS
+export type TRegistrationModel = {
+    userName: string,
+    email: string,
+    password: string,
+};
+export type TAuthenticationModel = {
+    userName: string,
+    password: string,
+};

@@ -3,19 +3,25 @@ import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 
+import { TAuthenticationModel } from "../../TAccount";
 import ActionButtons from "../ActionButtons";
 
 interface Props extends FormComponentProps {
-  HandleSubmit: (payload: object) => void;
+  HandleSubmit: (payload: TAuthenticationModel) => void;
   HandleСlose: () => void;
   loading: boolean;
 }
 
 export class Authentication extends React.Component<Props, {}> {
   OnSubmit = () => {
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields((err: any, values: TAuthenticationModel) => {
       if (!err) {
         console.log("Received values of form: ", values);
+        this.props.HandleSubmit({
+          password: values.password,
+          userName: values.userName,
+        });
+        this.props.form.resetFields(["password"]);
       }
     });
   }

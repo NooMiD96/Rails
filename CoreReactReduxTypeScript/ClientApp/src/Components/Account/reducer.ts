@@ -7,6 +7,7 @@ import KnownAction, * as t from "./actionsType";
 
 export const reducer: Reducer<AccountState> = (state: AccountState, action: KnownAction) => {
     switch (action.type) {
+        case t.REGISTRATION_REQUEST:
         case t.AUTHENTICATION_REQUEST:
         case t.LOGOUT_REQUEST:
             return {
@@ -14,6 +15,7 @@ export const reducer: Reducer<AccountState> = (state: AccountState, action: Know
                 pending: true,
             };
 
+        case t.REGISTRATION_SUCCESS:
         case t.AUTHENTICATION_SUCCESS:
             return {
                 ...state,
@@ -21,11 +23,9 @@ export const reducer: Reducer<AccountState> = (state: AccountState, action: Know
             };
 
         case t.LOGOUT_SUCCESS:
-            return {
-                ...state,
-                pending: false,
-            };
+            return UnloadedState;
 
+        case t.REGISTRATION_ERROR:
         case t.AUTHENTICATION_ERROR:
         case t.LOGOUT_ERROR:
             return {

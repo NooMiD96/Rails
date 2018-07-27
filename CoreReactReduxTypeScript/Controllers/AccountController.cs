@@ -27,14 +27,17 @@ namespace CoreReactReduxTypeScript.Controllers
             _signInManager = signInManager;
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegistrationModel userModel)
+        [HttpPost("[action]")]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Registration([FromBody] RegistrationModel userModel)
         {
-            if (userModel.IsValid(_userManager, out var error))
+            var user = new ApplicationUser {
+                UserName = userModel.UserName,
+                Email = userModel.Email
+            };
+            if (userModel.IsValid(_userManager, user, out var error))
             {
-                var user = new ApplicationUser { UserName = userModel.UserName };
                 var result = await _userManager.CreateAsync(user, userModel.Password);
                 if (result.Succeeded)
                 {
@@ -58,10 +61,10 @@ namespace CoreReactReduxTypeScript.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginModel userModel)
+        [HttpPost("[action]")]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Authentication([FromBody] LoginModel userModel)
         {
             if (userModel.IsValid(out var error))
             {
@@ -98,8 +101,8 @@ namespace CoreReactReduxTypeScript.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost("[action]")]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

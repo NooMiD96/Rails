@@ -9,6 +9,7 @@ namespace CoreReactReduxTypeScript.Models.Account
     public class RegistrationModel
     {
         public string UserName { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
 
         /// <summary>
@@ -18,13 +19,23 @@ namespace CoreReactReduxTypeScript.Models.Account
         /// <param name="userManager">The manager which give Validation Rules</param>
         /// <param name="errors">If Password is not valid then return rules which not passed, else return null</param>
         /// <returns></returns>
-        public bool IsValid<T>(UserManager<T> userManager, out IdentityError error) where T: class
+        public bool IsValid<T>(UserManager<T> userManager, T user, out IdentityError error) where T: class
         {
             IdentityError returnErrors = null;
-            async ValueTask<bool> Validator(IPasswordValidator<T> x)
+            async ValueTask<bool> IsNotValid(object x)
             {
-                // Check second param
-                var validResul = await x.ValidateAsync(userManager, null, "123");
+                IdentityResult validResul;
+                switch (x)
+                {
+                    case IPasswordValidator<T> p:
+                        validResul = await p.ValidateAsync(userManager, user, Password);
+                        break;
+                    case IUserValidator<T> u:
+                        validResul = await u.ValidateAsync(userManager, user);
+                        break;
+                    default:
+                        return true;
+                }
                 if (!validResul.Succeeded)
                 {
                     returnErrors = validResul.Errors.FirstOrDefault();
@@ -36,11 +47,12 @@ namespace CoreReactReduxTypeScript.Models.Account
                 }
             }
 
-            var IsAnyRulesNotPassed = userManager.PasswordValidators
-                .Any(x => Validator(x).GetAwaiter().GetResult());
-
+            var IsAnyPasswordRulesNotPassed = userManager.PasswordValidators
+                .Any(x => IsNotValid(x).GetAwaiter().GetResult());
+            var IsAnyUserRulesNotPassed = userManager.UserValidators
+                .Any(x => IsNotValid(x).GetAwaiter().GetResult());
             error = returnErrors;
-            return !IsAnyRulesNotPassed;
+            return !(IsAnyPasswordRulesNotPassed || IsAnyUserRulesNotPassed);
         }
     }
 }

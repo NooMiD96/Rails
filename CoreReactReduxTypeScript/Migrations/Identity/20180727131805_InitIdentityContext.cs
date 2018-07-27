@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CoreReactReduxTypeScript.Migrations.Identity
 {
-    public partial class InitFetcherContext : Migration
+    public partial class InitIdentityContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

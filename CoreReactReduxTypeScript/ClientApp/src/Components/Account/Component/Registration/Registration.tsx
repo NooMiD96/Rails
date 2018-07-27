@@ -3,19 +3,26 @@ import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 
+import { TRegistrationModel } from "../../TAccount";
 import ActionButtons from "../ActionButtons";
 
 interface Props extends FormComponentProps {
-  HandleSubmit: (payload: object) => void;
+  HandleSubmit: (payload: TRegistrationModel) => void;
   HandleСlose: () => void;
   loading: boolean;
 }
 
 export class Registration extends React.Component<Props, {}> {
   OnSubmit = () => {
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields((err: any, values: TRegistrationModel & {confirm: string}) => {
       if (!err) {
         console.log("Received values of form: ", values);
+        this.props.HandleSubmit({
+          userName: values.userName,
+          email: values.email,
+          password: values.password,
+        });
+        this.props.form.resetFields(["password", "confirm"]);
       }
     });
   }
@@ -47,6 +54,19 @@ export class Registration extends React.Component<Props, {}> {
             rules: [{ required: true, message: "Please input your username!" }],
           })(
             <Input prefix={<Icon type="user" className="input-prefix-color" />} placeholder="Username" />
+          )}
+        </FormItem>
+        <FormItem
+          label="EMail"
+        >
+          {getFieldDecorator("email", {
+            rules: [{
+                type: "email", message: "The input is not valid E-mail!",
+              }, {
+                required: true, message: "Please input your email!",
+              }],
+          })(
+            <Input prefix={<Icon type="mail" className="input-prefix-color" />} type="email" placeholder="Email" />
           )}
         </FormItem>
         <FormItem
