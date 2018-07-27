@@ -13,7 +13,6 @@ import {
   IPressEnterEvent,
   IMouseClickEvent,
 } from "@core/IEvents";
-import { IData } from "./IFetcherState";
 import {
   TState,
   PendingTypeEnums,
@@ -116,7 +115,6 @@ export class Fetcher extends React.Component<TState, TComponentState> {
                     dataIndex="data"
                   />
                 </Table>
-                {/* {data.map((val: IData) => <p key={val.id}>{val.data}</p>)} */}
               </Spin>
             </Col>
           </Row>

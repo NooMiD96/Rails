@@ -1,4 +1,5 @@
 using CoreReactReduxTypeScript.Context;
+using CoreReactReduxTypeScript.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,8 +17,8 @@ namespace CoreReactReduxTypeScript.Services.DIServices
         public static async Task InitIdentityDataBase(IServiceProvider serviceProvider, IConfiguration Configuration)
         {
             var identityContext = serviceProvider.GetRequiredService<IdentityContext>();
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
             try
             {
                 identityContext.Database.Migrate();
@@ -30,7 +31,7 @@ namespace CoreReactReduxTypeScript.Services.DIServices
                     var roleExist = await RoleManager.RoleExistsAsync(roleName);
                     if (!roleExist)
                     {
-                        roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
+                        roleResult = await RoleManager.CreateAsync(new ApplicationRole(roleName));
 
                         if (!roleResult.Succeeded)
                             throw new Exception("Can't add roles in database");
@@ -46,7 +47,7 @@ namespace CoreReactReduxTypeScript.Services.DIServices
                     var _user = await UserManager.FindByNameAsync(userName);
                     if (_user == null)
                     {
-                        var poweruser = new IdentityUser
+                        var poweruser = new ApplicationUser
                         {
                             UserName = userName,
                         };

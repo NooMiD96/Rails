@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import Menu from "@core/antd/Menu";
+import Account from "@components/Account";
 
 interface IState {
     selectedKeys: string[];
@@ -58,6 +59,7 @@ export class NavMenu extends React.Component<{}, IState> {
                         <Link to={"/Counter"}>Counter</Link>
                     </Menu.Item>
                 </Menu>
+                <Account />
             </div>
         );
     }

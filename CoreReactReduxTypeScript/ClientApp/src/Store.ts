@@ -3,14 +3,18 @@ import { CounterState } from "@src/components/Counter/ICounterState";
 import { reducer as CounterReducer } from "@src/components/Counter/reducer";
 import { FetcherState } from "@src/components/Fetcher/IFetcherState";
 import { reducer as FetcherReducer } from "@src/components/Fetcher/reducer";
+import { AccountState } from "@src/components/Account/IAccountState";
+import { reducer as AccountReducer } from "@src/components/Account/reducer";
 
 export interface ApplicationState {
-    router: RouterState;
+    account: AccountState;
     counter: CounterState;
     fetcher: FetcherState;
+    router: RouterState;
 }
 
 export const reducers = {
+    account: AccountReducer,
     counter: CounterReducer,
     fetcher: FetcherReducer,
 };

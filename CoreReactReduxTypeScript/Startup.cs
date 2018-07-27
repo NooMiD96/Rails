@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using System.IO;
 using System.Collections.Generic;
+using System;
+using CoreReactReduxTypeScript.Models;
 
 namespace CoreReactReduxTypeScript
 {
@@ -36,15 +38,31 @@ namespace CoreReactReduxTypeScript
                 options.UseSqlServer(Configuration.GetConnectionString("Fetcher"));
             });
 
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.Password.RequiredLength = 1;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireDigit = false;
+
+                options.User.RequireUniqueEmail = true;
+
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
             })
                 .AddEntityFrameworkStores<IdentityContext>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                options.SlidingExpiration = true;
+                //options.LoginPath = "/Account/Login";
+                //options.AccessDeniedPath = "/Account/AccessDenied";
+            });
+
 
             var serviceProvider = services.BuildServiceProvider();
             Task.WhenAll(

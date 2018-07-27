@@ -17,3 +17,22 @@ body {
 .antd-header {
     height: initial;
 }
+
+.ant-menu {
+    display: inline-block;
+}
+
+.account-container {
+    display: block;
+    margin: -64px 0 0 auto;
+    width: 80px;
+}
+
+.account-container .account-modal-title {
+    text-align: center;
+    display: block;
+}
+
+.input-prefix-color {
+    color: rgba(0,0,0,.25);
+}

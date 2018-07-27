@@ -32,6 +32,7 @@
   <ItemGroup>
     <Folder Include="ClientApp\public\client\" />
     <Folder Include="ClientApp\public\server\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
