@@ -2,6 +2,7 @@ import * as React from "react";
 import Button from "@core/antd/Button";
 import ButtonGroup from "@core/antd/ButtonGroup";
 import Modal from "@core/antd/Modal";
+import Alert from "@core/antd/Alert";
 
 import Authentication from "./Authentication";
 import Registration from "./Registration";
@@ -17,34 +18,47 @@ import {
 export class Account extends React.Component<TState, TComponentState> {
   state = {
     modalType: ModalTypeEnums.Nothing,
+    pending: false,
   };
   containerRef = React.createRef<HTMLDivElement>();
 
-  componentDidMount() {
-    // TODO: request user info
+  static getDerivedStateFromProps(nextProps: TState, prevState: TComponentState) {
+    if (prevState.pending && !nextProps.pending) {
+      if (nextProps.errorMessage) {
+        return {
+          ...prevState,
+          pending: false,
+        } as TComponentState;
+      }
+      return {
+        ...prevState,
+        modalType: ModalTypeEnums.Nothing,
+        pending: false,
+      } as TComponentState;
+    }
+    return null;
   }
 
-  HandleRegistrationSubmit = (payload: TRegistrationModel) => {
-    this.props.Registration(payload);
-    // TODO: request
+  HandleSubmit = (cb: Function, payload: TRegistrationModel | TAuthenticationModel) => {
+    this.props.RemoveErrorMessage();
+    cb(payload);
+    this.setState({
+      pending: true,
+    });
   }
 
-  HandleAuthenticationSubmit = (payload: TAuthenticationModel) => {
-    this.props.Authentication(payload);
-    // TODO: request
-  }
+  LogOut = () => this.props.Logout();
 
   ShowModal = (type: ModalTypeEnums) => this.setState({
     modalType: type,
   })
-
-  HandleСlose = () => this.setState({
+  СloseModal = () => this.setState({
     modalType: ModalTypeEnums.Nothing,
   })
 
   render() {
     const { modalType } = this.state;
-    const { pending } = this.props;
+    const { pending, userName, errorMessage } = this.props;
 
     return (
       <div
@@ -52,20 +66,32 @@ export class Account extends React.Component<TState, TComponentState> {
         ref={this.containerRef}
       >
         <ButtonGroup>
-          <Button
-            type="primary"
-            shape="circle"
-            size="large"
-            icon="login"
-            onClick={() => this.ShowModal(ModalTypeEnums.Authentication)}
-          />
-          <Button
-            type="primary"
-            shape="circle"
-            size="large"
-            icon="idcard"
-            onClick={() => this.ShowModal(ModalTypeEnums.Registration)}
-          />
+          {
+            !userName
+              ? <React.Fragment>
+                <Button
+                  type="primary"
+                  shape="circle"
+                  size="large"
+                  icon="login"
+                  onClick={() => this.ShowModal(ModalTypeEnums.Authentication)}
+                />
+                <Button
+                  type="primary"
+                  shape="circle"
+                  size="large"
+                  icon="idcard"
+                  onClick={() => this.ShowModal(ModalTypeEnums.Registration)}
+                />
+              </React.Fragment>
+              : <Button
+                type="primary"
+                shape="circle"
+                size="large"
+                icon="logout"
+                onClick={() => this.LogOut()}
+              />
+          }
           <Modal
             getContainer={() => this.containerRef.current!}
             title={<span className="account-modal-title">{ModalTypeEnums[modalType]}</span>}
@@ -74,18 +100,27 @@ export class Account extends React.Component<TState, TComponentState> {
             footer={null}
           >
             {
+              errorMessage && <Alert
+                message="Error"
+                description={errorMessage}
+                type="error"
+                closable={false}
+                style={{marginBottom: 10}}
+              />
+            }
+            {
               modalType === ModalTypeEnums.Authentication
               && <Authentication
-                HandleSubmit={this.HandleAuthenticationSubmit}
-                HandleСlose={this.HandleСlose}
+                HandleSubmit={(payload: TAuthenticationModel) => this.HandleSubmit(this.props.Authentication, payload)}
+                HandleСlose={this.СloseModal}
                 loading={pending}
               />
             }
             {
               modalType === ModalTypeEnums.Registration
               && <Registration
-                HandleSubmit={this.HandleRegistrationSubmit}
-                HandleСlose={this.HandleСlose}
+                HandleSubmit={(payload: TRegistrationModel) => this.HandleSubmit(this.props.Registration, payload)}
+                HandleСlose={this.СloseModal}
                 loading={pending}
               />
             }

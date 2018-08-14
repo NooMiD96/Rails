@@ -45,14 +45,14 @@ export const ActionCreators = {
                 } else {
                     return Promise.resolve({ error: `Status is ${res.status}` });
                 }
-            }).then((value: IResponse) => {
+            }).then((value: IResponse<string>) => {
                 if (value && value.error) {
                     throw value.error;
                 }
                 const data: IData[] = JSON.parse(value.data);
                 dispatch(ActionsList.GetDataSuccess(data));
             }).catch((err: string) => {
-                console.log(err);
+                console.error(err);
                 dispatch(ActionsList.GetDataError(err));
             });
 
@@ -70,14 +70,14 @@ export const ActionCreators = {
                 } else {
                     return Promise.resolve({ error: `Status is ${res.status}` });
                 }
-            }).then((value: IResponse) => {
+            }).then((value: IResponse<string>) => {
                 if (value && value.error) {
                     throw value.error;
                 }
                 dispatch(ActionsList.PostDataSuccess());
                 ActionCreators.GetData()(dispatch, _getState);
             }).catch((err: string) => {
-                console.log(err);
+                console.error(err);
                 dispatch(ActionsList.PostDataError(err));
             });
 

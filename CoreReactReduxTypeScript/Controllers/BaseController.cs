@@ -16,9 +16,9 @@ namespace CoreReactReduxTypeScript.Controllers
 
         public IActionResult BadRequest(string res)
         {
-            return this.BadRequest(new
+            return this.Ok(new
             {
-                Error = res
+                error = res
             });
         }
     }

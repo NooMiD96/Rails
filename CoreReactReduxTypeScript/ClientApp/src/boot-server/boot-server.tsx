@@ -9,6 +9,7 @@ import { createServerRenderer, RenderResult } from "aspnet-prerendering";
 import configureStore from "./configureStore";
 import { AppRoutes } from "@src/App";
 import initReduxForComponent from "@core/BootServerHelper";
+import { ActionsList } from "@components/Account/actions";
 
 export default createServerRenderer(params =>
     new Promise<RenderResult>(async (resolve, reject) => {
@@ -23,6 +24,13 @@ export default createServerRenderer(params =>
         // cause any async tasks (e.g., data access) to begin
         const splitedUrl = urlAfterBasename.split("/").filter(Boolean);
         initReduxForComponent(splitedUrl, store);
+        if (params.data.user) {
+            store.dispatch(
+                ActionsList.SetUser(
+                    JSON.parse(params.data.user)
+                )
+            );
+        }
         const routerContext: any = {};
 
         const app = (
@@ -44,7 +52,7 @@ export default createServerRenderer(params =>
         params.domainTasks.then(() => {
             resolve({
                 html: renderToString(app),
-                globals: { initialReduxState: store.getState(), props: app.props },
+                globals: { initialReduxState: store.getState(), data: JSON.parse(params.data.user) },
             });
         }, reject); // Also propagate any errors back into the host application
     })

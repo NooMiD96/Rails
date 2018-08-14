@@ -17,7 +17,7 @@ import {
   TState,
   PendingTypeEnums,
   TComponentState,
-} from "./TFetcher";
+} from "../TFetcher";
 
 import FetcherWrapped from "./Fetcher.style";
 

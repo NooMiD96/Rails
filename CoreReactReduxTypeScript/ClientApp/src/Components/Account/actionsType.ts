@@ -1,3 +1,4 @@
+import { TUserModel } from "./TAccount";
 // -----------------
 // ACTIONS TYPE
 export const REGISTRATION_REQUEST = "REGISTRATION_REQUEST";
@@ -11,6 +12,8 @@ export const AUTHENTICATION_ERROR = "AUTHENTICATION_ERROR";
 export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const LOGOUT_ERROR = "LOGOUT_ERROR";
+
+export const SET_USER = "SET_USER";
 
 export const REMOVE_ERROR_MESSAGE = "REMOVE_ERROR_MESSAGE";
 // -----------------
@@ -30,7 +33,9 @@ export interface ILogoutSuccess { type: typeof LOGOUT_SUCCESS; }
 export interface ILogoutError { type: typeof LOGOUT_ERROR; errorMessage: string; }
 export type TLogout = ILogoutRequest | ILogoutSuccess | ILogoutError;
 
+export interface ISetUser { type: typeof SET_USER; user: TUserModel; }
+
 export interface IRemoveErrorMessage { type: typeof REMOVE_ERROR_MESSAGE; }
 
-type KnownAction = TRegistration | TAuthentication | TLogout | IRemoveErrorMessage;
+type KnownAction = TRegistration | TAuthentication | TLogout | ISetUser | IRemoveErrorMessage;
 export default KnownAction;

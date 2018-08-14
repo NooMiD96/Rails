@@ -2,7 +2,7 @@
 // REDUCER
 import { Reducer } from "redux";
 
-import { AccountState, UnloadedState } from "./IAccountState";
+import { UserTypeEnums, AccountState, UnloadedState } from "./IAccountState";
 import KnownAction, * as t from "./actionsType";
 
 export const reducer: Reducer<AccountState> = (state: AccountState, action: KnownAction) => {
@@ -23,7 +23,9 @@ export const reducer: Reducer<AccountState> = (state: AccountState, action: Know
             };
 
         case t.LOGOUT_SUCCESS:
-            return UnloadedState;
+            return {
+                ...UnloadedState,
+            };
 
         case t.REGISTRATION_ERROR:
         case t.AUTHENTICATION_ERROR:
@@ -38,6 +40,13 @@ export const reducer: Reducer<AccountState> = (state: AccountState, action: Know
             return {
                 ...state,
                 errorMessage: "",
+            };
+
+        case t.SET_USER:
+            return {
+                ...state,
+                userName: action.user.userName,
+                userType: UserTypeEnums[action.user.userType] as any,
             };
 
         default:

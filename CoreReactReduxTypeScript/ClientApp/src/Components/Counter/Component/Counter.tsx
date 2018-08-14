@@ -7,7 +7,7 @@ import Icon from "@core/antd/Icon";
 import {
     TComponentState,
     TState,
-} from "./TCounter";
+} from "../TCounter";
 
 import CounterWrapper from "./Counter.style";
 

@@ -2,7 +2,7 @@ import { fetch, addTask } from "domain-task";
 
 import { AppThunkAction } from "@src/Store";
 import { IResponse } from "@core/IResponses";
-import { TRegistrationModel, TAuthenticationModel } from "./TAccount";
+import { TRegistrationModel, TAuthenticationModel, TUserModel } from "./TAccount";
 import * as t from "./actionsType";
 // ----------------
 // ACTIONS
@@ -37,6 +37,10 @@ export const ActionsList = {
         type: t.LOGOUT_ERROR,
         errorMessage,
     }),
+    SetUser: (user: TUserModel): t.ISetUser => ({
+        type: t.SET_USER,
+        user,
+    }),
     RemoveErrorMessage: (): t.IRemoveErrorMessage => ({
         type: t.REMOVE_ERROR_MESSAGE,
     }),
@@ -44,7 +48,7 @@ export const ActionsList = {
 // ----------------
 // ACTION CREATORS
 export const ActionCreators = {
-    Registration: (data: TRegistrationModel): AppThunkAction<t.TRegistration> => (dispatch, _getState) => {
+    Registration: (data: TRegistrationModel): AppThunkAction<t.TRegistration | t.ISetUser> => (dispatch, _getState) => {
         const fetchTask = fetch("/api/Account/Registration", {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
@@ -55,20 +59,21 @@ export const ActionCreators = {
             } else {
                 return Promise.resolve({ error: `Status is ${res.status}` });
             }
-        }).then((value: IResponse) => {
+        }).then((value: IResponse<TUserModel>) => {
             if (value && value.error) {
                 throw value.error;
             }
             dispatch(ActionsList.RegistrationSuccess());
+            dispatch(ActionsList.SetUser(value.data));
         }).catch((err: string) => {
-            console.log(err);
+            console.error(err);
             dispatch(ActionsList.RegistrationError(err));
         });
 
         addTask(fetchTask);
         dispatch(ActionsList.RegistrationRequest());
     },
-    Authentication: (data: TAuthenticationModel): AppThunkAction<t.TAuthentication> => (dispatch, _getState) => {
+    Authentication: (data: TAuthenticationModel): AppThunkAction<t.TAuthentication | t.ISetUser> => (dispatch, _getState) => {
         const fetchTask = fetch("/api/Account/Authentication", {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=UTF-8" },
@@ -79,13 +84,14 @@ export const ActionCreators = {
             } else {
                 return Promise.resolve({ error: `Status is ${res.status}` });
             }
-        }).then((value: IResponse) => {
+        }).then((value: IResponse<TUserModel>) => {
             if (value && value.error) {
                 throw value.error;
             }
             dispatch(ActionsList.AuthenticationSuccess());
+            dispatch(ActionsList.SetUser(value.data));
         }).catch((err: string) => {
-            console.log(err);
+            console.error(err);
             dispatch(ActionsList.AuthenticationError(err));
         });
 
@@ -102,13 +108,13 @@ export const ActionCreators = {
             } else {
                 return Promise.resolve({ error: `Status is ${res.status}` });
             }
-        }).then((value: IResponse) => {
+        }).then((value: IResponse<string>) => {
             if (value && value.error) {
                 throw value.error;
             }
             dispatch(ActionsList.LogoutSuccess());
         }).catch((err: string) => {
-            console.log(err);
+            console.error(err);
             dispatch(ActionsList.LogoutError(err));
         });
 

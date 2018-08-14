@@ -16,7 +16,6 @@ export class Authentication extends React.Component<Props, {}> {
   OnSubmit = () => {
     this.props.form.validateFields((err: any, values: TAuthenticationModel) => {
       if (!err) {
-        console.log("Received values of form: ", values);
         this.props.HandleSubmit({
           password: values.password,
           userName: values.userName,
@@ -38,12 +37,16 @@ export class Authentication extends React.Component<Props, {}> {
     return (
       <Form layout="vertical" onSubmit={this.OnSubmit}>
         <FormItem
-          label="UserName"
+          label="User Name"
         >
           {getFieldDecorator("userName", {
-            rules: [{ required: true, message: "Please input your username!" }],
+            rules: [{ required: true, message: "Please input your User Name!" }],
           })(
-            <Input prefix={<Icon type="user" className="input-prefix-color" />} placeholder="Username" />
+            <Input
+              prefix={<Icon type="user" className="input-prefix-color" />}
+              placeholder="User Name"
+              onPressEnter={this.OnSubmit}
+            />
           )}
         </FormItem>
         <FormItem
@@ -52,7 +55,12 @@ export class Authentication extends React.Component<Props, {}> {
           {getFieldDecorator("password", {
             rules: [{ required: true, message: "Please input your Password!" }],
           })(
-            <Input prefix={<Icon type="lock" className="input-prefix-color" />} type="password" placeholder="Password" />
+            <Input
+              prefix={<Icon type="lock" className="input-prefix-color" />}
+              type="password"
+              placeholder="Password"
+              onPressEnter={this.OnSubmit}
+            />
           )}
         </FormItem>
         <div className="ant-modal-footer">

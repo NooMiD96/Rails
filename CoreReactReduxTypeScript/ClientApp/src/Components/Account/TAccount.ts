@@ -1,4 +1,4 @@
-import { AccountState } from "./IAccountState";
+import { UserTypeEnums, AccountState } from "./IAccountState";
 import { ActionCreators } from "./actions";
 // -----------------------------
 // STATE OF COMPONENT
@@ -9,6 +9,7 @@ export enum ModalTypeEnums {
 }
 export type TComponentState = {
     modalType: ModalTypeEnums,
+    pending: Boolean,
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT
@@ -34,4 +35,8 @@ export type TRegistrationModel = {
 export type TAuthenticationModel = {
     userName: string,
     password: string,
+};
+export type TUserModel = {
+    userName: string;
+    userType: UserTypeEnums;
 };

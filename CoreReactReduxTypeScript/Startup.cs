@@ -65,10 +65,10 @@ namespace CoreReactReduxTypeScript
 
 
             var serviceProvider = services.BuildServiceProvider();
-            //Task.WhenAll(
-            //    DIServices.InitIFetcherDataBase(serviceProvider, Configuration),
-            //    DIServices.InitIdentityDataBase(serviceProvider, Configuration)
-            //).GetAwaiter().GetResult();
+            Task.WhenAll(
+                DIServices.InitIFetcherDataBase(serviceProvider, Configuration),
+                DIServices.InitIdentityDataBase(serviceProvider, Configuration)
+            ).GetAwaiter().GetResult();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
