@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27520.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreReactRedux", "CoreReactRedux\CoreReactRedux.csproj", "{97A656B0-4C02-4DE5-BDDB-162E1BC67768}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreReactReduxTypeScript", "CoreReactReduxTypeScript\CoreReactReduxTypeScript.csproj", "{19E857EB-D976-4F95-A1C6-8D34A9E699E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreReactReduxTypeScript", "CoreReactReduxTypeScript\CoreReactReduxTypeScript.csproj", "{19E857EB-D976-4F95-A1C6-8D34A9E699E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

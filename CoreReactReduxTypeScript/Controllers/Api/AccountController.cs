@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using CoreReactReduxTypeScript.Models;
-using CoreReactReduxTypeScript.Models.Account;
-using static CoreReactReduxTypeScript.Services.AccountService;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using CoreReactReduxTypeScript.UserManagerExtensions;
+using CoreReactReduxTypeScript.Contexts.ProjectIdentity;
+using CoreReactReduxTypeScript.Models.ProjectIdentity;
+using CoreReactReduxTypeScript.Models.Account;
+using static CoreReactReduxTypeScript.Controllers.Api.Services.AccountService;
 
-namespace CoreReactReduxTypeScript.Controllers
+namespace CoreReactReduxTypeScript.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]

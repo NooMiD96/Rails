@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using CoreReactReduxTypeScript.Context;
-using CoreReactReduxTypeScript.Services;
+using CoreReactReduxTypeScript.Contexts.DbName;
+using CoreReactReduxTypeScript.Models.DbName;
+using CoreReactReduxTypeScript.Helpers;
 
-namespace CoreReactReduxTypeScript.Controllers
+namespace CoreReactReduxTypeScript.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
     public class FetcherController : BaseController
     {
-        private readonly FetcherContext _fetcher;
+        private readonly DbNameContext _fetcher;
 
-        public FetcherController([FromServices] FetcherContext fetcherContext)
+        public FetcherController([FromServices] DbNameContext fetcherContext)
         {
             _fetcher = fetcherContext;
         }

@@ -1,22 +1,22 @@
-using CoreReactReduxTypeScript.Context;
-using CoreReactReduxTypeScript.Models;
+using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
+using CoreReactReduxTypeScript.Contexts.ProjectIdentity;
+using CoreReactReduxTypeScript.Models.ProjectIdentity;
 
-namespace CoreReactReduxTypeScript.Services.DIServices
+namespace CoreReactReduxTypeScript.DIServices
 {
     /// <summary>
     /// class for initialize custom DI
     /// </summary>
-    public partial class DIServices
+    public static partial class DependencyInjections
     {
-        public static async Task InitIdentityDataBase(IServiceProvider serviceProvider, IConfiguration Configuration)
+        public static async Task IdentityDataBase(IServiceProvider serviceProvider, IConfiguration Configuration)
         {
-            var identityContext = serviceProvider.GetRequiredService<IdentityContext>();
+            var identityContext = serviceProvider.GetRequiredService<ProjectIdentityContext>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
             try

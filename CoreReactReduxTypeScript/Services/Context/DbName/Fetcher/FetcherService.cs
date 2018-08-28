@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using CoreReactReduxTypeScript.Models.DbName;
 
-namespace CoreReactReduxTypeScript.Context
+namespace CoreReactReduxTypeScript.Contexts.DbName
 {
-    public partial class FetcherContext
+    public partial class DbNameContext
     {
         public async Task<List<FetcherDataModel>> GetStringsAsync() => await (
                 from f in Fetchers
@@ -21,7 +21,7 @@ namespace CoreReactReduxTypeScript.Context
         public async ValueTask<bool> AddNewStringAsync(FetcherDataModel model)
         {
             var fetcher = new Fetcher();
-            fetcher.FetchersDataList.Add(new FetcherData()
+            fetcher.FetcherDataList.Add(new FetcherData()
             {
                 Data = model.Data
             });

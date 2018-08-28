@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CoreReactReduxTypeScript.Services
+﻿namespace CoreReactReduxTypeScript.Controllers.Api.Services
 {
     public class AccountService
     {

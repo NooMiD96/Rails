@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CoreReactReduxTypeScript.Context
+namespace CoreReactReduxTypeScript.Models.DbName
 {
     public class FetcherData
     {

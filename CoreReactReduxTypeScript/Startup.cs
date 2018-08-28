@@ -1,19 +1,18 @@
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CoreReactReduxTypeScript.Services.DIServices;
-using CoreReactReduxTypeScript.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
-using System.IO;
-using System.Collections.Generic;
-using System;
-using CoreReactReduxTypeScript.Models;
+using CoreReactReduxTypeScript.Contexts.ProjectIdentity;
+using CoreReactReduxTypeScript.Contexts.DbName;
+using CoreReactReduxTypeScript.Models.ProjectIdentity;
+using static CoreReactReduxTypeScript.DIServices.DependencyInjections;
 
 namespace CoreReactReduxTypeScript
 {
@@ -29,11 +28,11 @@ namespace CoreReactReduxTypeScript
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<IdentityContext>(options =>
+            services.AddDbContext<ProjectIdentityContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Identity"));
             });
-            services.AddDbContext<FetcherContext>(options =>
+            services.AddDbContext<DbNameContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Fetcher"));
             });
@@ -52,7 +51,7 @@ namespace CoreReactReduxTypeScript
                 options.Lockout.MaxFailedAccessAttempts = 10;
                 options.Lockout.AllowedForNewUsers = true;
             })
-                .AddEntityFrameworkStores<IdentityContext>();
+                .AddEntityFrameworkStores<ProjectIdentityContext>();
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -66,8 +65,8 @@ namespace CoreReactReduxTypeScript
 
             var serviceProvider = services.BuildServiceProvider();
             Task.WhenAll(
-                DIServices.InitIFetcherDataBase(serviceProvider, Configuration),
-                DIServices.InitIdentityDataBase(serviceProvider, Configuration)
+                DbNameDataBase(serviceProvider, Configuration),
+                IdentityDataBase(serviceProvider, Configuration)
             ).GetAwaiter().GetResult();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

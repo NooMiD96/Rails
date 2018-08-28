@@ -1,38 +1,35 @@
 body {
-    background-color: whitesmoke;
+  background-color: whitesmoke;
 }
 
 .loading-spin-container {
-    min-height: 320px;
+  min-height: 320px;
 }
 
 .visible {
-    visibility: visible;
+  visibility: visible;
 }
 
 .hidden {
-    visibility: hidden;
-}
-
-.antd-header {
-    height: initial;
+  visibility: hidden;
 }
 
 .ant-menu {
-    display: inline-block;
+  display: inline-block;
 }
 
 .account-container {
-    display: block;
-    margin: -64px 0 0 auto;
-    width: 80px;
+  display: inline-block;
+  position: absolute;
+  right: 50px;
+  line-height: 68px;
 }
 
 .account-container .account-modal-title {
-    text-align: center;
-    display: block;
+  text-align: center;
+  display: block;
 }
 
 .input-prefix-color {
-    color: rgba(0,0,0,.25);
+  color: rgba(0,0,0,.25);
 }

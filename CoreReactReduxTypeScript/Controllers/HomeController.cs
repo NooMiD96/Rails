@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
-using CoreReactReduxTypeScript.Models;
-using CoreReactReduxTypeScript.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using CoreReactReduxTypeScript.UserManagerExtensions;
+using CoreReactReduxTypeScript.Contexts.ProjectIdentity;
+using CoreReactReduxTypeScript.Models.ProjectIdentity;
+using CoreReactReduxTypeScript.Helpers;
 
 namespace CoreReactReduxTypeScript.Controllers
 {
