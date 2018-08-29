@@ -1,5 +1,6 @@
 import * as React from "react";
 import Button from "@core/antd/Button";
+
 import { ModalTypeEnums } from "../TAccount";
 
 type AccountControlButtonsProps = {

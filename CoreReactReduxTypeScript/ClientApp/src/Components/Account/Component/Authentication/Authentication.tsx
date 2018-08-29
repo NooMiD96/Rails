@@ -3,8 +3,9 @@ import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 
-import { TAuthenticationModel } from "../../TAccount";
 import ModalControlButtons from "../ModalControlButtons";
+
+import { TAuthenticationModel } from "../../TAccount";
 
 interface Props extends FormComponentProps {
   HandleSubmit: (payload: TAuthenticationModel) => void;

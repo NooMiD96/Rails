@@ -1,12 +1,10 @@
 import * as React from "react";
-import Button from "@core/antd/Button";
 import ButtonGroup from "@core/antd/ButtonGroup";
 import Modal from "@core/antd/Modal";
 import Alert from "@core/antd/Alert";
 
-import Authentication from "./Authentication";
-import Registration from "./Registration";
 import AccountControlButtons from "./AccountControlButtons";
+import ModalContent from "./ModalContent";
 
 import {
   TState,
@@ -85,25 +83,18 @@ export class Account extends React.Component<TState, TComponentState> {
                 description={errorMessage}
                 type="error"
                 closable={false}
-                style={{marginBottom: 10}}
+                style={{ marginBottom: 10 }}
               />
             }
-            {
-              modalType === ModalTypeEnums.Authentication
-              && <Authentication
-                HandleSubmit={(payload: TAuthenticationModel) => this.HandleSubmit(this.props.Authentication, payload)}
-                HandleСlose={this.СloseModal}
-                loading={pending}
-              />
-            }
-            {
-              modalType === ModalTypeEnums.Registration
-              && <Registration
-                HandleSubmit={(payload: TRegistrationModel) => this.HandleSubmit(this.props.Registration, payload)}
-                HandleСlose={this.СloseModal}
-                loading={pending}
-              />
-            }
+            <ModalContent
+              HandleAuthSubmit={(payload: TAuthenticationModel) => this.HandleSubmit(this.props.Authentication, payload)}
+              HandleRegSubmit={(payload: TRegistrationModel) => this.HandleSubmit(this.props.Registration, payload)}
+              generalProps={{
+                HandleСlose: this.СloseModal,
+                loading: pending,
+              }}
+              modalType={modalType}
+            />
           </Modal>
         </ButtonGroup>
       </div>
