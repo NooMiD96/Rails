@@ -1,10 +1,5 @@
 ﻿using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using CoreReactReduxTypeScript.Contexts.ProjectTodoIdentity;
-using CoreReactReduxTypeScript.Models.ProjectTodoIdentity;
 using CoreReactReduxTypeScript.Helpers;
 
 namespace CoreReactReduxTypeScript.Controllers

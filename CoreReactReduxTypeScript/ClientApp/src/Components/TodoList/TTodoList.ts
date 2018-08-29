@@ -1,5 +1,5 @@
 import { RouteComponentProps } from "react-router";
-import { TodoListState } from "./ITodoListState";
+import { TodoListState, TodoPayload } from "./ITodoListState";
 import { ActionCreators } from "./actions";
 // -----------------------------
 // STATE OF COMPONENT
@@ -20,3 +20,9 @@ export type TMapDispatchToProps = TDispatchToProps;
 // COMBINE REDUX PROPS
 export type TState = TMapStateToProps
     & TMapDispatchToProps;
+// -----------------------------
+// MODELS
+export type TTodoListModel = {
+    todoId: number,
+    todoPayloads: TodoPayload[],
+};

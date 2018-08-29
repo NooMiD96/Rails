@@ -13,7 +13,7 @@ namespace CoreReactReduxTypeScript.Contexts.ProjectTodo
         public DbSet<FetcherData> FetchersData { get; set; }
 
         public DbSet<Todo> Todos { get; set; }
-        public DbSet<TodoPayload> TodoPayloads { get; set; }
+        public DbSet<TodoList> TodoLists { get; set; }
 
         public ProjectTodoContext(DbContextOptions<ProjectTodoContext> options) : base(options) { }
     }

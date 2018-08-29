@@ -1,30 +1,31 @@
 import { fetch, addTask } from "domain-task";
-
 import { AppThunkAction } from "@src/Store";
+
 import { IResponse } from "@core/IResponses";
 import * as t from "./actionsType";
+import { TTodoListModel } from "./TTodoList";
 // ----------------
 // ACTIONS
 export const ActionsList = {
-    PostDataRequest: (): t.IPostDataRequest => ({
-        type: t.POST_DATA_REQUEST,
+    GetTodoListRequest: (): t.IGetTodoListRequest => ({
+        type: t.GET_TODO_LIST_REQUEST,
     }),
-    PostDataSuccess: (): t.IPostDataSuccess => ({
-        type: t.POST_DATA_SUCCESS,
-    }),
-    PostDataError: (errorMessage: string): t.IPostDataError => ({
-        type: t.POST_DATA_ERROR,
-        errorMessage,
-    }),
-    GetDataRequest: (): t.IGetDataRequest => ({
-        type: t.GET_DATA_REQUEST,
-    }),
-    GetDataSuccess: (payload: string[]): t.IGetDataSuccess => ({
-        type: t.GET_DATA_SUCCESS,
+    GetTodoListSuccess: (payload: TTodoListModel): t.IGetTodoListSuccess => ({
+        type: t.GET_TODO_LIST_SUCCESS,
         payload,
     }),
-    GetDataError: (errorMessage: string): t.IGetDataError => ({
-        type: t.GET_DATA_ERROR,
+    GetTodoListError: (errorMessage: string): t.IGetTodoListError => ({
+        type: t.GET_TODO_LIST_ERROR,
+        errorMessage,
+    }),
+    PostTodoListRequest: (): t.IPostTodoListRequest => ({
+        type: t.POST_TODO_LIST_REQUEST,
+    }),
+    PostTodoListSuccess: (): t.IPostTodoListSuccess => ({
+        type: t.POST_TODO_LIST_SUCCESS,
+    }),
+    PostTodoListError: (errorMessage: string): t.IPostTodoListError => ({
+        type: t.POST_TODO_LIST_ERROR,
         errorMessage,
     }),
     RemoveErrorMessage: (): t.IRemoveErrorMessage => ({
@@ -34,7 +35,7 @@ export const ActionsList = {
 // ----------------
 // ACTION CREATORS
 export const ActionCreators = {
-    GetData: (): AppThunkAction<t.TGetData> => (dispatch, _getState) => {
+    GetData: (): AppThunkAction<t.TGetTodoList> => (dispatch, _getState) => {
         const fetchTask = fetch("/adminapi/todolist/GetStrings", {
                 method: "GET",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
@@ -48,17 +49,17 @@ export const ActionCreators = {
                 if (value && value.error) {
                     throw value.error;
                 }
-                const data: string[] = JSON.parse(value.data);
-                dispatch(ActionsList.GetDataSuccess(data));
+                const data: TTodoListModel = JSON.parse(value.data);
+                dispatch(ActionsList.GetTodoListSuccess(data));
             }).catch((err: string) => {
                 console.error(err);
-                dispatch(ActionsList.GetDataError(err));
+                dispatch(ActionsList.GetTodoListError(err));
             });
 
         addTask(fetchTask);
-        dispatch(ActionsList.GetDataRequest());
+        dispatch(ActionsList.GetTodoListRequest());
     },
-    PostData: (text: string): AppThunkAction<t.TPostData | t.TGetData> => (dispatch, _getState) => {
+    PostData: (text: string): AppThunkAction<t.TPostTodoList | t.TGetTodoList> => (dispatch, _getState) => {
         const fetchTask = fetch("/adminapi/todolist/SaveString", {
                 method: "POST",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
@@ -73,15 +74,15 @@ export const ActionCreators = {
                 if (value && value.error) {
                     throw value.error;
                 }
-                dispatch(ActionsList.PostDataSuccess());
+                dispatch(ActionsList.PostTodoListSuccess());
                 ActionCreators.GetData()(dispatch, _getState);
             }).catch((err: string) => {
                 console.error(err);
-                dispatch(ActionsList.PostDataError(err));
+                dispatch(ActionsList.PostTodoListError(err));
             });
 
         addTask(fetchTask);
-        dispatch(ActionsList.PostDataRequest());
+        dispatch(ActionsList.PostTodoListRequest());
     },
     RemoveErrorMessage: ActionsList.RemoveErrorMessage,
 };

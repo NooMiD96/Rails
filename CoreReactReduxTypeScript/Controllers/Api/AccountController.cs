@@ -10,7 +10,7 @@ using CoreReactReduxTypeScript.Contexts.ProjectTodoIdentity;
 using CoreReactReduxTypeScript.Contexts.ProjectTodo;
 using CoreReactReduxTypeScript.Models.ProjectTodoIdentity;
 using CoreReactReduxTypeScript.Models.Account;
-using static CoreReactReduxTypeScript.Controllers.Api.Services.AccountService;
+using CoreReactReduxTypeScript.Controllers.Api.Services;
 
 namespace CoreReactReduxTypeScript.Controllers.Api
 {
@@ -21,6 +21,7 @@ namespace CoreReactReduxTypeScript.Controllers.Api
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ProjectTodoContext _context;
+        private readonly AccountService _service;
 
         public AccountController([FromServices] UserManager<ApplicationUser> userManager,
                                  [FromServices] SignInManager<ApplicationUser> signInManager,
@@ -29,6 +30,7 @@ namespace CoreReactReduxTypeScript.Controllers.Api
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _service = new AccountService();
         }
 
         [HttpPost("[action]")]
@@ -51,7 +53,7 @@ namespace CoreReactReduxTypeScript.Controllers.Api
                     await _userManager.AddToRoleAsync(user, Roles.User);
                     await _signInManager.SignInAsync(user, isPersistent: true);
 
-                    return Ok(SuccessUserAuth(user.UserName, Roles.User));
+                    return Ok(_service.SuccessUserAuth(user.UserName, Roles.User));
                 }
                 else
                 {
@@ -92,12 +94,9 @@ namespace CoreReactReduxTypeScript.Controllers.Api
                     //if (result.IsLockedOut)
                     //    return RedirectToAction(nameof(Lockout));
 
-                    var userRoleDefined = Enum.TryParse(await _userManager.GetRoleAsync(user),
-                                                       true,
-                                                       out Roles role);
+                    var userRoleDefined = await _userManager.GetRoleAsync(user);
 
-                    return Ok(SuccessUserAuth(user.UserName,
-                                              userRoleDefined ? role : Roles.User));
+                    return Ok(_service.SuccessUserAuth(user.UserName, userRoleDefined));
                 }
                 else
                 {
@@ -120,7 +119,7 @@ namespace CoreReactReduxTypeScript.Controllers.Api
         {
             var userName = User.Identity.Name;
             await _signInManager.SignOutAsync();
-            return Ok(SuccessLogOut(userName));
+            return Ok(_service.SuccessLogOut(userName));
         }
     }
 }

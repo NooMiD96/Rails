@@ -23,7 +23,7 @@ namespace CoreReactReduxTypeScript.DIServices
             {
                 identityContext.Database.Migrate();
 
-                var roleNames = new string[] { "Admin", "User", "Guest" };
+                var roleNames = Roles.GetProjectRoles;
                 IdentityResult roleResult;
 
                 foreach (var roleName in roleNames)
@@ -57,7 +57,7 @@ namespace CoreReactReduxTypeScript.DIServices
                         var createPowerUser = await UserManager.CreateAsync(poweruser, password);
                         if (createPowerUser.Succeeded)
                         {
-                            await UserManager.AddToRoleAsync(poweruser, "Admin");
+                            await UserManager.AddToRoleAsync(poweruser, Roles.Admin);
                         }
                     }
                 }

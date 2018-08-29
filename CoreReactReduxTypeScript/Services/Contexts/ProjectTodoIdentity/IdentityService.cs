@@ -8,9 +8,9 @@ namespace CoreReactReduxTypeScript.Contexts.ProjectTodoIdentity
     public static class UserManagerExtensions
     {
         public static async Task<string> GetRoleAsync<T>(this UserManager<T> userManager, T user) where T : class =>
-            (await userManager.GetRolesAsync(user)).FirstOrDefault() ?? "User";
+            (await userManager.GetRolesAsync(user)).FirstOrDefault() ?? Roles.User;
 
-        public static async Task<IdentityResult> AddToRoleAsync<T>(this UserManager<T> userManager, T user, Roles role) where T : class =>
-            await userManager.AddToRoleAsync(user, role.ToString());
+        public static async Task<IdentityResult> AddToRoleAsync<T>(this UserManager<T> userManager, T user, string role) where T : class =>
+            await userManager.AddToRoleAsync(user, role);
     }
 }

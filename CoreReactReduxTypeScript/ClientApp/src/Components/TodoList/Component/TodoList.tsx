@@ -8,6 +8,8 @@ import Table, { Column } from "@core/antd/Table";
 
 import Alert from "@core/Alert";
 
+import { Testdnd } from "./Testdnd";
+
 import {
   IKeyChangeEvent,
   IPressEnterEvent,
@@ -50,7 +52,7 @@ export class TodoList extends React.Component<TState, TComponentState> {
   })
 
   render() {
-    const { errorMessage, RemoveErrorMessage, data, GetData, pending } = this.props;
+    const { errorMessage, RemoveErrorMessage, todoList, GetData, pending } = this.props;
     const { text } = this.state;
     return (
       <TodoListWrapped>
@@ -72,7 +74,7 @@ export class TodoList extends React.Component<TState, TComponentState> {
                     className="ant-input-group-addon-before"
                     onClick={this.fetchRequest}
                   >
-                    Send data
+                    Create new todo list
                   </span>
                 }
                 value={text}
@@ -87,16 +89,7 @@ export class TodoList extends React.Component<TState, TComponentState> {
               xs={{ span: 24 }}
             >
               <Spin spinning={pending}>
-                <Button onClick={GetData}>
-                  Fetch request
-                </Button>
-                <Table
-                  dataSource={data}
-                >
-                  <Column
-                    title="Id"
-                  />
-                </Table>
+                <Testdnd />
               </Spin>
             </Col>
           </Row>

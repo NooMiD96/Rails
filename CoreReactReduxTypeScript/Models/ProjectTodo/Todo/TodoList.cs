@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoreReactReduxTypeScript.Models.ProjectTodo
 {
-    public class TodoPayload
+    public class TodoList
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int TodoPayloadId { get; set; }
+        public int TodoListId { get; set; }
 
         [ForeignKey(nameof(Todo))]
         public int TodoId { get; set; }

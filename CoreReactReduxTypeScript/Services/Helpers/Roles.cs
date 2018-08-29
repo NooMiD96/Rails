@@ -5,11 +5,25 @@ using System.Threading.Tasks;
 
 namespace CoreReactReduxTypeScript
 {
-    public enum Roles
+    public static class Roles
     {
-        Admin,
-        Employee,
-        User,
-        Guest
+        public const string Admin       = "Admin";
+        public const string Employee    = "Employee";
+        public const string User        = "User";
+        public const string Guest       = "Guest";
+
+        public static IEnumerable<string> GetProjectRoles
+        {
+            get
+            {
+                return new[]
+                {
+                    Admin,
+                    Employee,
+                    User,
+                    Guest
+                };
+            }
+        }
     }
 }
