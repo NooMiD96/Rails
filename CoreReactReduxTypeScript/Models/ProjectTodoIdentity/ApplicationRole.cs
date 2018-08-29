@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace CoreReactReduxTypeScript.Models.ProjectIdentity
+namespace CoreReactReduxTypeScript.Models.ProjectTodoIdentity
 {
     public class ApplicationRole: IdentityRole
     {

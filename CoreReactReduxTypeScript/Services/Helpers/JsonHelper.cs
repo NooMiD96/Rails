@@ -2,18 +2,18 @@
 
 namespace CoreReactReduxTypeScript.Helpers
 {
-    static public class JsonHelper
+    public static class JsonHelper
     {
-        static public readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings
+        public static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             NullValueHandling = NullValueHandling.Ignore,
         };
 
-        static public string Serialize(object obj) => JsonConvert
+        public static string Serialize(object obj) => JsonConvert
             .SerializeObject(obj, JsonSettings);
 
-        static public T Deserialize<T>(string json) => JsonConvert
+        public static T Deserialize<T>(string json) => JsonConvert
             .DeserializeObject<T>(json);
     }
 }

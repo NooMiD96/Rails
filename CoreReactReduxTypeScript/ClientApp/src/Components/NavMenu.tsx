@@ -23,6 +23,9 @@ export class NavMenu extends React.Component<{}, IState> {
         case "counter":
           urlKey = "3";
           break;
+        case "todolist":
+          urlKey = "4";
+          break;
         default:
           break;
       }
@@ -44,28 +47,28 @@ export class NavMenu extends React.Component<{}, IState> {
     return (
       <div className="header-container">
         <div className="header-menu-container">
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          selectedKeys={this.state.selectedKeys}
-          onSelect={this.onSelectItemHandler}
-        >
-          <Menu.Item key="1">
-            <Link to={"/"}>Home</Link>
-          </Menu.Item>
-          <Menu.Item key="2">
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            selectedKeys={this.state.selectedKeys}
+            onSelect={this.onSelectItemHandler}
+          >
+            <Menu.Item key="1">
+              <Link to={"/"}>Home</Link>
+            </Menu.Item>
+            <Menu.Item key="2">
               <Link to={"/fetcher"}>Fetcher</Link>
-          </Menu.Item>
-          <Menu.Item key="3">
+            </Menu.Item>
+            <Menu.Item key="3">
               <Link to={"/counter"}>Counter</Link>
             </Menu.Item>
             <Menu.Item key="4">
               <Link to={"/todolist"}>Todo List</Link>
-          </Menu.Item>
-        </Menu>
+            </Menu.Item>
+          </Menu>
         </div>
         <div className="header-account-container">
-        <Account />
+          <Account />
         </div>
       </div>
     );

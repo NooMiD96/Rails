@@ -1,16 +1,18 @@
-﻿namespace CoreReactReduxTypeScript.Controllers.Api.Services
+﻿using CoreReactReduxTypeScript;
+
+namespace CoreReactReduxTypeScript.Controllers.Api.Services
 {
-    public class AccountService
+    public static class AccountService
     {
-        static public object SuccessAuthOrReg(string userName, string userRole) => new
+        public static object SuccessUserAuth(string userName, Roles role) => new
         {
             data = new
             {
                 userName,
-                userType = userRole
+                userType = role.ToString()
             }
         };
 
-        static public object SuccessLogOut(string userName) => new { data = $"{userName} is logouted" };
+        public static object SuccessLogOut(string userName) => new { data = $"{userName} is logouted" };
     }
 }

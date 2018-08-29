@@ -6,13 +6,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using CoreReactReduxTypeScript.Contexts.ProjectIdentity;
-using CoreReactReduxTypeScript.Contexts.DbName;
-using CoreReactReduxTypeScript.Models.ProjectIdentity;
+using CoreReactReduxTypeScript.Contexts.ProjectTodoIdentity;
+using CoreReactReduxTypeScript.Contexts.ProjectTodo;
+using CoreReactReduxTypeScript.Models.ProjectTodoIdentity;
 using static CoreReactReduxTypeScript.DIServices.DependencyInjections;
+using CoreReactReduxTypeScript.DIServices;
 
 namespace CoreReactReduxTypeScript
 {
@@ -28,11 +30,11 @@ namespace CoreReactReduxTypeScript
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ProjectIdentityContext>(options =>
+            services.AddDbContext<ProjectTodoIdentityContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Identity"));
             });
-            services.AddDbContext<DbNameContext>(options =>
+            services.AddDbContext<ProjectTodoContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Fetcher"));
             });
@@ -51,7 +53,7 @@ namespace CoreReactReduxTypeScript
                 options.Lockout.MaxFailedAccessAttempts = 10;
                 options.Lockout.AllowedForNewUsers = true;
             })
-                .AddEntityFrameworkStores<ProjectIdentityContext>();
+                .AddEntityFrameworkStores<ProjectTodoIdentityContext>();
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -62,10 +64,11 @@ namespace CoreReactReduxTypeScript
                 //options.AccessDeniedPath = "/Account/AccessDenied";
             });
 
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ClaimsPrincipalFactoryDI>();
 
             var serviceProvider = services.BuildServiceProvider();
             Task.WhenAll(
-                DbNameDataBase(serviceProvider, Configuration),
+                ProjectTodoDataBase(serviceProvider, Configuration),
                 IdentityDataBase(serviceProvider, Configuration)
             ).GetAwaiter().GetResult();
 
@@ -76,8 +79,6 @@ namespace CoreReactReduxTypeScript
             {
                 configuration.RootPath = "ClientApp/public";
             });
-
-            services.AddNodeServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

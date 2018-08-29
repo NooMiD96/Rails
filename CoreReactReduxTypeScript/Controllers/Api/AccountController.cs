@@ -1,9 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using CoreReactReduxTypeScript.Contexts.ProjectIdentity;
-using CoreReactReduxTypeScript.Models.ProjectIdentity;
+using Microsoft.AspNetCore.Authentication;
+using CoreReactReduxTypeScript.Contexts.ProjectTodoIdentity;
+using CoreReactReduxTypeScript.Contexts.ProjectTodo;
+using CoreReactReduxTypeScript.Models.ProjectTodoIdentity;
 using CoreReactReduxTypeScript.Models.Account;
 using static CoreReactReduxTypeScript.Controllers.Api.Services.AccountService;
 
@@ -15,19 +20,18 @@ namespace CoreReactReduxTypeScript.Controllers.Api
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ProjectTodoContext _context;
 
-        public AccountController(
-            [FromServices] UserManager<ApplicationUser> userManager,
-            [FromServices] SignInManager<ApplicationUser> signInManager
-        )
+        public AccountController([FromServices] UserManager<ApplicationUser> userManager,
+                                 [FromServices] SignInManager<ApplicationUser> signInManager,
+                                 [FromServices] ProjectTodoContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         [HttpPost("[action]")]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Registration([FromBody] RegistrationModel userModel)
         {
             var user = new ApplicationUser {
@@ -39,12 +43,15 @@ namespace CoreReactReduxTypeScript.Controllers.Api
                 var result = await _userManager.CreateAsync(user, userModel.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "User");
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     //await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                    await _context.AddNewUserAsync(user.Id);
+                    await _userManager.AddToRoleAsync(user, Roles.User);
                     await _signInManager.SignInAsync(user, isPersistent: true);
-                    return Ok(SuccessAuthOrReg(user.UserName, "User"));
+
+                    return Ok(SuccessUserAuth(user.UserName, Roles.User));
                 }
                 else
                 {
@@ -59,8 +66,6 @@ namespace CoreReactReduxTypeScript.Controllers.Api
         }
 
         [HttpPost("[action]")]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Authentication([FromBody] LoginModel userModel)
         {
             if (userModel.IsValid(out var error))
@@ -83,14 +88,16 @@ namespace CoreReactReduxTypeScript.Controllers.Api
                 if (result.Succeeded)
                 {
                     //if (result.RequiresTwoFactor)
-                    //{
                     //    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
-                    //}
                     //if (result.IsLockedOut)
-                    //{
                     //    return RedirectToAction(nameof(Lockout));
-                    //}
-                    return Ok(SuccessAuthOrReg(user.UserName, await _userManager.GetRoleAsync(user)));
+
+                    var userRoleDefined = Enum.TryParse(await _userManager.GetRoleAsync(user),
+                                                       true,
+                                                       out Roles role);
+
+                    return Ok(SuccessUserAuth(user.UserName,
+                                              userRoleDefined ? role : Roles.User));
                 }
                 else
                 {

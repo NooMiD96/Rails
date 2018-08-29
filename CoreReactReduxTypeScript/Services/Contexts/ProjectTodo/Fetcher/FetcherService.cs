@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using CoreReactReduxTypeScript.Models.DbName;
+using CoreReactReduxTypeScript.Models.ProjectTodo;
 
-namespace CoreReactReduxTypeScript.Contexts.DbName
+namespace CoreReactReduxTypeScript.Contexts.ProjectTodo
 {
-    public partial class DbNameContext
+    public partial class ProjectTodoContext
     {
         public async Task<List<FetcherDataModel>> GetStringsAsync() => await (
                 from f in Fetchers

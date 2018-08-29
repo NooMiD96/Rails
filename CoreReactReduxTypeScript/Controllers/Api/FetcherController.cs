@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using CoreReactReduxTypeScript.Contexts.DbName;
-using CoreReactReduxTypeScript.Models.DbName;
+using CoreReactReduxTypeScript.Contexts.ProjectTodo;
+using CoreReactReduxTypeScript.Models.ProjectTodo;
 using CoreReactReduxTypeScript.Helpers;
 
 namespace CoreReactReduxTypeScript.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FetcherController : BaseController
+    public class TodoController : BaseController
     {
-        private readonly DbNameContext _fetcher;
+        private readonly ProjectTodoContext _fetcher;
 
-        public FetcherController([FromServices] DbNameContext fetcherContext)
+        public TodoController([FromServices] ProjectTodoContext fetcherContext)
         {
             _fetcher = fetcherContext;
         }

@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CoreReactReduxTypeScript.Contexts.ProjectIdentity;
-using CoreReactReduxTypeScript.Models.ProjectIdentity;
+using CoreReactReduxTypeScript.Contexts.ProjectTodoIdentity;
+using CoreReactReduxTypeScript.Models.ProjectTodoIdentity;
 
 namespace CoreReactReduxTypeScript.DIServices
 {
@@ -16,7 +16,7 @@ namespace CoreReactReduxTypeScript.DIServices
     {
         public static async Task IdentityDataBase(IServiceProvider serviceProvider, IConfiguration Configuration)
         {
-            var identityContext = serviceProvider.GetRequiredService<ProjectIdentityContext>();
+            var identityContext = serviceProvider.GetRequiredService<ProjectTodoIdentityContext>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
             try
@@ -43,6 +43,7 @@ namespace CoreReactReduxTypeScript.DIServices
                 {
                     var userName = admin["UserName"];
                     var password = admin["Password"];
+                    var email    = admin["Email"];
 
                     var _user = await UserManager.FindByNameAsync(userName);
                     if (_user == null)
@@ -50,6 +51,7 @@ namespace CoreReactReduxTypeScript.DIServices
                         var poweruser = new ApplicationUser
                         {
                             UserName = userName,
+                            Email = email
                         };
 
                         var createPowerUser = await UserManager.CreateAsync(poweruser, password);

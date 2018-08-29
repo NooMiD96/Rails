@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using CoreReactReduxTypeScript.Contexts.DbName;
+using CoreReactReduxTypeScript.Contexts.ProjectTodo;
 
 namespace CoreReactReduxTypeScript.DIServices
 {
@@ -12,12 +12,12 @@ namespace CoreReactReduxTypeScript.DIServices
     /// </summary>
     public static partial class DependencyInjections
     {
-        public static async Task DbNameDataBase(IServiceProvider serviceProvider, IConfiguration Configuration)
+        public static async Task ProjectTodoDataBase(IServiceProvider serviceProvider, IConfiguration Configuration)
         {
-            var dbNameContext = serviceProvider.GetRequiredService<DbNameContext>();
+            var projectTodoContext = serviceProvider.GetRequiredService<ProjectTodoContext>();
             try
             {
-                await dbNameContext.Database.MigrateAsync();
+                await projectTodoContext.Database.MigrateAsync();
             }
             catch (Exception ex)
             {
@@ -25,8 +25,8 @@ namespace CoreReactReduxTypeScript.DIServices
             }
             finally
             {
-                if (dbNameContext != null)
-                    dbNameContext.Dispose();
+                if (projectTodoContext != null)
+                    projectTodoContext.Dispose();
             }
         }
     }
