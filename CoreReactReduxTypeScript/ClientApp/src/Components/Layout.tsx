@@ -16,7 +16,7 @@ export class Layout extends React.Component<{}, {}> {
         </Content>
         <Footer>
           Footer
-                </Footer>
+        </Footer>
       </AntdLayout>
     );
   }

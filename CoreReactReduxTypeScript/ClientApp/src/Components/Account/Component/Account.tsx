@@ -6,6 +6,7 @@ import Alert from "@core/antd/Alert";
 
 import Authentication from "./Authentication";
 import Registration from "./Registration";
+import AccountControlButtons from "./AccountControlButtons";
 
 import {
   TState,
@@ -66,32 +67,11 @@ export class Account extends React.Component<TState, TComponentState> {
         ref={this.containerRef}
       >
         <ButtonGroup>
-          {
-            !userName
-              ? <React.Fragment>
-                <Button
-                  type="primary"
-                  shape="circle"
-                  size="large"
-                  icon="login"
-                  onClick={() => this.ShowModal(ModalTypeEnums.Authentication)}
-                />
-                <Button
-                  type="primary"
-                  shape="circle"
-                  size="large"
-                  icon="idcard"
-                  onClick={() => this.ShowModal(ModalTypeEnums.Registration)}
-                />
-              </React.Fragment>
-              : <Button
-                type="primary"
-                shape="circle"
-                size="large"
-                icon="logout"
-                onClick={() => this.LogOut()}
-              />
-          }
+          <AccountControlButtons
+            ShowModal={this.ShowModal}
+            LogOut={this.LogOut}
+            userName={userName}
+          />
           <Modal
             getContainer={() => this.containerRef.current!}
             title={<span className="account-modal-title">{ModalTypeEnums[modalType]}</span>}

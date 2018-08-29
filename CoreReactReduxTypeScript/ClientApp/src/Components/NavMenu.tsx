@@ -42,26 +42,32 @@ export class NavMenu extends React.Component<{}, IState> {
 
   render() {
     return (
-      <React.Fragment>
+      <div className="header-container">
+        <div className="header-menu-container">
         <Menu
           theme="dark"
           mode="horizontal"
           selectedKeys={this.state.selectedKeys}
           onSelect={this.onSelectItemHandler}
-          style={{lineHeight: "64px"}}
         >
           <Menu.Item key="1">
             <Link to={"/"}>Home</Link>
           </Menu.Item>
           <Menu.Item key="2">
-            <Link to={"/Fetcher"}>Fetcher</Link>
+              <Link to={"/fetcher"}>Fetcher</Link>
           </Menu.Item>
           <Menu.Item key="3">
-            <Link to={"/Counter"}>Counter</Link>
+              <Link to={"/counter"}>Counter</Link>
+            </Menu.Item>
+            <Menu.Item key="4">
+              <Link to={"/todolist"}>Todo List</Link>
           </Menu.Item>
         </Menu>
+        </div>
+        <div className="header-account-container">
         <Account />
-      </React.Fragment>
+        </div>
+      </div>
     );
   }
 }

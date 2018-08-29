@@ -1,7 +1,7 @@
 import * as React from "react";
 import Button from "@core/antd/Button";
 
-type ActionButtonsProps = {
+type ModalControlButtonsProps = {
     HandleSubmit: () => void,
     HandleCancel: () => void,
     loading: boolean,
@@ -9,7 +9,7 @@ type ActionButtonsProps = {
     submitTitle: string,
 };
 
-const ActionButtons = (props: ActionButtonsProps) => (
+const ModalControlButtons = (props: ModalControlButtonsProps) => (
     <React.Fragment>
         <Button
             key="back"
@@ -29,4 +29,4 @@ const ActionButtons = (props: ActionButtonsProps) => (
     </React.Fragment>
 );
 
-export default ActionButtons;
+export default ModalControlButtons;

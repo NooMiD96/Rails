@@ -4,7 +4,7 @@ import Input from "@core/antd/Input";
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 
 import { TAuthenticationModel } from "../../TAccount";
-import ActionButtons from "../ActionButtons";
+import ModalControlButtons from "../ModalControlButtons";
 
 interface Props extends FormComponentProps {
   HandleSubmit: (payload: TAuthenticationModel) => void;
@@ -64,12 +64,12 @@ export class Authentication extends React.Component<Props, {}> {
           )}
         </FormItem>
         <div className="ant-modal-footer">
-          <ActionButtons
+          <ModalControlButtons
             HandleSubmit={this.OnSubmit}
             HandleCancel={this.OnClose}
             loading={loading}
             returnTitle="Return"
-            submitTitle="Registration"
+            submitTitle="Login"
           />
         </div>
       </Form>
