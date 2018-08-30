@@ -41,36 +41,42 @@ namespace CoreReactReduxTypeScript
 
             services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
-                options.Password.RequiredLength = 1;
+                options.Password.RequiredLength         = 1;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase       = false;
+                options.Password.RequireUppercase       = false;
+                options.Password.RequireDigit           = false;
 
-                options.User.RequireUniqueEmail = true;
+                options.User.RequireUniqueEmail         = true;
 
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.DefaultLockoutTimeSpan  = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;
-                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.AllowedForNewUsers      = true;
             })
                 .AddEntityFrameworkStores<ProjectTodoIdentityContext>();
 
             services.ConfigureApplicationCookie(options =>
             {
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                options.SlidingExpiration = true;
-                //options.LoginPath = "/Account/Login";
-                //options.AccessDeniedPath = "/Account/AccessDenied";
+                options.Cookie.HttpOnly         = true;
+                options.ExpireTimeSpan          = TimeSpan.FromMinutes(30);
+                options.SlidingExpiration       = true;
+                options.ReturnUrlParameter      = "";
+                options.LoginPath               = "";
+                options.AccessDeniedPath        = "";
             });
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ClaimsPrincipalFactoryDI>();
 
             var serviceProvider = services.BuildServiceProvider();
-            Task.WhenAll(
-                ProjectTodoDataBase(serviceProvider, Configuration),
-                IdentityDataBase(serviceProvider, Configuration)
-            ).GetAwaiter().GetResult();
+
+            // We cant start the both DI together 'couse we have a reference from Project to Identity context
+            //Task.WhenAll(
+            //    ProjectTodoDataBase(serviceProvider, Configuration),
+            //    IdentityDataBase(serviceProvider, Configuration)
+            //).GetAwaiter().GetResult();
+
+            IdentityDataBase(serviceProvider, Configuration).GetAwaiter().GetResult();
+            ProjectTodoDataBase(serviceProvider, Configuration).GetAwaiter().GetResult();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -89,10 +95,10 @@ namespace CoreReactReduxTypeScript
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
-                    HotModuleReplacementClientOptions = new Dictionary<string, string> { { "dynamicPublicPath", "false" } },
-                    ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp"),
-                    HotModuleReplacement = true,
-                    ReactHotModuleReplacement = true
+                    HotModuleReplacementClientOptions   = new Dictionary<string, string> { { "dynamicPublicPath", "false" } },
+                    ProjectPath                         = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp"),
+                    HotModuleReplacement                = true,
+                    ReactHotModuleReplacement           = true
                 });
             }
             

@@ -11,10 +11,15 @@ namespace CoreReactReduxTypeScript.Controllers.AdminApi.Services
     {
         public TodoModel ConvertToModel(Todo todo)
         {
+            if (todo is null)
+            {
+                return new TodoModel();
+            }
             var todoModel = new TodoModel
             {
                 TodoId = todo.TodoId,
-                TodoPayloads = JsonHelper.Deserialize<IEnumerable<TodoPayload>>(todo.TodoList.Payload)
+                Label = todo.TodoList.Label,
+                TodoPayloads = JsonHelper.Deserialize<IEnumerable<TodoPayload>>(todo.TodoList.Payload),
             };
             return todoModel;
         }
@@ -27,6 +32,7 @@ namespace CoreReactReduxTypeScript.Controllers.AdminApi.Services
                 LastUpdateAt = DateTime.Now,
                 TodoList = new TodoList
                 {
+                    Label = todoList.Label,
                     Payload = JsonHelper.Serialize(todoList.TodoPayloads),
                 }
             };

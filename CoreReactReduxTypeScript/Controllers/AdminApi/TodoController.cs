@@ -10,8 +10,8 @@ using CoreReactReduxTypeScript;
 
 namespace CoreReactReduxTypeScript.Controllers.AdminApi
 {
-    [Authorize(Roles = Roles.Admin + ";" + Roles.Employee)]
-    [Route("api/[controller]")]
+    [Authorize(Roles = Roles.Admin + ", " + Roles.Employee)]
+    [Route("adminapi/[controller]")]
     [ApiController]
     public class TodoController : BaseController
     {
@@ -25,7 +25,7 @@ namespace CoreReactReduxTypeScript.Controllers.AdminApi
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetAllTodoList()
+        public async Task<IActionResult> GetFirstTodoList()
         {
             var todo = await _context.GetTodoListAsync(User.GetUserId());
             var todoListModel = _service.ConvertToModel(todo);
@@ -34,7 +34,7 @@ namespace CoreReactReduxTypeScript.Controllers.AdminApi
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Post([FromBody] TodoModel todoListModel)
+        public async Task<IActionResult> SaveTodoList([FromBody] TodoModel todoListModel)
         {
             var todoList = _service.Deserialize(todoListModel);
             var success = await _context.SaveTodoList(User.GetUserId(), todoList);

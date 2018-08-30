@@ -35,8 +35,8 @@ export const ActionsList = {
 // ----------------
 // ACTION CREATORS
 export const ActionCreators = {
-    GetData: (): AppThunkAction<t.TGetTodoList> => (dispatch, _getState) => {
-        const fetchTask = fetch("/adminapi/todolist/GetStrings", {
+    GetTodoList: (): AppThunkAction<t.TGetTodoList> => (dispatch, _getState) => {
+        const fetchTask = fetch("/adminapi/todo/getfirsttodolist", {
                 method: "GET",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
             }).then((res: Response) => {
@@ -51,19 +51,19 @@ export const ActionCreators = {
                 }
                 const data: TTodoListModel = JSON.parse(value.data);
                 dispatch(ActionsList.GetTodoListSuccess(data));
-            }).catch((err: string) => {
-                console.error(err);
-                dispatch(ActionsList.GetTodoListError(err));
+            }).catch((err: Error) => {
+                console.warn(`Error :-S in getting todo list: ${err.message}\r\n${err.stack}`);
+                dispatch(ActionsList.GetTodoListError(err.message));
             });
 
         addTask(fetchTask);
         dispatch(ActionsList.GetTodoListRequest());
     },
-    PostData: (text: string): AppThunkAction<t.TPostTodoList | t.TGetTodoList> => (dispatch, _getState) => {
-        const fetchTask = fetch("/adminapi/todolist/SaveString", {
+    PostTodoList: (todoList: TTodoListModel): AppThunkAction<t.TPostTodoList | t.TGetTodoList> => (dispatch, _getState) => {
+        const fetchTask = fetch("/adminapi/todo/savetodolist", {
                 method: "POST",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: JSON.stringify({ data: text }),
+                body: JSON.stringify(todoList),
             }).then((res: Response) => {
                 if (res.ok) {
                     return res.json();
@@ -75,10 +75,10 @@ export const ActionCreators = {
                     throw value.error;
                 }
                 dispatch(ActionsList.PostTodoListSuccess());
-                ActionCreators.GetData()(dispatch, _getState);
-            }).catch((err: string) => {
-                console.error(err);
-                dispatch(ActionsList.PostTodoListError(err));
+                ActionCreators.GetTodoList()(dispatch, _getState);
+            }).catch((err: Error) => {
+                console.warn(`Error :-S in sending todo list: ${err.message}\r\n${err.stack}`);
+                dispatch(ActionsList.PostTodoListError(err.message));
             });
 
         addTask(fetchTask);

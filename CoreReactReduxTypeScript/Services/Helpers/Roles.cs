@@ -12,7 +12,7 @@ namespace CoreReactReduxTypeScript
         public const string User        = "User";
         public const string Guest       = "Guest";
 
-        public static IEnumerable<string> GetProjectRoles
+        public static IEnumerable<string> ProjectRoles
         {
             get
             {

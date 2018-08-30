@@ -1,14 +1,11 @@
 import * as React from "react";
-import Input from "@core/antd/Input";
-import Button from "@core/antd/Button";
 import Row from "@core/antd/Row";
 import Col from "@core/antd/Col";
 import Spin from "@core/antd/Spin";
-import Table, { Column } from "@core/antd/Table";
 
 import Alert from "@core/Alert";
-
-import { Testdnd } from "./Testdnd";
+import AddNewItemField from "@core/AddNewItemField";
+import { DragDropTodoList } from "./DragDropTodoList";
 
 import {
   IKeyChangeEvent,
@@ -18,6 +15,7 @@ import {
 import {
   TState,
   TComponentState,
+  TTodoListModel,
 } from "../TTodoList";
 
 import TodoListWrapped from "./TodoList.style";
@@ -27,20 +25,15 @@ export class TodoList extends React.Component<TState, TComponentState> {
     text: "",
   };
 
-  componentDidMount() {
-    this.props.GetData();
-    this.setState({
-    });
-  }
-
-  static getDerivedStateFromProps(nextProps: TState, prevState: TComponentState) {
-    return null;
-  }
-
   fetchRequest = (_e: IPressEnterEvent | IMouseClickEvent) => {
     const text = this.state.text.trim();
     if (text) {
-      this.props.PostData(text);
+      const newTodoList: TTodoListModel = {
+        todoId: 0,
+        label: text,
+        todoPayloads: [],
+      };
+      this.props.PostTodoList(newTodoList);
       this.setState({
         text: "",
       });
@@ -52,7 +45,7 @@ export class TodoList extends React.Component<TState, TComponentState> {
   })
 
   render() {
-    const { errorMessage, RemoveErrorMessage, todoList, GetData, pending } = this.props;
+    const { errorMessage, RemoveErrorMessage, todoList, todoListlabel, pending } = this.props;
     const { text } = this.state;
     return (
       <TodoListWrapped>
@@ -68,18 +61,11 @@ export class TodoList extends React.Component<TState, TComponentState> {
               md={{ span: 22, offset: 1 }}
               xs={{ span: 24 }}
             >
-              <Input
-                addonBefore={
-                  <span
-                    className="ant-input-group-addon-before"
-                    onClick={this.fetchRequest}
-                  >
-                    Create new todo list
-                  </span>
-                }
-                value={text}
-                onChange={this.changeHandler}
-                onPressEnter={this.fetchRequest}
+              <AddNewItemField
+                onSubmitHandler={this.fetchRequest}
+                addonLabel="Create new todo list"
+                onChangeHandler={this.changeHandler}
+                text={text}
               />
             </Col>
           </Row>
@@ -89,7 +75,10 @@ export class TodoList extends React.Component<TState, TComponentState> {
               xs={{ span: 24 }}
             >
               <Spin spinning={pending}>
-                <Testdnd />
+                <DragDropTodoList
+                  dataSource={todoList}
+                  label={todoListlabel}
+                />
               </Spin>
             </Col>
           </Row>

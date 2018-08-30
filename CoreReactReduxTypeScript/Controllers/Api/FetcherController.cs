@@ -9,11 +9,11 @@ namespace CoreReactReduxTypeScript.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TodoController : BaseController
+    public class FetcherController: BaseController
     {
         private readonly ProjectTodoContext _fetcher;
 
-        public TodoController([FromServices] ProjectTodoContext fetcherContext)
+        public FetcherController([FromServices] ProjectTodoContext fetcherContext)
         {
             _fetcher = fetcherContext;
         }

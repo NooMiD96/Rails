@@ -17,4 +17,8 @@ export default styled.div`
   .ant-row {
     margin: 10px 0;
   }
+  .dnd-header-label {
+    text-align: center;
+    margin-bottom: 10px;
+  }
 `;

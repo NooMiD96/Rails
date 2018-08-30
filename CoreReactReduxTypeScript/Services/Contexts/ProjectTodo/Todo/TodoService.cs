@@ -16,19 +16,25 @@ namespace CoreReactReduxTypeScript.Contexts.ProjectTodo
         public async ValueTask<bool> SaveTodoList(int userId, Todo todo)
         {
             var contextTodo = await Todos.Include(x => x.TodoList)
-                                   .FirstOrDefaultAsync(x => x.TodoId == todo.TodoId);
+                                         .FirstOrDefaultAsync(x => x.TodoId == todo.TodoId);
 
             if (contextTodo != null)
             {
+                //need test
                 Entry(contextTodo)
                     .Context
-                    .Attach(todo);
+                    .Attach(todo)
+                    .State = EntityState.Modified;
             }
             else
             {
-                Users.First(x => x.UserId == userId)
-                     .Todos
-                     .Add(todo);
+                var user = Users.Include(x => x.Todos)
+                                 .First(x => x.UserId == userId);
+                user.Todos.Add(todo);
+                //or this case, need test
+                // Users.First(x => x.UserId == userId)
+                //      .Todos
+                //      .Add(todo);
             }
 
             await SaveChangesAsync();

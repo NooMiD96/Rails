@@ -1,8 +1,9 @@
 import * as React from "react";
-
-import { NavMenu } from "./NavMenu";
 import AntdLayout from "@core/antd/Layout";
 const { Header, Content, Footer } = AntdLayout;
+
+import AccountControlComponent from "@core/AccountControlComponent";
+import NavMenu from "./NavMenu";
 
 export class Layout extends React.Component<{}, {}> {
   public render() {
@@ -12,7 +13,9 @@ export class Layout extends React.Component<{}, {}> {
           <NavMenu />
         </Header>
         <Content>
-          {this.props.children}
+          <AccountControlComponent>
+            {this.props.children}
+          </AccountControlComponent>
         </Content>
         <Footer>
           Footer

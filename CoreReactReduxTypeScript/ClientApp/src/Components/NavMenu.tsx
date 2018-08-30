@@ -1,13 +1,19 @@
 import * as React from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Menu from "@core/antd/Menu";
+
+import { ApplicationState } from "@src/Store";
+import { AccountState, UserTypeEnums } from "@components/Account/IAccountState";
+
 import Account from "@components/Account";
 
-interface IState {
+interface IComponentState {
   selectedKeys: string[];
 }
+interface IComponentProps extends AccountState { }
 
-export class NavMenu extends React.Component<{}, IState> {
+export class NavMenu extends React.Component<IComponentProps, IComponentState> {
   state = {
     selectedKeys: ["1"],
   };
@@ -62,9 +68,14 @@ export class NavMenu extends React.Component<{}, IState> {
             <Menu.Item key="3">
               <Link to={"/counter"}>Counter</Link>
             </Menu.Item>
-            <Menu.Item key="4">
-              <Link to={"/todolist"}>Todo List</Link>
-            </Menu.Item>
+            {
+              (
+                this.props.userType === UserTypeEnums.Admin
+                || this.props.userType === UserTypeEnums.Employee
+              ) && <Menu.Item key="4">
+                <Link to={"/todolist"}>Todo List</Link>
+              </Menu.Item>
+            }
           </Menu>
         </div>
         <div className="header-account-container">
@@ -74,3 +85,7 @@ export class NavMenu extends React.Component<{}, IState> {
     );
   }
 }
+
+export default connect(
+  (state: ApplicationState): AccountState => state.account
+)(NavMenu);

@@ -1,5 +1,7 @@
 import { RouteComponentProps } from "react-router";
+
 import { TodoListState, TodoPayload } from "./ITodoListState";
+
 import { ActionCreators } from "./actions";
 // -----------------------------
 // STATE OF COMPONENT
@@ -24,5 +26,6 @@ export type TState = TMapStateToProps
 // MODELS
 export type TTodoListModel = {
     todoId: number,
+    label: string,
     todoPayloads: TodoPayload[],
 };

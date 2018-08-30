@@ -3,6 +3,7 @@
 export enum UserTypeEnums {
     Guest,
     User,
+    Employee,
     Admin,
 }
 export interface AccountState {

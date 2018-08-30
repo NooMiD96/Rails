@@ -51,9 +51,9 @@ export const ActionCreators = {
                 }
                 const data: IData[] = JSON.parse(value.data);
                 dispatch(ActionsList.GetDataSuccess(data));
-            }).catch((err: string) => {
-                console.error(err);
-                dispatch(ActionsList.GetDataError(err));
+            }).catch((err: Error) => {
+                console.warn(`Error :-S in getting fetchers string: ${err.message}\r\n${err.stack}`);
+                dispatch(ActionsList.GetDataError(err.message));
             });
 
         addTask(fetchTask);
@@ -76,9 +76,9 @@ export const ActionCreators = {
                 }
                 dispatch(ActionsList.PostDataSuccess());
                 ActionCreators.GetData()(dispatch, _getState);
-            }).catch((err: string) => {
-                console.error(err);
-                dispatch(ActionsList.PostDataError(err));
+            }).catch((err: Error) => {
+                console.warn(`Error :-S in sending fetcher string: ${err.message}\r\n${err.stack}`);
+                dispatch(ActionsList.PostDataError(err.message));
             });
 
         addTask(fetchTask);

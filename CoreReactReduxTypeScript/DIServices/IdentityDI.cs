@@ -16,64 +16,67 @@ namespace CoreReactReduxTypeScript.DIServices
     {
         public static async Task IdentityDataBase(IServiceProvider serviceProvider, IConfiguration Configuration)
         {
-            var identityContext = serviceProvider.GetRequiredService<ProjectTodoIdentityContext>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-            try
+            using (var scope = serviceProvider.CreateScope())
             {
-                identityContext.Database.Migrate();
-
-                var roleNames = Roles.GetProjectRoles;
-                IdentityResult roleResult;
-
-                foreach (var roleName in roleNames)
+                var identityContext = scope.ServiceProvider.GetRequiredService<ProjectTodoIdentityContext>();
+                var UserManager     = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var RoleManager     = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+                try
                 {
-                    var roleExist = await RoleManager.RoleExistsAsync(roleName);
-                    if (!roleExist)
-                    {
-                        roleResult = await RoleManager.CreateAsync(new ApplicationRole(roleName));
+                    await identityContext.Database.MigrateAsync();
 
-                        if (!roleResult.Succeeded)
-                            throw new Exception("Can't add roles in database");
+                    var roleNames = Roles.ProjectRoles;
+                    IdentityResult roleResult;
+
+                    foreach (var roleName in roleNames)
+                    {
+                        var roleExist = await RoleManager.RoleExistsAsync(roleName);
+                        if (!roleExist)
+                        {
+                            roleResult = await RoleManager.CreateAsync(new ApplicationRole(roleName));
+
+                            if (!roleResult.Succeeded)
+                                throw new Exception("Can't add roles in database");
+                        }
                     }
-                }
 
-                var admins = Configuration.GetSection("Admins").GetChildren();
-                foreach (var admin in admins)
-                {
-                    var userName = admin["UserName"];
-                    var password = admin["Password"];
-                    var email    = admin["Email"];
-
-                    var _user = await UserManager.FindByNameAsync(userName);
-                    if (_user == null)
+                    var admins = Configuration.GetSection("Admins").GetChildren();
+                    foreach (var admin in admins)
                     {
-                        var poweruser = new ApplicationUser
-                        {
-                            UserName = userName,
-                            Email = email
-                        };
+                        var userName = admin["UserName"];
+                        var password = admin["Password"];
+                        var email    = admin["Email"];
 
-                        var createPowerUser = await UserManager.CreateAsync(poweruser, password);
-                        if (createPowerUser.Succeeded)
+                        var _user = await UserManager.FindByNameAsync(userName);
+                        if (_user == null)
                         {
-                            await UserManager.AddToRoleAsync(poweruser, Roles.Admin);
+                            var poweruser = new ApplicationUser
+                            {
+                                UserName = userName,
+                                Email = email
+                            };
+
+                            var createPowerUser = await UserManager.CreateAsync(poweruser, password);
+                            if (createPowerUser.Succeeded)
+                            {
+                                await UserManager.AddToRoleAsync(poweruser, Roles.Admin);
+                            }
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"info: Trouble with first connection to identity database:\n{ex.Message}");
-            }
-            finally
-            {
-                if (RoleManager != null)
-                    RoleManager.Dispose();
-                if (UserManager != null)
-                    UserManager.Dispose();
-                if (identityContext != null)
-                    identityContext.Dispose();
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"\r\n\r\ninfo: Trouble with first connection to identity database:\n{ex.Message}\r\n\r\n");
+                }
+                finally
+                {
+                    if (RoleManager != null)
+                        RoleManager.Dispose();
+                    if (UserManager != null)
+                        UserManager.Dispose();
+                    if (identityContext != null)
+                        identityContext.Dispose();
+                }
             }
         }
     }

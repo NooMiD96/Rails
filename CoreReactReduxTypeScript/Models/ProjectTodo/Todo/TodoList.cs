@@ -12,6 +12,8 @@ namespace CoreReactReduxTypeScript.Models.ProjectTodo
         public int TodoId { get; set; }
 
         [Required]
+        public string Label { get; set; }
+        [Required]
         public string Payload { get; set; }
 
         // Parent

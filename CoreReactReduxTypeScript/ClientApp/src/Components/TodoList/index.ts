@@ -1,17 +1,18 @@
 
 import { connect } from "react-redux";
 
-import { ActionCreators } from "./actions";
 import {
     TOwnProps,
     TMapStateToProps,
     TMapDispatchToProps,
 } from "./TTodoList";
-import { TodoList } from "./Component/TodoList";
 import { ApplicationState } from "@src/Store";
 
+import { ActionCreators } from "./actions";
+import { TodoList } from "./Component/TodoList";
+
 const mapStateToProps = (state: ApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
-    ...state.fetcher,
+    ...state.todoList,
     ...ownProp,
 });
 

@@ -1,10 +1,4 @@
 import * as React from "react";
-import Input from "@core/antd/Input";
-import Button from "@core/antd/Button";
-import Row from "@core/antd/Row";
-import Col from "@core/antd/Col";
-import Spin from "@core/antd/Spin";
-import Table, { Column } from "@core/antd/Table";
 
 import {
   DragDropContext,
@@ -18,8 +12,6 @@ import {
   DraggableStateSnapshot,
 } from "react-beautiful-dnd";
 
-import Alert from "@core/Alert";
-
 import {
   IKeyChangeEvent,
   IPressEnterEvent,
@@ -29,22 +21,58 @@ import {
 import { TodoPayload } from "../ITodoListState";
 
 interface IComponentProps {
+  label: string;
   dataSource: TodoPayload[];
+}
+interface TodoPayloadWithId extends TodoPayload {
+  id: number;
 }
 interface IComponentState {
   text: string;
+  items: TodoPayloadWithId[];
 }
+
+const grid = 8;
+const getItemStyle = (draggableStyle: any, isDragging: boolean): {} => ({
+  userSelect: "none",
+  padding: 2 * grid,
+  margin: `0 0 ${grid}px 0`,
+  background: isDragging ? "lightgreen" : "#28c2ffa6",
+  fontSize: "16px",
+  color: "whitesmoke",
+  ...draggableStyle,
+});
+const getListStyle = (isDraggingOver: boolean): {} => ({
+  background: isDraggingOver ? "lightblue" : "#28dbff40",
+  borderRadius: "10%",
+  padding: grid,
+  width: 300,
+  minHeight: 400,
+});
+
 export class DragDropTodoList extends React.Component<IComponentProps, IComponentState> {
   state: IComponentState = {
     text: "",
+    items: [],
   };
 
-  getList (id: string): TodoPayload[] {
-    return this.state[this.id2List[id]];
+  componentDidMount() {
+    const newList = [...this.props.dataSource] as TodoPayloadWithId[];
+    newList.forEach((x, index) => x.id = index);
+    this.setState({
+      items: newList,
+    });
   }
 
-  onDragEnd(result: DropResult): void {
+  reorder = (list: TodoPayloadWithId[], startIndex: number, endIndex: number): TodoPayloadWithId[] => {
+    const result = [...list];
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
 
+    return result;
+  }
+
+  onDragEnd = (result: DropResult): void => {
     const { source, destination } = result;
 
     if (!destination) {
@@ -52,53 +80,54 @@ export class DragDropTodoList extends React.Component<IComponentProps, IComponen
     }
 
     if (source.droppableId === destination.droppableId) {
-      const items = reorder(
-        this.getList(source.droppableId),
+      let nextState: IComponentState = { ...this.state };
+
+      const items = this.reorder(
+        nextState.items,
         source.index,
         destination.index
       );
 
-      let state:IAppState = {...this.state};
-
-      if (source.droppableId === "droppable2") {
-        state = { ...this.state, selected: items };
-      } else if (source.droppableId === "droppable") {
-        state = {...this.state, items}
+      if (source.droppableId === this.props.label) {
+        nextState = { ...nextState, items };
       }
 
-      this.setState(state);
-
+      this.setState(nextState);
     } else {
-      const resultFromMove:IMoveResult = move(
-        this.getList(source.droppableId),
-        this.getList(destination.droppableId),
-        source,
-        destination
-      );
-
-      this.setState({
-        items: resultFromMove.droppable,
-        selected: resultFromMove.droppable2
-      });
+      // Move item to another List
     }
   }
 
-
   render() {
-    const { dataSource } = this.props;
-    // const { errorMessage, RemoveErrorMessage, todoList, GetData, pending } = this.props;
-    const { text } = this.state;
+    const { items } = this.state;
+    if (!items.length) {
+      return <div />;
+    }
+    const { label } = this.props;
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="droppable">
+      <DragDropContext
+        onDragEnd={this.onDragEnd}
+      >
+        <Droppable
+          droppableId={label}
+        >
           {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
               style={getListStyle(snapshot.isDraggingOver)}
             >
-              {dataSource.map((item, index) => (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
+              <div className="dnd-header-label">
+                <span>
+                  {label}
+                </span>
+              </div>
+              {items.map((item, index) => (
+                <Draggable
+                  key={item.id}
+                  draggableId={item.id.toString()}
+                  index={index}
+                >
                   {(providedDraggable: DraggableProvided, snapshotDraggable: DraggableStateSnapshot) => (
                     <div>
                       <div
@@ -121,37 +150,6 @@ export class DragDropTodoList extends React.Component<IComponentProps, IComponen
             </div>
           )}
         </Droppable>
-        {/* <Droppable droppableId="droppable2">
-          {(providedDroppable2: DroppableProvided, snapshotDroppable2: DroppableStateSnapshot) => (
-            <div
-              ref={providedDroppable2.innerRef}
-              style={getListStyle(snapshotDroppable2.isDraggingOver)}>
-              {this.state.selected.map((item, index) => (
-                <Draggable
-                  key={item.id}
-                  draggableId={item.id}
-                  index={index}>
-                  {(providedDraggable2: DraggableProvided, snapshotDraggable2: DraggableStateSnapshot) => (
-                    <div>
-                      <div
-                        ref={providedDraggable2.innerRef}
-                        {...providedDraggable2.draggableProps}
-                        {...providedDraggable2.dragHandleProps}
-                        style={getItemStyle(
-                          providedDraggable2.draggableProps.style,
-                          snapshotDraggable2.isDragging
-                        )}>
-                        {item.content}
-                      </div>
-                      {providedDraggable2.placeholder}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {providedDroppable2.placeholder}
-            </div>
-          )}
-        </Droppable> */}
       </DragDropContext>
     );
   }

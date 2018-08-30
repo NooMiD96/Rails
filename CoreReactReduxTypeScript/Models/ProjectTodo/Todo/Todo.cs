@@ -34,6 +34,7 @@ namespace CoreReactReduxTypeScript.Models.ProjectTodo
     public class TodoModel
     {
         public int TodoId { get; set; }
+        public string Label { get; set; }
         public IEnumerable<TodoPayload> TodoPayloads { get; set; }
     }
 }

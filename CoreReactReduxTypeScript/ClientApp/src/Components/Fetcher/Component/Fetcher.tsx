@@ -7,6 +7,7 @@ import Spin from "@core/antd/Spin";
 import Table, { Column } from "@core/antd/Table";
 
 import Alert from "@core/Alert";
+import AddNewItemField from "@core/AddNewItemField";
 
 import {
   IKeyChangeEvent,
@@ -76,18 +77,11 @@ export class Fetcher extends React.Component<TState, TComponentState> {
               md={{ span: 22, offset: 1 }}
               xs={{ span: 24 }}
             >
-              <Input
-                addonBefore={
-                  <span
-                    className="ant-input-group-addon-before"
-                    onClick={this.fetchRequest}
-                  >
-                    Send data
-                  </span>
-                }
-                value={text}
-                onChange={this.changeHandler}
-                onPressEnter={this.fetchRequest}
+              <AddNewItemField
+                onSubmitHandler={this.fetchRequest}
+                addonLabel="Send fetch string "
+                onChangeHandler={this.changeHandler}
+                text={text}
               />
             </Col>
           </Row>
