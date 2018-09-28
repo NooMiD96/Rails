@@ -1,0 +1,30 @@
+[ignore]
+.*/ClientApp/public/.*
+.*/node_modules/.*
+.*webpack\..*\.js
+.*\.mjs
+.*/dist/.*
+.*/ConfigureStore\.js
+.*/boot-client\.js
+.*/.*\.style\.js
+.*/_ClientApp/.*
+
+[include]
+./ClientApp/src/
+
+[libs]
+./flow/flow-typed/
+
+[lints]
+
+
+[options]
+all=true
+module.name_mapper='^@src\/\(.*\)$' -> '<PROJECT_ROOT>/ClientApp/src/\1'
+module.name_mapper='^@components\/\(.*\)$' -> '<PROJECT_ROOT>/ClientApp/src/Components/\1'
+module.name_mapper='^@core\/\(.*\)$' -> '<PROJECT_ROOT>/ClientApp/src/Core/\1'
+module.name_mapper='.*\.\(svg\|png\|jpg\|gif\)$' -> '<PROJECT_ROOT>/flow/url-loader.js'
+
+module.name_mapper.extension='css' -> '<PROJECT_ROOT>/flow/CSSModuleStub.js'
+
+[strict]

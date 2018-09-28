@@ -245,3 +245,4 @@ _Pvt_Extensions
 /NodeReact/dist
 server
 client
+**/flow

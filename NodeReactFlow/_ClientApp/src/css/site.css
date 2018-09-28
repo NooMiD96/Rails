@@ -1,0 +1,48 @@
+body {background-color: whitesmoke}
+.loading-spin-container {min-height: 320px}
+.visible {visibility: visible}
+.hidden {visibility: hidden}
+.input-prefix-color {color: rgba(0,0,0,.25)}
+
+/**
+  * Simple CSS Grid
+  */
+.header-container {
+  display: grid;
+  grid-template-columns: auto 15%;
+  grid-template-rows: auto;
+  justify-items: start;
+}
+
+.header-menu-container {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 2;
+
+  justify-self: start;
+}
+
+.header-menu-container .ant-menu {
+  font-size: 18px;
+  line-height: 64px;
+}
+
+.header-account-container {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+
+  justify-self: end;
+  align-self: center;
+  line-height: initial;
+  min-width: 80px;
+}
+.header-account-container .account-modal-title {
+  text-align: center;
+  display: block;
+}
+/**
+  * End CSS Grid
+  */
