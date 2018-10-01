@@ -1,7 +1,7 @@
 import { fetch, addTask } from "domain-task";
 import { AppThunkAction } from "@src/Store";
 
-import { IResponse } from "@core/IResponses";
+import { IResponse } from "@core/fetchHelper/IResponses";
 import * as t from "./actionsType";
 import { TTodoListModel } from "./TTodoList";
 // ----------------

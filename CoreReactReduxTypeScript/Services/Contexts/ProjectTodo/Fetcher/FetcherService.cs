@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CoreReactReduxTypeScript.Models.ProjectTodo;
+using System;
 
 namespace CoreReactReduxTypeScript.Contexts.ProjectTodo
 {
@@ -18,17 +19,31 @@ namespace CoreReactReduxTypeScript.Contexts.ProjectTodo
                 }
             ).ToListAsync();
 
-        public async ValueTask<bool> AddNewStringAsync(FetcherDataModel model)
+        public async ValueTask<bool> AddNewStringAsync(FetcherDataModel model, int userId)
         {
-            var fetcher = new Fetcher();
-            fetcher.FetcherDataList.Add(new FetcherData()
+            var user = await Users
+                .Include(x => x.Fetcher)
+                .FirstOrDefaultAsync(x => x.UserId == userId);
+
+            if (user == null) return false;
+            if (user.Fetcher == null)
+            {
+                user.Fetcher = new Fetcher();
+            }
+            user.Fetcher.FetcherDataList.Add(new FetcherData()
             {
                 Data = model.Data
             });
 
-            Fetchers.Add(fetcher);
-
-            await SaveChangesAsync();
+            try
+            {
+                await SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
 
             return true;
         }

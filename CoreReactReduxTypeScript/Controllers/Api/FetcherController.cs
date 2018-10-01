@@ -28,12 +28,16 @@ namespace CoreReactReduxTypeScript.Controllers.Api
         [HttpPost("[action]")]
         public async Task<IActionResult> SaveString([FromBody] FetcherDataModel fetcherReq)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return BadRequest("Need auth before the add new line");
+            }
             if (String.IsNullOrEmpty(fetcherReq.Data))
             {
                 return BadRequest("Content is empty");
             }
 
-            await _fetcher.AddNewStringAsync(fetcherReq);
+            await _fetcher.AddNewStringAsync(fetcherReq, User.GetUserId());
 
             return Ok("Success");
         }

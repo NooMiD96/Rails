@@ -7,7 +7,7 @@ import {
     TMapStateToProps,
     TMapDispatchToProps,
 } from "./TFetcher";
-import { Fetcher } from "./Component/Fetcher";
+import Fetcher from "./Component";
 import { ApplicationState } from "@src/Store";
 
 const mapStateToProps = (state: ApplicationState, ownProp: TOwnProps): TMapStateToProps => ({

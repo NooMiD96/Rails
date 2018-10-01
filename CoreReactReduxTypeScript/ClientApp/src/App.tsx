@@ -1,8 +1,8 @@
 ﻿import * as React from "react";
 import { Route } from "react-router-dom";
 
-import { Layout } from "@src/components/Layout";
-import { AsyncComponent } from "@src/core/AsyncComponent";
+import { Layout } from "@components/Layout";
+import { AsyncComponent } from "@core/HOC/AsyncComponent";
 
 export const AppRoutes = <Layout>
     <Route exact path="/" component={ AsyncComponent(() => import(/* webpackChunkName: "Home" */ "@src/components/Home/Home")) } />

@@ -3,8 +3,8 @@ import Row from "@core/antd/Row";
 import Col from "@core/antd/Col";
 import Spin from "@core/antd/Spin";
 
-import Alert from "@core/Alert";
-import AddNewItemField from "@core/AddNewItemField";
+import Alert from "@core/components/Alert";
+import AddNewItemField from "@core/components/AddNewItemField";
 import { DragDropTodoList } from "./DragDropTodoList";
 
 import {

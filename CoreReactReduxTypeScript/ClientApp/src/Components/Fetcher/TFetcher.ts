@@ -9,7 +9,6 @@ export enum PendingTypeEnums {
     GetData,
 }
 export type TComponentState = {
-    text: string,
     pendingType: PendingTypeEnums,
 };
 // -----------------------------

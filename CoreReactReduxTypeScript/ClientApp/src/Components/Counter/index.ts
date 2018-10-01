@@ -7,7 +7,7 @@ import {
     TMapStateToProps,
     TMapDispatchToProps,
 } from "./TCounter";
-import { Counter } from "./Component/Counter";
+import Counter from "./Component";
 import { ApplicationState } from "@src/Store";
 
 const mapStateToProps = (state: ApplicationState, ownProp: TOwnProps): TMapStateToProps => ({

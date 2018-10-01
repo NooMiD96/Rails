@@ -19,7 +19,7 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
   };
 
   componentDidMount() {
-    const urls = document.location.pathname.split("/").filter(Boolean);
+    const urls = document.location!.pathname.split("/").filter(Boolean);
     if (urls.length) {
       let urlKey = "1";
       switch (urls[0].toLowerCase()) {
@@ -50,6 +50,7 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
   }
 
   render() {
+    const { userType } = this.props;
     return (
       <div className="header-container">
         <div className="header-menu-container">
@@ -70,8 +71,8 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
             </Menu.Item>
             {
               (
-                this.props.userType === UserTypeEnums.Admin
-                || this.props.userType === UserTypeEnums.Employee
+                userType === UserTypeEnums.Admin
+                || userType === UserTypeEnums.Employee
               ) && <Menu.Item key="4">
                 <Link to={"/todolist"}>Todo List</Link>
               </Menu.Item>
