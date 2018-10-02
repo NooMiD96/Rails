@@ -14,10 +14,10 @@ class AccountControlComponent extends React.Component<TComponentProps, {isRender
 
     let isHavePermissions = false;
     try {
-      isHavePermissions = isUserHavePermissions({
-        userType: props.userType,
-        location: props.location,
-      });
+      isHavePermissions = isUserHavePermissions(
+        props.userType,
+        props.location.pathname
+      );
     } catch {}  // tslint:disable-line
 
     this.state = {
@@ -27,10 +27,10 @@ class AccountControlComponent extends React.Component<TComponentProps, {isRender
 
   componentDidMount() {
     const props = this.props;
-    const isHavePermissions = isUserHavePermissions({
-      userType: props.userType,
-      location: props.location,
-    });
+    const isHavePermissions = isUserHavePermissions(
+      props.userType,
+      props.location.pathname
+    );
     if (!isHavePermissions) {
       (props as any).dispatch(replace("/"));
     }
@@ -43,14 +43,20 @@ class AccountControlComponent extends React.Component<TComponentProps, {isRender
    */
   shouldComponentUpdate(nextProps: TComponentProps, nextState: any) {
     if (this.props.userType !== nextProps.userType) {
-      const isHavePermissions = isUserHavePermissions(nextProps);
+      const isHavePermissions = isUserHavePermissions(
+        nextProps.userType,
+        nextProps.location.pathname
+      );
       if (!isHavePermissions) {
         (this.props as any).dispatch(replace("/"));
       }
       return isHavePermissions;
     }
     if (this.props.location !== nextProps.location) {
-      const isHavePermissions = isUserHavePermissions(nextProps);
+      const isHavePermissions = isUserHavePermissions(
+        nextProps.userType,
+        nextProps.location.pathname
+      );
       if (!isHavePermissions) {
         (this.props as any).dispatch(replace("/"));
       } else if (!this.state.isRenderChildren) {
