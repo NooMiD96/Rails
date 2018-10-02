@@ -1,5 +1,6 @@
-import Input, { InputProps } from "antd/lib/input/Input";
-import "antd/lib/input/style/index.css";
+import Input from "antd/es/input/Input";
+import { InputProps } from "antd/lib/input/Input";
+import "antd/es/input/style/index.css";
 
 export {
     InputProps,

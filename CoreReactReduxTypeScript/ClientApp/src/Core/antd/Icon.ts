@@ -1,3 +1,3 @@
-import Icon from "antd/lib/icon";
+import Icon from "antd/es/icon";
 
 export default Icon;

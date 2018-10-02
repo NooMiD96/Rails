@@ -30,7 +30,8 @@
     }
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "public"
   ],
   "awesomeTypescriptLoaderOptions": {
     "transpileOnly": true

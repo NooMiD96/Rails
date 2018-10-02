@@ -51,6 +51,7 @@ export default createServerRenderer(params =>
       <Provider store={store}>
         <StaticRouter
           basename={basename}
+          context={{}}
           location={params.location.path}
           children={AppRoutes}
         />

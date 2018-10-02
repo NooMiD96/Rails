@@ -1,4 +1,4 @@
-import Button from "antd/lib/button/button";
-import "antd/lib/button/style/index.css";
+import Button from "antd/es/button/button";
+import "antd/es/button/style/index.css";
 
 export default Button;

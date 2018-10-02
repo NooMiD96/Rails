@@ -1,4 +1,4 @@
-import { Store } from "redux";
+import { Store, AnyAction } from "redux";
 import { ApplicationState } from "@src/Store";
 import { ActionCreators as FetcherActionCreators } from "@components/Fetcher/actions";
 

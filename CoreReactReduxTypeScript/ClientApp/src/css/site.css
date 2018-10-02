@@ -1,3 +1,8 @@
+/* @font-face {
+  font-family: "iconfont";
+  src: url("/iconfont.woff") format("woff"),
+} */
+
 body {background-color: whitesmoke}
 .loading-spin-container {min-height: 320px}
 .visible {visibility: visible}
