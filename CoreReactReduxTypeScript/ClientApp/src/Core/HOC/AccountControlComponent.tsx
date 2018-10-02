@@ -1,47 +1,84 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { RouterState } from "connected-react-router";
+import { RouterState, replace } from "connected-react-router";
 
 import { ApplicationState } from "@src/Store";
-import { AccountState, UserTypeEnums } from "@components/Account/IAccountState";
+import { UserTypeEnums } from "@core/constants";
+import { isUserHavePermissions } from "@core/helpers/route/isUserHavePermissions";
 
-type TComponentProps = AccountState & RouterState;
+type TComponentProps = { userType: UserTypeEnums } & RouterState;
 
-const allowToAllUserLocation = {
-  "/": true,
-  "/counter": true,
-  "/fetcher": true,
-};
+class AccountControlComponent extends React.Component<TComponentProps, {isRenderChildren: boolean}> {
+  constructor(props: TComponentProps) {
+    super(props);
 
-class AccountControlComponent extends React.Component<TComponentProps, {}> {
+    let isHavePermissions = false;
+    try {
+      isHavePermissions = isUserHavePermissions({
+        userType: props.userType,
+        location: props.location,
+      });
+    } catch {}  // tslint:disable-line
 
-  shouldComponentUpdate(nextProps: TComponentProps) {
-    if (this.props.location === nextProps.location) {
-      return true;
-    }
-    switch (this.props.userType) {
-      case UserTypeEnums.Admin:
-        return true;
-
-      case UserTypeEnums.Employee:
-        return true;
-
-      case UserTypeEnums.Guest:
-      case UserTypeEnums.User:
-        const { pathname } = nextProps.location;
-        const parthOfLocation = pathname.split("/");
-        return (allowToAllUserLocation as any)[`/${parthOfLocation[1]}`] || false;
-
-      default:
-        return true;
-    }
+    this.state = {
+      isRenderChildren: isHavePermissions,
+    };
   }
 
+  componentDidMount() {
+    const props = this.props;
+    const isHavePermissions = isUserHavePermissions({
+      userType: props.userType,
+      location: props.location,
+    });
+    if (!isHavePermissions) {
+      (props as any).dispatch(replace("/"));
+    }
+  }
+  /**
+   * If the user state was changed and haven't permission
+   * then skip the update and wait for change location
+   * If the location was changed
+   * then that was the changed by the user or app (check permission again)
+   */
+  shouldComponentUpdate(nextProps: TComponentProps, nextState: any) {
+    if (this.props.userType !== nextProps.userType) {
+      const isHavePermissions = isUserHavePermissions(nextProps);
+      if (!isHavePermissions) {
+        (this.props as any).dispatch(replace("/"));
+      }
+      return isHavePermissions;
+    }
+    if (this.props.location !== nextProps.location) {
+      const isHavePermissions = isUserHavePermissions(nextProps);
+      if (!isHavePermissions) {
+        (this.props as any).dispatch(replace("/"));
+      } else if (!this.state.isRenderChildren) {
+        this.setState({
+          isRenderChildren: true,
+        });
+      }
+      return isHavePermissions;
+    }
+    return true;
+  }
+  /**
+   * If user state was changed, and we on Admin/Employee page
+   * then redirect user on home page
+   */
+
   render() {
-    return (this.props.children);
+    return (
+      this.state.isRenderChildren
+        ? this.props.children
+        : <div />
+    );
   }
 }
 
 export default connect(
-  (state: ApplicationState): TComponentProps => ({ ...state.account, ...state.router })
+  (state: ApplicationState): TComponentProps => ({
+    userType: state.account.userType,
+    ...state.router,
+  })
 )(AccountControlComponent);

@@ -1,44 +1,47 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { RouterState } from "connected-react-router";
 import Menu from "@core/antd/Menu";
 
 import { ApplicationState } from "@src/Store";
-import { AccountState, UserTypeEnums } from "@components/Account/IAccountState";
+import { UserTypeEnums } from "@core/constants";
+import { AccountState } from "@components/Account/IAccountState";
+import { IMouseClickEvent } from "@core/IEvents";
 
 import Account from "@components/Account";
+import { routesArray, routesObject } from "@core/constants";
 
 interface IComponentState {
   selectedKeys: string[];
 }
-interface IComponentProps extends AccountState { }
+interface IComponentProps extends AccountState, RouterState { }
 
 export class NavMenu extends React.Component<IComponentProps, IComponentState> {
-  state = {
-    selectedKeys: ["1"],
+  state: IComponentState = {
+    selectedKeys: [],
   };
 
   componentDidMount() {
-    const urls = document.location!.pathname.split("/").filter(Boolean);
-    if (urls.length) {
-      let urlKey = "1";
-      switch (urls[0].toLowerCase()) {
-        case "fetcher":
-          urlKey = "2";
-          break;
-        case "counter":
-          urlKey = "3";
-          break;
-        case "todolist":
-          urlKey = "4";
-          break;
-        default:
-          break;
+    this.setState({
+      selectedKeys: [this.getUrlKey()],
+    });
+  }
+
+  componentDidUpdate(prevProps: IComponentProps) {
+    if (prevProps.location !== this.props.location) {
+      const urlKey = this.getUrlKey();
+      if (this.state.selectedKeys[0] !== urlKey) {
+        this.setState({
+          selectedKeys: [urlKey],
+        });
       }
-      this.setState({
-        selectedKeys: [urlKey],
-      });
     }
+  }
+
+  getUrlKey() {
+    const url = this.props.location.pathname;
+    return routesArray[(routesObject as any)[url] || 0];
   }
 
   onSelectItemHandler = (event: { item: {}, key: string, selectedKeys: string[] }) => {
@@ -46,6 +49,12 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
       this.setState({
         selectedKeys: [event.key],
       });
+    }
+  }
+
+  preventClick = (e: IMouseClickEvent, to: string) => {
+    if (this.props.location.pathname === to) {
+      e.preventDefault();
     }
   }
 
@@ -60,21 +69,41 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
             selectedKeys={this.state.selectedKeys}
             onSelect={this.onSelectItemHandler}
           >
-            <Menu.Item key="1">
-              <Link to={"/"}>Home</Link>
+            <Menu.Item key={routesArray[0]}>
+              <Link
+                to={routesArray[0]}
+                onClick={e => this.preventClick(e, routesArray[0])}
+              >
+                Home
+              </Link>
             </Menu.Item>
-            <Menu.Item key="2">
-              <Link to={"/fetcher"}>Fetcher</Link>
+            <Menu.Item key={routesArray[1]}>
+              <Link
+                to={routesArray[1]}
+                onClick={e => this.preventClick(e, routesArray[1])}
+              >
+                Fetcher
+              </Link>
             </Menu.Item>
-            <Menu.Item key="3">
-              <Link to={"/counter"}>Counter</Link>
+            <Menu.Item key={routesArray[2]}>
+              <Link
+                to={routesArray[2]}
+                onClick={e => this.preventClick(e, routesArray[2])}
+              >
+                Counter
+              </Link>
             </Menu.Item>
             {
               (
                 userType === UserTypeEnums.Admin
                 || userType === UserTypeEnums.Employee
-              ) && <Menu.Item key="4">
-                <Link to={"/todolist"}>Todo List</Link>
+              ) && <Menu.Item key={routesArray[3]}>
+                <Link
+                  to={routesArray[3]}
+                  onClick={e => this.preventClick(e, routesArray[3])}
+                >
+                  Todo List
+                </Link>
               </Menu.Item>
             }
           </Menu>
@@ -88,5 +117,8 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
 }
 
 export default connect(
-  (state: ApplicationState): AccountState => state.account
+  (state: ApplicationState): AccountState => ({
+    ...state.account,
+    ...state.router,
+  })
 )(NavMenu);

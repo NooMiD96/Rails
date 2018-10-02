@@ -2,7 +2,8 @@
 // REDUCER
 import { Reducer } from "redux";
 
-import { UserTypeEnums, AccountState, UnloadedState } from "./IAccountState";
+import { UserTypeEnums } from "@core/constants";
+import { AccountState, UnloadedState } from "./IAccountState";
 import KnownAction, * as t from "./actionsType";
 
 export const reducer: Reducer<AccountState> = (state: AccountState, action: KnownAction) => {

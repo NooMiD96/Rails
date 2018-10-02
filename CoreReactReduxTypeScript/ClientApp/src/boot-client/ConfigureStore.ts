@@ -12,9 +12,9 @@ export default function configureStore(history: History, initialState: Applicati
     if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
         devToolsExtension = window && (window as any).__REDUX_DEVTOOLS_EXTENSION__ as () => GenericStoreEnhancer;
     }
-    if (initialState.router) {
-        delete initialState.router;
-    }
+    // if (initialState.router) {
+    //     delete initialState.router;
+    // }
 
     const store = createStore(
         connectRouter(history)(buildRootReducer(reducers)),

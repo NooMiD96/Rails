@@ -1,11 +1,7 @@
 // -----------------
 // STATE
-export enum UserTypeEnums {
-    Guest,
-    User,
-    Employee,
-    Admin,
-}
+import { UserTypeEnums } from "@core/constants";
+
 export interface AccountState {
     userName?: string;
     userType: UserTypeEnums;

@@ -7,7 +7,7 @@ import {
 } from "@core/IEvents";
 
 type AddNewItemFieldProps = {
-  inputFieldRef: React.Ref<Input>,
+  inputFieldRef?: React.Ref<Input>,
   onSubmitHandler: (e: IPressEnterEvent | IMouseClickEvent) => void,
   onChangeHandler?: (e: IKeyChangeEvent) => void,
   text?: string,
