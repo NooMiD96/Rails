@@ -1,13 +1,14 @@
 import * as React from "react";
-// import AntdButton from "antd/es/button/button";
-import "antd/es/button/style/index.css";
+import Svg, { IconDefinition } from "./Svg";
 
+import "antd/es/button/style/index.css";
+// TODO: fill props and component
 export interface CustomButtonProps {
   key?: string;
   type?: string;
   shape?: "circle" | "circle-outline";
   size?: "large" | "default" | "small";
-  icon?: string;
+  svgProps?: IconDefinition;
   children?: React.ReactNodeArray | string | number;
   loading?: boolean;
   ghost?: boolean;
@@ -20,7 +21,7 @@ const CustomButton = (props: CustomButtonProps): JSX.Element => {
     type = "",
     shape = "",
     size = "default",
-    icon = "",
+    svgProps,
     loading = false,
     ghost = false,
     className = "",
@@ -48,7 +49,7 @@ const CustomButton = (props: CustomButtonProps): JSX.Element => {
         type ? " ant-btn-" + type : ""}${
         sizeCls ? " ant-btn-" + sizeCls : ""}${
         shape ? " ant-btn-" + shape : ""}${
-        icon ? " ant-btn-" + icon : ""}${
+        // icon ? " ant-btn-" + icon : ""}${
         isIconOnly ? " ant-btn-icon-only" : ""}${
         loading ? " ant-btn-loading" : ""}${
         ghost ? " ant-btn-background-ghost" : ""
@@ -57,11 +58,10 @@ const CustomButton = (props: CustomButtonProps): JSX.Element => {
       type="button"
       onClick={onClick}
     >
-      {
-        isIconOnly
-          ? <span>i</span>
-          : props.children
-      }
+      <React.Fragment>
+        {isIconOnly && <Svg svgProps={svgProps} />}
+        {props.children}
+      </React.Fragment>
     </button>
   );
 };

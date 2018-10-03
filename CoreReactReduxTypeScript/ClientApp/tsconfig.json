@@ -26,6 +26,9 @@
       ],
       "@components/*": [
         "src/components/*"
+      ],
+      "@antdSvgs/*": [
+        "node_modules/@ant-design/icons/lib/outline/*"
       ]
     }
   },

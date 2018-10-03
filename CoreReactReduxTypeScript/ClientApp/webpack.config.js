@@ -30,20 +30,29 @@ module.exports = (env) => {
         '@src': path.resolve('./src'),
         '@core': path.resolve('./src/core'),
         '@components': path.resolve('./src/components'),
+        '@antdSvgs': path.resolve('./node_modules/@ant-design/icons/lib/outline'),
       },
     },
     // https://webpack.js.org/configuration/module/
     module: {
       rules: [
+        // https://webpack.js.org/loaders/url-loader/
         // https://webpack.js.org/loaders/file-loader/
         {
-          test: /\.(png|jpg|jpeg|gif|svg|eot|ttf|woff)$/,
-          loader: 'file-loader',
-          options: { name: '[name].[ext]', outputPath: 'assets/', publicPath: 'assets/' },
+          test: /\.(png|jpg|jpeg|gif|eot|ttf|woff)$/,
+          loader: 'url-loader',
+          options: {
+            limit: 8192,
+            name: '[name].[ext]',
+          },
         },
         // https://github.com/s-panferov/awesome-typescript-loader
         // TS module for webpack
-        { test: /\.(ts|tsx)?$/, include: /src/, use: 'awesome-typescript-loader?silent=true' },
+        {
+          test: /\.(ts|tsx)?$/,
+          include: /src/,
+          use: 'awesome-typescript-loader?silent=true'
+        },
         // {
         //   test: /\.css$/,
         //   enforce: 'pre',
@@ -72,13 +81,6 @@ module.exports = (env) => {
             }
           ]
         },
-        // https://webpack.js.org/loaders/url-loader/
-        // some troubles with creating the base64 string
-        // {
-        //   test: /\.(png|jpg|jpeg|gif|svg|eot|ttf|woff)$/,
-        //   loader: 'url-loader',
-        //   options: { limit: 1024 },
-        // },
       ]
     },
     plugins: [

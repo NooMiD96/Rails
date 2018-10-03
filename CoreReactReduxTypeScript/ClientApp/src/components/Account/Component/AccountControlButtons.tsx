@@ -1,6 +1,9 @@
 import * as React from "react";
 import Button from "@core/antd/Button";
 
+import LoginSvgProps from "@antdSvgs/LoginOutline";
+import LogoutSvgProps from "@antdSvgs/LogoutOutline";
+import IdcardSvgProps from "@antdSvgs/IdcardOutline";
 import { ModalTypeEnums } from "../TAccount";
 
 type AccountControlButtonsProps = {
@@ -11,19 +14,19 @@ type AccountControlButtonsProps = {
 
 const AccountControlButtons = (props: AccountControlButtonsProps) => (
   !props.userName
-    ? <React.Fragment>
+  ? <React.Fragment>
       <Button
         type="primary"
         shape="circle"
         size="large"
-        icon="login"
+        svgProps={LoginSvgProps}
         onClick={() => props.ShowModal(ModalTypeEnums.Authentication)}
       />
       <Button
         type="primary"
         shape="circle"
         size="large"
-        icon="idcard"
+        svgProps={IdcardSvgProps}
         onClick={() => props.ShowModal(ModalTypeEnums.Registration)}
       />
     </React.Fragment>
@@ -31,7 +34,7 @@ const AccountControlButtons = (props: AccountControlButtonsProps) => (
       type="primary"
       shape="circle"
       size="large"
-      icon="logout"
+      svgProps={LogoutSvgProps}
       onClick={() => props.LogOut()}
     />
 );
