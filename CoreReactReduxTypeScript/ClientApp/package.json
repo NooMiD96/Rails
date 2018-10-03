@@ -16,9 +16,12 @@
     "connected-react-router": "^4.5.0",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
-    "domain-task": "^3.0.3"
+    "antd": "^3.7.2",
+    "react-beautiful-dnd": "^9.0.2",
+    "styled-components": "^3.3.3"
   },
   "devDependencies": {
+    "domain-task": "^3.0.3",
     "@types/history": "^4.7.0",
     "@types/react": "^16.4.14",
     "@types/react-beautiful-dnd": "^7.1.2",
@@ -28,7 +31,6 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/webpack": "^4.4.13",
     "@types/webpack-env": "^1.13.6",
-    "antd": "^3.7.2",
     "aspnet-prerendering": "^3.0.1",
     "aspnet-webpack": "^3.0.0",
     "aspnet-webpack-react": "^4.0.0",
@@ -36,10 +38,8 @@
     "css-loader": "^1.0.0",
     "file-loader": "^2.0.0",
     "node-noop": "^1.0.0",
-    "react-beautiful-dnd": "^9.0.2",
     "react-hot-loader": "^4.3.11",
     "style-loader": "^0.23.0",
-    "styled-components": "^3.3.3",
     "tslint": "^5.11.0",
     "typescript": "^3.1.1",
     "url-loader": "^1.1.1",
