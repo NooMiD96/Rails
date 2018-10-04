@@ -5,10 +5,31 @@ const StringReplacePlugin = require('string-replace-webpack-plugin');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const merge = require('webpack-merge');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = (env) => {
-  const isDevBuild = !(env && env.prod);
+  let isDevBuild = true;
+  let isShowInBrowser = false;
+  if (env) {
+    isDevBuild = !env.prod;
+    isShowInBrowser = !!env.show;
+  }
+
+  let buildModeString = "development";
+  let optimizationConfiguration = {
+    minimize: !isDevBuild,
+    splitChunks: {
+      // the "all" doesn't work
+      chunks: "async"
+    },
+  }
+  if (!isDevBuild) {
+    buildModeString = "production";
+    optimizationConfiguration.minimizer = [
+      new UglifyJsPlugin({ parallel: true })
+    ];
+  }
+  optimizationConfiguration.nodeEnv = buildModeString
 
   // Configuration in common to both client-side and server-side bundles
   const sharedConfig = () => ({
@@ -71,7 +92,11 @@ module.exports = (env) => {
             MiniCssExtractPlugin.loader,
             {
               loader: require.resolve('css-loader'),
-              options: { importLoaders: 1, minimize: !isDevBuild, sourceMap: isDevBuild }
+              options: {
+                importLoaders: 1,
+                minimize: !isDevBuild,
+                sourceMap: isDevBuild
+              }
             }
           ]
         },
@@ -85,6 +110,8 @@ module.exports = (env) => {
 
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 
+      // https://github.com/webpack-contrib/mini-css-extract-plugin
+      // Concatenate css styles in file
       new MiniCssExtractPlugin({
         // Options similar to the same options in webpackOptions.output
         // both options are optional
@@ -98,51 +125,22 @@ module.exports = (env) => {
       new StringReplacePlugin(),
 
       // hide warning in the webpack
-      new webpack.NormalModuleReplacementPlugin(
-        /\/iconv-loader$/, 'node-noop',
-      ),
-      
+      new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
+
       // https://github.com/webpack-contrib/webpack-bundle-analyzer
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        openAnalyzer: false,
-        analyzerHost: "0.0.0.0",
-        analyzerPort: 5500,
-      }) 
+      // new BundleAnalyzerPlugin({
+      //   analyzerMode: 'static',
+      //   openAnalyzer: isShowInBrowser,
+      //   analyzerHost: "0.0.0.0",
+      //   analyzerPort: 5500,
+      // })
     ],
-    optimization: {
-      minimize: !isDevBuild,
-      ...(
-        isDevBuild
-          ? {}
-          : {
-            minimizer: [
-              new UglifyJsPlugin({
-                parallel: true,
-              })
-            ]
-          }
-      ),
-      splitChunks: {
-        // "all" doesn't work
-        chunks: "async"
-      },
-      nodeEnv: (
-        isDevBuild
-          ? "development"
-          : "production"
-      )
-    },
-    ...(
-      isDevBuild
-        ? { devtool: 'eval-source-map' }
-        : {}
-    ),
-    mode: (
-      isDevBuild
-        ? "development"
-        : "production"
-    ),
+    optimization: optimizationConfiguration,
+    mode: buildModeString,
+    ...(isDevBuild
+      ? { devtool: 'eval-source-map' }
+      : {}
+    )
   });
 
   // Configuration for client-side bundle suitable for running in browsers
