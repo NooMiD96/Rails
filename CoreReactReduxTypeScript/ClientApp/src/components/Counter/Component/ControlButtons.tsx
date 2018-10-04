@@ -23,14 +23,14 @@ export class ControlButtons extends React.Component<ButtonsProps, {}> {
           ghost
           onClick={Decrement}
         >
-          <Icon type="down-circle-o" />Decrement
+          <Icon type="down-circle-o" /> Decrement
         </Button>
         <Button
           type="primary"
           ghost
           onClick={Increment}
         >
-          Increment<Icon type="up-circle-o" />
+          Increment <Icon type="up-circle-o" />
         </Button>
       </ButtonGroup>
     );

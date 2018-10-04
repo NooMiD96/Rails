@@ -1,7 +1,12 @@
 import * as React from "react";
 import { IconDefinition } from "@antdSvgs/../types";
 // TODO: recursive function
-const Svg = (props: { svgProps?: IconDefinition }) => {
+interface SvgProps {
+  svgProps?: IconDefinition;
+  className?: string;
+}
+
+const Svg = (props: SvgProps) => {
   if (!props.svgProps
     || typeof(props.svgProps.icon) !== "object"
   ) {
@@ -10,19 +15,27 @@ const Svg = (props: { svgProps?: IconDefinition }) => {
   const { icon } = props.svgProps;
 
   return (
-    <svg
-      {...icon.attrs}
+    <i
+      className={`anticon${props.className ? " " + props.className : ""}`}
     >
-      {
-        icon.children && icon.children.map(val => (
-          <val.tag
-            {...val.attrs}
-          >
+      <svg
+        fill="currentColor"
+        height="1em"
+        width="1em"
+        {...icon.attrs}
+        >
+        {
+          icon.children && icon.children.map((val, index) => (
+            <val.tag
+              key={index}
+              {...val.attrs}
+            >
 
-          </val.tag>
-        ))
-      }
-    </svg>
+            </val.tag>
+          ))
+        }
+      </svg>
+    </i>
   );
 };
 
