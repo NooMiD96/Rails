@@ -6,7 +6,7 @@
     "clean": "IF EXIST %CD%\\public\\client rd /s /q %CD%\\public\\client && IF EXIST %CD%\\public\\server rd /s /q %CD%\\public\\server",
     "buildDev": "npm run clean && webpack --config webpack.config.js --mode development",
     "buildProd": "npm run clean && webpack --config webpack.config.js --mode production --env.prod",
-    "getBundlsStats": "webpack --mode production --env.prod --env.show --profile --json > stats.json"
+    "getBundlsStats": "npm run clean && webpack --mode production --env.prod --env.show --profile --json > stats.json"
   },
   "dependencies": {
     "react": "^16.5.2",
@@ -19,7 +19,8 @@
     "redux-thunk": "^2.3.0",
     "antd": "^3.10.0",
     "react-beautiful-dnd": "^9.0.2",
-    "styled-components": "^3.4.9"
+    "styled-components": "^3.4.9",
+    "domain-task": "^3.0.3"
   },
   "devDependencies": {
     "@types/history": "^4.7.0",
@@ -36,7 +37,6 @@
     "aspnet-webpack-react": "^4.0.0",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^1.0.0",
-    "domain-task": "^3.0.3",
     "file-loader": "^2.0.0",
     "mini-css-extract-plugin": "^0.4.3",
     "node-noop": "^1.0.0",
@@ -51,6 +51,7 @@
     "webpack-dev-middleware": "^3.4.0",
     "webpack-hot-middleware": "^2.24.2",
     "webpack-merge": "^4.1.4",
-    "webpack-bundle-analyzer": "^3.0.2"
+    "webpack-bundle-analyzer": "^3.0.2",
+    "optimize-css-assets-webpack-plugin": "^5.0.1"
   }
 }

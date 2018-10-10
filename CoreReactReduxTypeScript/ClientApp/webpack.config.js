@@ -5,7 +5,8 @@ const StringReplacePlugin = require('string-replace-webpack-plugin');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const merge = require('webpack-merge');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 module.exports = (env) => {
   let isDevBuild = true;
@@ -19,14 +20,16 @@ module.exports = (env) => {
   let optimizationConfiguration = {
     minimize: !isDevBuild,
     splitChunks: {
-      // the "all" doesn't work
-      chunks: "async"
+      automaticNameDelimiter: '.',
+      maxInitialRequests: 10,
+      name: true,
     },
   }
   if (!isDevBuild) {
     buildModeString = "production";
     optimizationConfiguration.minimizer = [
-      new UglifyJsPlugin({ parallel: true })
+      new UglifyJsPlugin({ parallel: true }),
+      new OptimizeCSSAssetsPlugin({})
     ];
   }
   optimizationConfiguration.nodeEnv = buildModeString
@@ -35,7 +38,7 @@ module.exports = (env) => {
   const sharedConfig = () => ({
     output: {
       filename: '[name].js',
-      chunkFilename: '[name].bundle.js',
+      chunkFilename: '[name].js',
       publicPath: 'client/'
     },
     // https://webpack.js.org/configuration/stats/
@@ -90,14 +93,7 @@ module.exports = (env) => {
           test: /\.css$/,
           use: [
             MiniCssExtractPlugin.loader,
-            {
-              loader: require.resolve('css-loader'),
-              options: {
-                importLoaders: 1,
-                minimize: !isDevBuild,
-                sourceMap: isDevBuild
-              }
-            }
+            require.resolve('css-loader')
           ]
         },
       ]
@@ -116,9 +112,7 @@ module.exports = (env) => {
         // Options similar to the same options in webpackOptions.output
         // both options are optional
         filename: "[name].css",
-        chunkFilename: "[id].css",
         // filename: isDevBuild ? "[name].css" : "[name].[hash].css",
-        // chunkFilename: isDevBuild ? "[id].css" : "[id].[hash].css"
       }),
 
       // an instance of the plugin must be present
@@ -128,12 +122,12 @@ module.exports = (env) => {
       new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
 
       // https://github.com/webpack-contrib/webpack-bundle-analyzer
-      // new BundleAnalyzerPlugin({
-      //   analyzerMode: 'static',
-      //   openAnalyzer: isShowInBrowser,
-      //   analyzerHost: "0.0.0.0",
-      //   analyzerPort: 5500,
-      // })
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        openAnalyzer: isShowInBrowser,
+        analyzerHost: "0.0.0.0",
+        analyzerPort: 5500,
+      })
     ],
     optimization: optimizationConfiguration,
     mode: buildModeString,
@@ -151,6 +145,36 @@ module.exports = (env) => {
     output: {
       path: path.join(__dirname, './public/client')
     },
+    optimization: {
+      splitChunks: {
+        chunks: "all",
+        cacheGroups: {
+          "react.redux": {
+            chunks: 'all',
+            // The all *react* and *redux* modules without "react-beautiful-dnd"
+            // 'cause it is used only in TodoList component
+            test: /[\\\/]node_modules[\\\/][^\\\/]*(react(?!-beautiful-dnd)|redux)[^\\\/]*[\\\/]/,
+            priority: 2
+          },
+          "react.dnd": {
+            chunks: 'all',
+            test: /[\\\/]node_modules[\\\/][^\\\/]*react-beautiful-dnd[^\\\/]*[\\\/]/,
+            priority: 2
+          },
+          antd: {
+            chunks: 'all',
+            test: /[\\\/]node_modules[\\\/][^\\\/]*(antd|ant-design)[^\\\/]*[\\\/]/,
+            priority: 1,
+          },
+          rc: {
+            chunks: 'all',
+            // rc-[componentName] - used in the antd etc. components
+            test: /[\\\/]node_modules[\\\/][^\\\/]*rc-[^\\\/]*[\\\/]/,
+            priority: 1,
+          }
+        }
+      }
+    },
   });
 
   // Configuration for server-side (prerendering) bundle suitable for running in Node
@@ -166,6 +190,11 @@ module.exports = (env) => {
     // Import only main from package
     resolve: {
       mainFields: ['main']
+    },
+    optimization: {
+      splitChunks: {
+        chunks: "async",
+      }
     },
     target: 'node',
   });
