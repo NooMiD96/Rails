@@ -15,7 +15,8 @@ import { routesArray, routesObject } from "@core/constants";
 interface IComponentState {
   selectedKeys: string[];
 }
-interface IComponentProps extends AccountState, RouterState { }
+
+interface IComponentProps extends AccountState, RouterState {}
 
 export class NavMenu extends React.Component<IComponentProps, IComponentState> {
   state: IComponentState = {
@@ -117,7 +118,7 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
 }
 
 export default connect(
-  (state: ApplicationState): AccountState => ({
+  (state: ApplicationState): IComponentProps => ({
     ...state.account,
     ...state.router,
   })

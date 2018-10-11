@@ -6,7 +6,7 @@ import { UserTypeEnums } from "@core/constants";
 import { AccountState, UnloadedState } from "./IAccountState";
 import KnownAction, * as t from "./actionsType";
 
-export const reducer: Reducer<AccountState> = (state: AccountState, action: KnownAction) => {
+export const reducer: Reducer<AccountState> = (state: AccountState = UnloadedState, action: KnownAction) => {
     switch (action.type) {
         case t.REGISTRATION_REQUEST:
         case t.AUTHENTICATION_REQUEST:
@@ -53,5 +53,5 @@ export const reducer: Reducer<AccountState> = (state: AccountState, action: Know
         default:
             const exhaustiveCheck: never = action;
     }
-    return state || UnloadedState;
+    return state;
 };

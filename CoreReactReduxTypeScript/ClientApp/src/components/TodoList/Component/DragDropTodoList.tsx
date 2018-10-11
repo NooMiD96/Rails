@@ -5,18 +5,18 @@ import {
   Draggable,
   Droppable,
   DroppableProvided,
-  DraggableLocation,
+  // DraggableLocation,
   DropResult,
   DroppableStateSnapshot,
   DraggableProvided,
   DraggableStateSnapshot,
 } from "react-beautiful-dnd";
 
-import {
-  IKeyChangeEvent,
-  IPressEnterEvent,
-  IMouseClickEvent,
-} from "@core/IEvents";
+// import {
+//   IKeyChangeEvent,
+//   IPressEnterEvent,
+//   IMouseClickEvent,
+// } from "@core/IEvents";
 
 import { TodoPayload } from "../ITodoListState";
 

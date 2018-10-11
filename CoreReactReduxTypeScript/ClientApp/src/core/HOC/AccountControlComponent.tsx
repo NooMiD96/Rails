@@ -18,7 +18,7 @@ class AccountControlComponent extends React.Component<TComponentProps, {isRender
         props.userType,
         props.location.pathname
       );
-    } catch {}  // tslint:disable-line
+    } catch {}  // tslint:disable-line:no-empty
 
     this.state = {
       isRenderChildren: isHavePermissions,

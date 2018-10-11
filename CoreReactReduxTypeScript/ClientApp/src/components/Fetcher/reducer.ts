@@ -5,7 +5,7 @@ import { Reducer } from "redux";
 import { FetcherState, UnloadedState } from "./IFetcherState";
 import KnownAction, * as t from "./actionsType";
 
-export const reducer: Reducer<FetcherState> = (state: FetcherState, action: KnownAction) => {
+export const reducer: Reducer<FetcherState> = (state: FetcherState = UnloadedState, action: KnownAction) => {
     switch (action.type) {
         case t.GET_DATA_REQUEST:
         case t.POST_DATA_REQUEST:
@@ -44,5 +44,5 @@ export const reducer: Reducer<FetcherState> = (state: FetcherState, action: Know
         default:
             const exhaustiveCheck: never = action;
     }
-    return state || UnloadedState;
+    return state;
 };
