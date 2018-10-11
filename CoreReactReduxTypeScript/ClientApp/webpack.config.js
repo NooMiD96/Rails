@@ -7,8 +7,10 @@ const merge = require('webpack-merge');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const AppSettings = require("../appsettings.json");
 
 module.exports = (env) => {
+  const projectFolder = path.join(__dirname, '../');
   let isDevBuild = true;
   let isShowInBrowser = false;
   if (env) {
@@ -16,12 +18,17 @@ module.exports = (env) => {
     isShowInBrowser = !!env.show;
   }
 
+  const fileNameTemplate = isDevBuild
+  ? '[name]'
+  : '[name].[contenthash]';
+
   let buildModeString = "development";
   let optimizationConfiguration = {
     minimize: !isDevBuild,
     splitChunks: {
       automaticNameDelimiter: '.',
-      maxInitialRequests: 10,
+      maxInitialRequests: Infinity,
+      minSize: 0,
       name: true,
     },
   }
@@ -36,11 +43,6 @@ module.exports = (env) => {
 
   // Configuration in common to both client-side and server-side bundles
   const sharedConfig = () => ({
-    output: {
-      filename: '[name].js',
-      chunkFilename: '[name].js',
-      publicPath: 'client/'
-    },
     // https://webpack.js.org/configuration/stats/
     // Add built modules information
     stats: {
@@ -79,7 +81,7 @@ module.exports = (env) => {
           loader: 'url-loader',
           options: {
             limit: 8192,
-            name: '[name].[ext]',
+            name: `${fileNameTemplate}.[ext]`,
           },
         },
         // https://github.com/s-panferov/awesome-typescript-loader
@@ -106,15 +108,6 @@ module.exports = (env) => {
 
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 
-      // https://github.com/webpack-contrib/mini-css-extract-plugin
-      // Concatenate css styles in file
-      new MiniCssExtractPlugin({
-        // Options similar to the same options in webpackOptions.output
-        // both options are optional
-        filename: "[name].css",
-        // filename: isDevBuild ? "[name].css" : "[name].[hash].css",
-      }),
-
       // an instance of the plugin must be present
       new StringReplacePlugin(),
 
@@ -127,7 +120,10 @@ module.exports = (env) => {
         openAnalyzer: isShowInBrowser,
         analyzerHost: "0.0.0.0",
         analyzerPort: 5500,
-      })
+      }),
+
+      // https://webpack.js.org/guides/caching/#module-identifiers
+      new webpack.HashedModuleIdsPlugin()
     ],
     optimization: optimizationConfiguration,
     mode: buildModeString,
@@ -140,10 +136,13 @@ module.exports = (env) => {
   // Configuration for client-side bundle suitable for running in browsers
   const clientBundleConfig = merge(sharedConfig(), {
     entry: {
-      'main-client': './src/boot-client/boot-client.tsx'
+      [AppSettings.SpaClientFileName]: './src/boot-client/boot-client.tsx'
     },
     output: {
-      path: path.join(__dirname, './public/client')
+      filename: `${fileNameTemplate}.js`,
+      chunkFilename: `${fileNameTemplate}.js`,
+      publicPath: `${AppSettings.SpaPublicPath}/`,
+      path: path.join(projectFolder, AppSettings.SpaPhysicalClientPath)
     },
     optimization: {
       splitChunks: {
@@ -175,15 +174,24 @@ module.exports = (env) => {
         }
       }
     },
+    plugins: [
+      // https://github.com/webpack-contrib/mini-css-extract-plugin
+      new MiniCssExtractPlugin({
+        // Options similar to the same options in webpackOptions.output
+        filename: `${fileNameTemplate}.css`,
+      }),
+    ],
   });
 
   // Configuration for server-side (prerendering) bundle suitable for running in Node
   const serverBundleConfig = merge(sharedConfig(), {
     entry: {
-      'main-server': './src/boot-server/boot-server.tsx',
+      [AppSettings.SpaServerFileName]: './src/boot-server/boot-server.tsx',
     },
     output: {
-      path: path.join(__dirname, './public/server'),
+      filename: '[name].js',
+      chunkFilename: '[name].js',
+      path: path.join(projectFolder, AppSettings.SpaPhysicalServerPath),
       libraryTarget: 'commonjs',
     },
     // https://webpack.js.org/configuration/resolve/#resolve-mainfields
@@ -197,6 +205,13 @@ module.exports = (env) => {
       }
     },
     target: 'node',
+    plugins: [
+      // https://github.com/webpack-contrib/mini-css-extract-plugin
+      new MiniCssExtractPlugin({
+        // Options similar to the same options in webpackOptions.output
+        filename: `[name].css`,
+      }),
+    ],
   });
 
   return [clientBundleConfig, serverBundleConfig];

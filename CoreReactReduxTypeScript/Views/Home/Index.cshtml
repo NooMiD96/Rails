@@ -3,15 +3,14 @@
 }
 
 <div id="react-app"
-     asp-prerender-module="ClientApp/public/server/main-server"
+     asp-prerender-module=@($"{StartUpVendors.ServerPhysicalPath}/{StartUpVendors.ServerFileName}")
      asp-prerender-data="new {
         user = @ViewData["user"]
      }">Loading...</div>
 
 @section scripts {
-    <script src="~/client/vendors.main-client.js" asp-append-version="true"></script>
-    <script src="~/client/react.redux.main-client.js" asp-append-version="true"></script>
-    <script src="~/client/antd.main-client.js" asp-append-version="true"></script>
-    <script src="~/client/rc.main-client.js" asp-append-version="true"></script>
-    <script src="~/client/main-client.js" asp-append-version="true"></script>
+    @foreach (var scriptSrc in StartUpVendors.JsVendors)
+    {
+        <script src="@scriptSrc" asp-append-version="true"></script>
+    }
 }

@@ -67,6 +67,8 @@ namespace CoreReactReduxTypeScript
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ClaimsPrincipalFactoryDI>();
 
+            services.AddResponseCompression();
+
             var serviceProvider = services.BuildServiceProvider();
 
             // We cant start the both DI together 'couse we have a reference from Project to Identity context
@@ -83,8 +85,10 @@ namespace CoreReactReduxTypeScript
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/public";
+                configuration.RootPath = Configuration.GetValue<string>("SpaPhysicalStaticPath");
             });
+
+            StartUpVendors.Configuration = Configuration;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,12 +100,14 @@ namespace CoreReactReduxTypeScript
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
                     HotModuleReplacementClientOptions   = new Dictionary<string, string> { { "dynamicPublicPath", "false" } },
-                    ProjectPath                         = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp"),
+                    ProjectPath                         = Path.Combine(Directory.GetCurrentDirectory(), Configuration.GetValue<string>("SpaPhysicalRootPath")),
                     HotModuleReplacement                = true,
                     ReactHotModuleReplacement           = true
                 });
             }
-            
+
+            app.UseResponseCompression();
+
             app.UseSpaStaticFiles();
 
             app.UseAuthentication();
