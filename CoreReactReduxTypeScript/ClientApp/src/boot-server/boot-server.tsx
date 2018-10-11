@@ -13,6 +13,7 @@ import { UnloadedState } from "@components/Account/IAccountState";
 import { TUserModel } from "@components/Account/TAccount";
 import { getUrlPathnameToCheck, isUserHavePermissions } from "@core/helpers/route";
 import { routesArray } from "@core/constants";
+import { XPT } from "@src/core/helpers/auth/xsrf";
 
 export default createServerRenderer(params =>
   new Promise<RenderResult>(async (resolve, reject) => {
@@ -25,8 +26,12 @@ export default createServerRenderer(params =>
       userName: "",
       userType: UnloadedState.userType,
     };
+    let xpt: XPT | undefined;
     if (params.data.user) {
       userModel = JSON.parse(params.data.user);
+    }
+    if (params.data.xpt) {
+      xpt = JSON.parse(params.data.xpt);
     }
     // check access to the requested url and change history entries
     if (isUserHavePermissions(
@@ -41,7 +46,14 @@ export default createServerRenderer(params =>
     }
     // create a store and dispatch the user information
     const store = configureStore(history);
-    store.dispatch(ActionsList.SetUser(userModel));
+    if (userModel.userName) {
+      if (xpt) {
+        store.dispatch(ActionsList.SetUser(userModel));
+        store.dispatch(ActionsList.SetXsrf(xpt));
+      } else {
+        store.dispatch(ActionsList.LogoutRequest());
+      }
+    }
     // init state corresponding to the incoming URL
     const splitedUrl = urlAfterBasename.split("?")[0].split("/").filter(Boolean);
     initReduxForComponent(splitedUrl, store);

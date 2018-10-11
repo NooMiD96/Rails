@@ -6,6 +6,7 @@ import { IData } from "./IFetcherState";
 
 import * as t from "./actionsType";
 import { errorCreater, errorCatcher } from "@core/fetchHelper/errorCatcher";
+import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 // ----------------
 // ACTIONS
 export const ActionsList = {
@@ -37,10 +38,15 @@ export const ActionsList = {
 // ----------------
 // ACTION CREATORS
 export const ActionCreators = {
-  GetData: (): AppThunkAction<t.TGetData> => (dispatch, _getState) => {
+  GetData: (): AppThunkAction<t.TGetData> => (dispatch, getState) => {
+    const xptToHeader = GetXsrfToHeader(getState);
+
     const fetchTask = fetch("/api/Fetcher/GetStrings", {
       method: "GET",
-      headers: { "Content-Type": "application/json; charset=UTF-8" },
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        ...xptToHeader,
+      },
     }).then((res: Response) => {
       if (res.ok) {
         return res.json();
@@ -53,6 +59,7 @@ export const ActionCreators = {
       }
       const data: IData[] = JSON.parse(value.data);
       dispatch(ActionsList.GetDataSuccess(data));
+
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Fetcher",
@@ -64,10 +71,15 @@ export const ActionCreators = {
     addTask(fetchTask);
     dispatch(ActionsList.GetDataRequest());
   },
-  PostData: (text: string): AppThunkAction<t.TPostData | t.TGetData> => (dispatch, _getState) => {
+  PostData: (text: string): AppThunkAction<t.TPostData | t.TGetData> => (dispatch, getState) => {
+    const xptToHeader = GetXsrfToHeader(getState);
+
     const fetchTask = fetch("/api/Fetcher/SaveString", {
       method: "POST",
-      headers: { "Content-Type": "application/json; charset=UTF-8" },
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        ...xptToHeader,
+      },
       body: JSON.stringify({ data: text }),
     }).then((res: Response) => {
       if (res.ok) {
@@ -80,7 +92,7 @@ export const ActionCreators = {
         return errorCreater(value.error);
       }
       dispatch(ActionsList.PostDataSuccess());
-      ActionCreators.GetData()(dispatch, _getState);
+      ActionCreators.GetData()(dispatch, getState);
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Fetcher",

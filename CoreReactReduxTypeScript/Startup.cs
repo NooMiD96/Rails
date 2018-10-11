@@ -69,6 +69,14 @@ namespace CoreReactReduxTypeScript
 
             services.AddResponseCompression();
 
+            services.AddAntiforgery(options =>
+            {
+                options.HeaderName = Configuration.GetValue<string>("XsrfName");
+                //cookie is only for the same-site requests
+                options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
+                options.Cookie.Name = Configuration.GetValue<string>("XsrfName");
+            });
+
             var serviceProvider = services.BuildServiceProvider();
 
             // We cant start the both DI together 'couse we have a reference from Project to Identity context

@@ -1,4 +1,5 @@
 import { TUserModel } from "./TAccount";
+import { XPT } from "@src/core/helpers/auth/xsrf";
 // -----------------
 // ACTIONS TYPE
 export const REGISTRATION_REQUEST = "REGISTRATION_REQUEST";
@@ -16,6 +17,8 @@ export const LOGOUT_ERROR = "LOGOUT_ERROR";
 export const SET_USER = "SET_USER";
 
 export const REMOVE_ERROR_MESSAGE = "REMOVE_ERROR_MESSAGE";
+
+export const SET_XPT = "SET_XPT";
 // -----------------
 // ACTIONS INTERFACE
 export interface IRegistrationRequest { type: typeof REGISTRATION_REQUEST; }
@@ -37,5 +40,7 @@ export interface ISetUser { type: typeof SET_USER; user: TUserModel; }
 
 export interface IRemoveErrorMessage { type: typeof REMOVE_ERROR_MESSAGE; }
 
-type KnownAction = TRegistration | TAuthentication | TLogout | ISetUser | IRemoveErrorMessage;
+export interface ISetXPTAction { type: typeof SET_XPT; xpt: XPT; }
+
+type KnownAction = TRegistration | TAuthentication | TLogout | ISetUser | IRemoveErrorMessage | ISetXPTAction;
 export default KnownAction;

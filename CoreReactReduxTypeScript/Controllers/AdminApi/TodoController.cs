@@ -10,6 +10,7 @@ using CoreReactReduxTypeScript;
 
 namespace CoreReactReduxTypeScript.Controllers.AdminApi
 {
+    [ValidateAntiForgeryToken]
     [Authorize(Roles = Roles.Admin + ", " + Roles.Employee)]
     [Route("adminapi/[controller]")]
     [ApiController]

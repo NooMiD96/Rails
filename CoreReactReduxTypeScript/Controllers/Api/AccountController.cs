@@ -12,6 +12,8 @@ using CoreReactReduxTypeScript.Models.ProjectTodoIdentity;
 using CoreReactReduxTypeScript.Models.Account;
 using CoreReactReduxTypeScript.Controllers.Api.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Antiforgery;
+using static CoreReactReduxTypeScript.Services.Helpers.Xsrf;
 
 namespace CoreReactReduxTypeScript.Controllers.Api
 {
@@ -23,17 +25,20 @@ namespace CoreReactReduxTypeScript.Controllers.Api
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ProjectTodoContext _context;
         private readonly AccountService _service;
+        private readonly IAntiforgery _antiforgery;
         private readonly ILogger _logger;
 
         public AccountController([FromServices] UserManager<ApplicationUser> userManager,
                                  [FromServices] SignInManager<ApplicationUser> signInManager,
                                  [FromServices] ProjectTodoContext context,
+                                 IAntiforgery antiforgery,
                                  ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
             _service = new AccountService();
+            _antiforgery = antiforgery;
             _logger = logger;
         }
 
@@ -127,7 +132,16 @@ namespace CoreReactReduxTypeScript.Controllers.Api
         }
 
         [HttpPost("[action]")]
-        //[ValidateAntiForgeryToken]
+        public IActionResult ReNewXSRF([FromBody] RegistrationModel model)
+        {
+            if (_signInManager.IsSignedIn(User))
+            {
+                return Ok(XsrfToXpt(_antiforgery.GetAndStoreTokens(HttpContext)));
+            }
+            return BadRequest("User is not Signed");
+        }
+
+        [HttpPost("[action]")]
         public async Task<IActionResult> Logout()
         {
             var userName = User.Identity.Name;

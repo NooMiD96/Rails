@@ -12,6 +12,8 @@ import UpCircleSvg from "@antdSvgs/UpCircleOutline";
 import LeftSvg from "@antdSvgs/LeftOutline";
 import RightSvg from "@antdSvgs/RightOutline";
 import LoadingSvg from "@antdSvgs/LoadingOutline";
+import CloseCircleSvg from "@antdSvgs/CloseCircleOutline";
+import CloseSvg from "@antdSvgs/CloseOutline";
 
 export interface CustomIconProps {
   type: string;
@@ -58,6 +60,12 @@ const CustomIcon = (props: CustomIconProps): JSX.Element => {
       break;
     case "loading":
       svgProps = LoadingSvg;
+      break;
+    case "close-circle":
+      svgProps = CloseCircleSvg;
+      break;
+    case "close":
+      svgProps = CloseSvg;
       break;
 
     default:

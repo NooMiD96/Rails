@@ -1,6 +1,4 @@
-﻿using CoreReactReduxTypeScript;
-
-namespace CoreReactReduxTypeScript.Controllers.Api.Services
+﻿namespace CoreReactReduxTypeScript.Controllers.Api.Services
 {
     public class AccountService
     {
