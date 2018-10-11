@@ -11,6 +11,7 @@ using CoreReactReduxTypeScript.Contexts.ProjectTodo;
 using CoreReactReduxTypeScript.Models.ProjectTodoIdentity;
 using CoreReactReduxTypeScript.Models.Account;
 using CoreReactReduxTypeScript.Controllers.Api.Services;
+using Microsoft.Extensions.Logging;
 
 namespace CoreReactReduxTypeScript.Controllers.Api
 {
@@ -22,15 +23,18 @@ namespace CoreReactReduxTypeScript.Controllers.Api
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ProjectTodoContext _context;
         private readonly AccountService _service;
+        private readonly ILogger _logger;
 
         public AccountController([FromServices] UserManager<ApplicationUser> userManager,
                                  [FromServices] SignInManager<ApplicationUser> signInManager,
-                                 [FromServices] ProjectTodoContext context)
+                                 [FromServices] ProjectTodoContext context,
+                                 ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
             _service = new AccountService();
+            _logger = logger;
         }
 
         [HttpPost("[action]")]
@@ -40,11 +44,16 @@ namespace CoreReactReduxTypeScript.Controllers.Api
                 UserName = userModel.UserName,
                 Email = userModel.Email
             };
+            _logger.LogDebug($"Registration: UserName:{user.UserName}, Email:{user.Email}");
             if (userModel.IsValid(_userManager, user, out var error))
             {
+                _logger.LogDebug($"Registration: Model is valid");
+
                 var result = await _userManager.CreateAsync(user, userModel.Password);
                 if (result.Succeeded)
                 {
+                    _logger.LogDebug($"Registration: Create user is Succeeded");
+
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     //await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
@@ -57,11 +66,15 @@ namespace CoreReactReduxTypeScript.Controllers.Api
                 }
                 else
                 {
+                    _logger.LogDebug($"Registration: Create user is Failure");
+
                     // TODO: can't create
                     // return error description
                     return BadRequest(result.Errors.FirstOrDefault()?.Description ?? "Please try again");
                 }
             }
+            _logger.LogDebug($"Registration: Model is invalid");
+
             // TODO: not valid
             // return error description
             return BadRequest(error.Description ?? "Please try again");
