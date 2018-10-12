@@ -1,3 +1,71 @@
+// import * as React from "react";
+// import Svg, { IconDefinition } from "./Svg";
+// import { mainIcons, icons, TIcons, TMainIcons } from "../constants";
+
+// export interface CustomIconProps {
+//   type: TIcons | TMainIcons;
+//   className?: string;
+// }
+
+// export interface CustomIconState {
+//   svgProps: IconDefinition | null;
+// }
+
+// class CustomIcon extends React.PureComponent<CustomIconProps, CustomIconState> {
+//   state: CustomIconState = {
+//     svgProps: null,
+//   };
+
+//   importSvg = async (path: string) => {
+//     const svg = await import(/* webpackChunkName: "icons" */ path);
+//     return svg.default as IconDefinition;
+//   }
+
+//   importMainSvg = async (path: string) => {
+//     const svg = await import(
+//       /* webpackChunkName: "icons" */
+//       path
+//     );
+//     return svg.default as IconDefinition;
+//   }
+
+//   loadIcon = async (type: TIcons | TMainIcons) => {
+//     if (icons[type as TIcons]) {
+//       const svgProps = await this.importSvg(icons[type as TIcons]);
+//       this.setState({svgProps});
+//     } else if (mainIcons[type as TMainIcons]) {
+//       const svgProps = await this.importMainSvg(mainIcons[type as TMainIcons]);
+//       this.setState({svgProps});
+//     } else {
+//       throw new Error(`SVG with "${type}" type not found!`);
+//     }
+//   }
+//   async componentDidMount() {
+//     const { type } = this.props;
+//     try {
+//       await this.loadIcon(type);
+//     } catch (err) {
+//       if (process.env.NODE_ENV === "development") {
+//         throw new Error(err.message);
+//       }
+//     }
+//   }
+
+//   render() {
+//     const { svgProps } = this.state;
+//     return (
+//       svgProps
+//         ? <Svg
+//           className={this.props.className}
+//           svgProps={svgProps}
+//         />
+//         : <span />
+//     );
+//   }
+// }
+
+// export default CustomIcon;
+
 import * as React from "react";
 import Svg, { IconDefinition } from "./Svg";
 
