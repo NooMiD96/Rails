@@ -9,7 +9,6 @@ import AddNewItemField from "@core/components/AddNewItemField";
 import { Table } from "./Table";
 
 import {
-  IKeyChangeEvent,
   IPressEnterEvent,
   IMouseClickEvent,
 } from "@core/IEvents";

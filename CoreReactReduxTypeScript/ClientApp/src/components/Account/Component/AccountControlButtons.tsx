@@ -10,7 +10,7 @@ type AccountControlButtonsProps = {
 };
 
 const AccountControlButtons = (props: AccountControlButtonsProps) => (
-  !props.userName
+  ! props.userName
   ? <React.Fragment>
       <Button
         type="primary"

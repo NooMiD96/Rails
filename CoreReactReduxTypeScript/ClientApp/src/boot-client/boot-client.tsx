@@ -12,6 +12,10 @@ let routes = App.AppRoutes;
 
 import "@src/css/site.css";
 
+import RegisterServiceWorker from "../registerServiceWorker";
+
+RegisterServiceWorker();
+
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href")!;
 const history = createBrowserHistory({ basename: baseUrl });

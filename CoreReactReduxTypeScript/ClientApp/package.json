@@ -52,6 +52,8 @@
     "webpack-hot-middleware": "^2.24.3",
     "webpack-merge": "^4.1.4",
     "webpack-bundle-analyzer": "^3.0.2",
-    "optimize-css-assets-webpack-plugin": "^5.0.1"
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "webpack-manifest-plugin": "^2.0.4",
+    "copy-webpack-plugin": "^4.5.3"
   }
 }

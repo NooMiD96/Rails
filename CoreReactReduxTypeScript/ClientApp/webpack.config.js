@@ -8,6 +8,8 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const AppSettings = require("../appsettings.json");
+const ManifestPlugin = require('webpack-manifest-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env) => {
   const projectFolder = path.join(__dirname, '../');
@@ -19,8 +21,8 @@ module.exports = (env) => {
   }
 
   const fileNameTemplate = isDevBuild
-  ? '[name]'
-  : '[name].[contenthash]';
+    ? '[name]'
+    : '[name].[contenthash]';
 
   let buildModeString = "development";
   let optimizationConfiguration = {
@@ -114,16 +116,13 @@ module.exports = (env) => {
       // hide warning in the webpack
       new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
 
-      // https://github.com/webpack-contrib/webpack-bundle-analyzer
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        openAnalyzer: isShowInBrowser,
-        analyzerHost: "0.0.0.0",
-        analyzerPort: 5500,
-      }),
-
       // https://webpack.js.org/guides/caching/#module-identifiers
-      new webpack.HashedModuleIdsPlugin()
+      new webpack.HashedModuleIdsPlugin(),
+
+      // https://webpack.js.org/plugins/environment-plugin
+      new webpack.EnvironmentPlugin({
+        'PUBLIC_URL': AppSettings.SpaPublicPath
+      }),
     ],
     optimization: optimizationConfiguration,
     mode: buildModeString,
@@ -136,10 +135,18 @@ module.exports = (env) => {
   // Configuration for client-side bundle suitable for running in browsers
   const clientBundleConfig = merge(sharedConfig(), {
     entry: {
-      [AppSettings.SpaClientFileName]: './src/boot-client/boot-client.tsx'
+      [AppSettings.SpaClientFileName]: './src/boot-client/boot-client.tsx',
+      ...(
+        !isDevBuild
+        ? {'service-worker': './src/sw.ts'} : {}
+      )
     },
     output: {
-      filename: `${fileNameTemplate}.js`,
+      filename: (chunkData) => (
+        chunkData.chunk.name === 'service-worker'
+          ? "[name].js"
+          : `${fileNameTemplate}.js`
+      ),
       chunkFilename: `${fileNameTemplate}.js`,
       publicPath: `${AppSettings.SpaPublicPath}/`,
       path: path.join(projectFolder, AppSettings.SpaPhysicalClientPath)
@@ -180,6 +187,33 @@ module.exports = (env) => {
         // Options similar to the same options in webpackOptions.output
         filename: `${fileNameTemplate}.css`,
       }),
+
+      // https://github.com/webpack-contrib/webpack-bundle-analyzer
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        openAnalyzer: isShowInBrowser,
+        analyzerHost: "0.0.0.0",
+        analyzerPort: 5500,
+      }),
+
+      // https://github.com/danethurber/webpack-manifest-plugin
+      new ManifestPlugin({
+        fileName: "manifest-assets.json",
+        filter: (fileDescriptor) => fileDescriptor.name !== "service-worker.js"
+      }),
+
+      // https://github.com/webpack-contrib/copy-webpack-plugin
+      ...(
+        isDevBuild ?
+        [
+          new CopyWebpackPlugin([
+            {
+              from: "src/sw.ts",
+              to: 'service-worker.js',
+            }
+          ])
+        ] : []
+      )
     ],
   });
 
