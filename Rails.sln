@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreReactRedux", "CoreReact
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreReactReduxTypeScript", "CoreReactReduxTypeScript\CoreReactReduxTypeScript.csproj", "{19E857EB-D976-4F95-A1C6-8D34A9E699E4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vue", "CoreVueTypeScript\Vue.csproj", "{0403D89D-0877-441D-A110-B908CBB8BDDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreVueTypeScript", "CoreVueTypeScript\CoreVueTypeScript.csproj", "{0403D89D-0877-441D-A110-B908CBB8BDDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
