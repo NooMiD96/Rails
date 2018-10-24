@@ -1,7 +1,7 @@
 module.exports = getJsModuleRules = () => ([
   {
-    test: /\.vue\.html$/,
-    include: /ClientApp/,
+    test: /\.vue(\.html)?$/,
+    include: /src/,
     loader: 'vue-loader',
     options: {
       loaders: {

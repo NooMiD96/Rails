@@ -3,17 +3,13 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 
 import Vue from "vue";
-import VueRouter from "vue-router";
-Vue.use(VueRouter);
+import VueRouter from "./routes";
 
-const routes = [
-    { path: "/", component: require("./components/home/home.vue.html").default },
-    { path: "/counter", component: require("./components/counter/counter.vue.html").default },
-    { path: "/fetchdata", component: require("./components/fetchdata/fetchdata.vue.html").default }
-];
+import App from "./components/app/app.vue";
 
+// tslint:disable:no-unused-expression
 new Vue({
-    el: "#app-root",
-    router: new VueRouter({ mode: "history", routes: routes }),
-    render: h => h(require("./components/app/app.vue.html").default)
+  el: "#app-root",
+  router: VueRouter,
+  render: h => h(App),
 });

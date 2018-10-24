@@ -1,14 +1,18 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "module": "es2015",
+    "module": "esnext",
     "moduleResolution": "node",
     "target": "es5",
     "sourceMap": true,
+    "allowJs": true,
     "skipDefaultLibCheck": true,
     "strict": true,
-    "types": ["webpack-env"],
+    "types": [
+      "webpack-env"
+    ],
     "lib": [
       "dom",
       "es2015",
@@ -16,12 +20,17 @@
       "webworker"
     ],
     "plugins": [
-      { "name": "ts-vue-plugin" }
+      {
+        "name": "ts-vue-plugin"
+      }
     ]
   },
   "exclude": [
-      "bin",
-      "node_modules"
+    "bin",
+    "node_modules"
+  ],
+  "include": [
+    "./src/**/*"
   ],
   "awesomeTypescriptLoaderOptions": {
     "transpileOnly": true

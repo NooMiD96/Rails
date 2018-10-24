@@ -1,9 +1,9 @@
 #route-nav-bar .nav-link-item.active.show {
-    color: #007bff;
-    background-color: initial;
+  color: #007bff;
+  background-color: initial;
 }
 
 #route-nav-bar .router-link-active .nav-link-item.active.show {
-    color: #fff;
-    background-color: #007bff;
+  color: #fff;
+  background-color: #007bff;
 }

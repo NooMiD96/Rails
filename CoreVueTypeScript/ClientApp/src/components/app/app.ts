@@ -1,10 +1,10 @@
-import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import Navmenu from "../navmenu/navmenu.vue";
 
 @Component({
-    components: {
-        MenuComponent: require('../navmenu/navmenu.vue.html').default
-    }
+  components: {
+    MenuComponent: Navmenu,
+  },
 })
-export default class AppComponent extends Vue {
-}
+export default class AppComponent extends Vue { }

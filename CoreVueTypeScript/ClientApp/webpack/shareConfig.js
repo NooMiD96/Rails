@@ -20,7 +20,7 @@ module.exports = getSharedConfig = (
     // https://webpack.js.org/configuration/resolve/#resolve-extensions
     // Can import files without extansions
     resolve: {
-      extensions: ['.js', '.ts'],
+      extensions: ['.js', '.ts'/*, '.vue', '.vue.html'*/],
       alias: getAlias(),
     },
     // https://webpack.js.org/configuration/module/

@@ -115,6 +115,7 @@
       true,
       "multiline"
     ],
-    "no-namespace": true
+    "no-namespace": true,
+    "newline-before-return": true
   }
 }

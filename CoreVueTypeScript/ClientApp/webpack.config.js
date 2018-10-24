@@ -1,22 +1,22 @@
-const getStartupValues = require('./webpack/startupValues');
-const getSharedConfig = require('./webpack/shareConfig');
+const getStartupValues = require("./webpack/startupValues");
+const getSharedConfig = require("./webpack/shareConfig");
 // const getServerBundleConfig = require('./webpack/serverBundleConfig');
-const getClientBundleConfig = require('./webpack/clientBundleConfig');
+const getClientBundleConfig = require("./webpack/clientBundleConfig");
 
-module.exports = (env) => {
+module.exports = env => {
   const {
     projectFolder,
     isDevBuild,
     isShowInBrowser,
     fileNameTemplate,
     buildModeString,
-    optimizationConfiguration,
+    optimizationConfiguration
   } = getStartupValues(env, __dirname);
 
   const shareConfigFunc = () => getSharedConfig(
     optimizationConfiguration,
     buildModeString,
-    isDevBuild ? 'eval-source-map' : '',
+    isDevBuild ? "eval-source-map" : "",
     fileNameTemplate
   );
 
@@ -31,8 +31,7 @@ module.exports = (env) => {
     isShowInBrowser,
     isDevBuild,
     shareConfigFunc
-  )
+  );
 
-
-  return [clientBundleConfig/*, serverBundleConfig*/];
+  return [clientBundleConfig /*, serverBundleConfig*/];
 };
