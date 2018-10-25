@@ -12,8 +12,8 @@ module.exports = getStartupValues = (env, dirname) => {
   }
 
   const fileNameTemplate = isDevBuild
-    ? '[name]'
-    : '[name].[contenthash]';
+    ? (ext) => `[name].${ext}`
+    : (ext) => `[name].${ext}?v=[contenthash]`;
 
   let buildModeString = "development";
   let optimizationConfiguration = {

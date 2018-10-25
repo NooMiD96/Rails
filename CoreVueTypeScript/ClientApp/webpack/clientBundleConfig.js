@@ -14,7 +14,7 @@ const clientPlugins = (
   // https://github.com/webpack-contrib/mini-css-extract-plugin
   new MiniCssExtractPlugin({
     // Options similar to the same options in webpackOptions.output
-    filename: `${fileNameTemplate}.css`,
+    filename: fileNameTemplate('css'),
   }),
 
   // https://github.com/webpack-contrib/webpack-bundle-analyzer
@@ -45,8 +45,8 @@ module.exports = getClientBundleConfig = (
       [AppSettings.SpaClientFileName]: './src/boot.ts'
     },
     output: {
-      filename: `${fileNameTemplate}.js`,
-      chunkFilename: `${fileNameTemplate}.js`,
+      filename: fileNameTemplate('js'),
+      chunkFilename: fileNameTemplate('js'),
       publicPath: `${AppSettings.SpaPublicPath}/`,
       path: path.join(projectFolder, AppSettings.SpaPhysicalClientPath)
     },
