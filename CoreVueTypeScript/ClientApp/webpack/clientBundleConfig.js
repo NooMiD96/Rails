@@ -1,7 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-// const ManifestPlugin = require('webpack-manifest-plugin');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
 const merge = require('webpack-merge');
 const path = require('path');
 
@@ -24,12 +22,6 @@ const clientPlugins = (
     analyzerHost: "0.0.0.0",
     analyzerPort: 5500,
   }),
-
-  // https://github.com/danethurber/webpack-manifest-plugin
-  // new ManifestPlugin({
-  //   fileName: "manifest-assets.json",
-  //   filter: (fileDescriptor) => fileDescriptor.name !== "service-worker.js"
-  // }),
 ]);
 
 // Configuration for client-side bundle suitable for running in browsers

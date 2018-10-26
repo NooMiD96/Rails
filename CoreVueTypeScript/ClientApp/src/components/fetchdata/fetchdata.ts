@@ -1,22 +1,15 @@
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { State, Action } from "vuex-class";
+import Component from "vue-class-component";
 
-interface WeatherForecast {
-  dateFormatted: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
-}
+import { IState } from "./IFetchdata";
 
 @Component
-export default class FetchDataComponent extends Vue {
-  forecasts: WeatherForecast[] = [];
+export default class UserDetail extends Vue {
+  @State("fetchdata") fetchdata!: IState;
+  @Action("getNewForecasts", { namespace: "fetchdata" }) getNewForecasts: any;
 
   mounted() {
-    fetch("api/SampleData/WeatherForecasts")
-      .then(response => response.json() as Promise<WeatherForecast[]>)
-      .then(data => {
-        this.forecasts = data;
-      });
+    this.getNewForecasts();
   }
 }

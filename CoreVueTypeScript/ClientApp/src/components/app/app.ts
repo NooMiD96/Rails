@@ -1,5 +1,6 @@
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import Component from "vue-class-component";
+
 import Navmenu from "../navmenu/navmenu.vue";
 
 @Component({

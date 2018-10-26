@@ -1,4 +1,3 @@
-const StringReplacePlugin = require('string-replace-webpack-plugin');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
@@ -12,9 +11,6 @@ module.exports = getGeneralPlugins = () => [
   new CheckerPlugin(),
 
   new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-
-  // an instance of the plugin must be present
-  new StringReplacePlugin(),
 
   // hide warning in the webpack
   new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
