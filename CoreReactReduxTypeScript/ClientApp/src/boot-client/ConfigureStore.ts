@@ -14,7 +14,7 @@ export default function configureStore(history: History, initialState: Applicati
     }
 
     const store = createStore(
-        connectRouter(history)(buildRootReducer(reducers as any)),
+        buildRootReducer(history, reducers as any),
         initialState,
         compose(
             applyMiddleware(thunk, routerMiddleware(history)),
@@ -27,17 +27,15 @@ export default function configureStore(history: History, initialState: Applicati
         module.hot.accept("@src/Store", () => {
             // tslint:disable-next-line:no-require-imports
             const nextRootReducer = require<typeof StoreModule>("@src/Store");
-            store.replaceReducer(
-                connectRouter(history)(
-                    buildRootReducer(nextRootReducer.reducers as any)
-                )
-            );
+            store.replaceReducer(buildRootReducer(history, nextRootReducer.reducers as any));
         });
     }
 
     return store;
 }
 
-function buildRootReducer(allReducers: ReducersMapObject<ApplicationState, AnyAction>) {
-    return combineReducers<ApplicationState>(allReducers);
-}
+const buildRootReducer = (historyForRouterReducer: History, appReducers: ReducersMapObject<ApplicationState, AnyAction>) =>
+    combineReducers<ApplicationState>({
+        router: connectRouter(historyForRouterReducer),
+        ...appReducers,
+    });

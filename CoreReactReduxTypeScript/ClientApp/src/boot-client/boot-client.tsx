@@ -12,9 +12,11 @@ let routes = App.AppRoutes;
 
 import "@src/css/site.css";
 
-import RegisterServiceWorker from "../registerServiceWorker";
-
-RegisterServiceWorker();
+//TODO: Register only in prod
+//#region ServiceWorker
+// import RegisterServiceWorker from "../registerServiceWorker";
+// RegisterServiceWorker();
+//#endregion
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href")!;

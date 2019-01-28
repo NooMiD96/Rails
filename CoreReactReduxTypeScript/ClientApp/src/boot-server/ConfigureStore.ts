@@ -8,7 +8,7 @@ const { reducers } = StoreModule;
 type ApplicationState = StoreModule.ApplicationState;
 
 export default function configureStore(history: History) {
-    const allReducers = connectRouter(history)(buildRootReducer(reducers as any));
+    const allReducers = buildRootReducer(history, reducers as any);
     const store = createStore(
         allReducers,
         applyMiddleware(thunk, routerMiddleware(history))
@@ -17,6 +17,8 @@ export default function configureStore(history: History) {
     return store;
 }
 
-function buildRootReducer(allReducers: ReducersMapObject<ApplicationState, AnyAction>) {
-    return combineReducers<ApplicationState>(allReducers);
-}
+const buildRootReducer = (historyForRouterReducer: History, appReducers: ReducersMapObject<ApplicationState, AnyAction>) => 
+    combineReducers<ApplicationState>({
+        router: connectRouter(historyForRouterReducer),
+        ...appReducers,
+    });

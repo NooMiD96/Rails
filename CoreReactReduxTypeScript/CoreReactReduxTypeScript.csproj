@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -42,10 +42,7 @@
     <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
     <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
 
-    <Exec
-      Condition=" Exists('$(SpaRoot)\public\client') OR Exists('$(SpaRoot)\public\server') "
-      WorkingDirectory="$(SpaRoot)"
-      Command="npm run clean" />
+    <Exec Condition=" Exists('$(SpaRoot)\public\client') OR Exists('$(SpaRoot)\public\server') " WorkingDirectory="$(SpaRoot)" Command="npm run clean" />
     <Exec Condition=" !Exists('$(SpaRoot)node_modules') " WorkingDirectory="$(SpaRoot)" Command="npm install" />
   </Target>
 
